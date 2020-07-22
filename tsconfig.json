@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "CommonJS",
+    "lib": ["esnext", "dom"],
+    "declaration": true,
+    "sourceMap": true,
+    "rootDir": "./src/js",
+    "outDir": "./dist/js",
+    "strict": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "exclude": [
+    "./node_modules"
+  ],
+  "files": ["./src/js/index.ts"]
+}

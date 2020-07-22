@@ -5,14 +5,33 @@ const { CleanWebpackPlugin} = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
-    entry: './src/js/index.js',
+    entry: './src/js/index.ts',
     output: {
-        filename: "./js/main.js",
+        filename: "./js/app.js",
         path: path.resolve(__dirname, '../dist'),
         publicPath: "/",
     },
     module: {
         rules: [
+            {
+                test: /\.ts?$/,
+                enforce: 'pre',
+                use: [
+                    // {
+                    //     options: {
+                    //         eslintPath: require.resolve('eslint'),
+                    //     },
+                    //     loader: require.resolve('eslint-loader'),
+                    // },
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            configFile: 'tsconfig.json'
+                        }
+                    }
+                ],
+                exclude: /node_modules/,
+            },
             {
                 test: /\.css$/,
                 use:[
@@ -38,12 +57,10 @@ module.exports = {
                     'sass-loader'
                 ]
             },
-            {
-                test: /\.js$/,
-                loader: 'babel-loader',
-                exclude: '/node_modules/'
-            },
         ]
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js']
     },
     plugins :[
         new HtmlWebpackPlugin({
