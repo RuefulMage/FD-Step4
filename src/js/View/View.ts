@@ -18,8 +18,6 @@ export type options = {
         divisionsAmount: number,
         minValue: number,
         maxValue: number,
-        startPositionLow: number,
-        startPositionHigh: number
         startValueLow: number,
         startValueHigh: number,
         step: number
@@ -54,21 +52,18 @@ export class View extends ViewComponent implements IPublisher{
 
         if(options.isRange){
             this._runnersAndTips = new Map<Runner, Tip>([
-                        [new Runner(this._strip.DOMNode, orientationBehavior, options.startPositionLow),
-                            new Tip(this._strip.DOMNode, orientationBehavior, options.startValueLow.toString(),
-                                options.startPositionLow, options.isTipsHidden)],
-                        [new Runner(this._strip.DOMNode, orientationBehavior, options.startPositionHigh),
-                            new Tip(this._strip.DOMNode, orientationBehavior, options.startPositionHigh.toString(),
-                                options.startValueHigh, options.isTipsHidden, true)]
+                        [new Runner(this._strip.DOMNode, orientationBehavior),
+                            new Tip(this._strip.DOMNode, orientationBehavior, options.isTipsHidden)],
+                        [new Runner(this._strip.DOMNode, orientationBehavior),
+                            new Tip(this._strip.DOMNode, orientationBehavior, options.isTipsHidden, true)]
                     ]);
-            this._range = new Range(this._strip.DOMNode, orientationBehavior,
-                options.startPositionLow, options.startPositionHigh);
+            this._range = new Range(this._strip.DOMNode, orientationBehavior);
         } else {
             this._runnersAndTips = new Map<Runner, Tip>([
-                [new Runner(this._strip.DOMNode, orientationBehavior, options.startPositionLow),
-                    new Tip(this._strip.DOMNode, orientationBehavior, options.startValueLow.toString(), options.startPositionLow, options.isTipsHidden)]
+                [new Runner(this._strip.DOMNode, orientationBehavior),
+                    new Tip(this._strip.DOMNode, orientationBehavior, options.isTipsHidden)]
             ]);
-            this._range = new Range(this._strip.DOMNode, orientationBehavior, 0, options.startPositionLow);
+            this._range = new Range(this._strip.DOMNode, orientationBehavior);
         }
         this.addHadler();
     }
@@ -96,8 +91,11 @@ export class View extends ViewComponent implements IPublisher{
             return;
         }
         let orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(this._orientation);
-        let runner = new Runner(this._strip.DOMNode, orientationBehavior, highRunnerPosition);
-        let tip = new Tip(this._strip.DOMNode, orientationBehavior, highRunnerValue.toString(), highRunnerPosition, this._isTipsHidden, true);
+        let runner = new Runner(this._strip.DOMNode, orientationBehavior);
+        runner.position = highRunnerPosition;
+        let tip = new Tip(this._strip.DOMNode, orientationBehavior, this._isTipsHidden, true);
+        tip.setPosition(highRunnerPosition);
+        tip.setInnerText(highRunnerValue.toString());
         this._runnersAndTips.set(runner, tip);
         this.setRange(this.getRunners()[0].position, this.getRunners()[1].position);
     }

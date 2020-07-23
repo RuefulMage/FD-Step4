@@ -7,15 +7,13 @@ export class Tip extends ViewComponent{
     protected _isHidden: boolean = true;
     protected _orientationBehavior: IOrientationBehavior;
 
-    constructor(parentNode: JQuery<HTMLElement>, orientationBehavior: IOrientationBehavior, innerText: string,
-                startPosition: number = 0, isHidden: boolean = true, isBelow: boolean = false) {
+    constructor(parentNode: JQuery<HTMLElement>, orientationBehavior: IOrientationBehavior,
+                isHidden: boolean = true, isBelow: boolean = false) {
         super(parentNode, isBelow ?
             constants.tipClassName + ' ' + constants.tipBellowClassName:
             constants.tipClassName);
         this.isHidden = isHidden;
         this._orientationBehavior = orientationBehavior;
-        this.setPosition(startPosition);
-        this.setInnerText(innerText);
     }
 
     setPosition(newPosition: number){

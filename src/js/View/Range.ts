@@ -7,12 +7,9 @@ export class Range extends ViewComponent{
     protected _maxEdge: number = 100;
     protected _orientationBehavior: IOrientationBehavior;
 
-    constructor(parentNode: JQuery<HTMLElement>,  orientationBehavior: IOrientationBehavior,
-                minEdge: number = 0, maxEdge: number = 100) {
+    constructor(parentNode: JQuery<HTMLElement>,  orientationBehavior: IOrientationBehavior) {
         super(parentNode, constants.rangeClassName);
         this._orientationBehavior = orientationBehavior;
-        this.minEdge = minEdge;
-        this.maxEdge = maxEdge;
     }
 
     get minEdge(): number {

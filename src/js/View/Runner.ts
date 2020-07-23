@@ -7,10 +7,9 @@ export class Runner extends ViewComponent {
     protected _position: number = 0;
     protected _orientationBehavior: IOrientationBehavior;
 
-    constructor(parentNode: JQuery<HTMLElement>,  orientationBehavior: IOrientationBehavior, startPosition: number = 0) {
+    constructor(parentNode: JQuery<HTMLElement>,  orientationBehavior: IOrientationBehavior) {
         super(parentNode, constants.runnerClassName);
         this._orientationBehavior = orientationBehavior;
-        this.position = startPosition;
         this.addHadler();
     }
 
