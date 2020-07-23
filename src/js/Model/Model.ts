@@ -139,29 +139,51 @@ export class Model implements IPublisher{
 
 
     validateValue(value: number): number {
-        let validatedValue = this._minValue + Math.round((value - this._minValue) / this.step) * this.step;
-        if( validatedValue < this._minValue ){
-            validatedValue = this.minValue;
-        } else if ( validatedValue > this._maxValue ) {
+        let validatedValue;
+        if( value <= this._minValue ){
+            validatedValue = this._minValue;
+        } else if ( value >= this._maxValue ) {
             validatedValue = this._maxValue;
+        } else {
+            validatedValue = this._minValue + Math.round((value - this._minValue) / this.step) * this.step;
         }
-
         return validatedValue;
     }
 
     validateValueInPercent(value: number): number{
-        let percentsInStep = (100 / (this._maxValue - this._minValue)) * this.step;
-        let validatedValue = Math.round(value / percentsInStep) * percentsInStep;
+        let validatedValue;
+        if( value >= 100) {
+            validatedValue = 100
+        } else if ( value <= 0 ) {
+            validatedValue = 0
+        } else {
+            let percentsInStep = (100 / (this._maxValue - this._minValue)) * this.step;
+            validatedValue = Math.round(value / percentsInStep) * percentsInStep;
+        }
         return validatedValue;
     }
 
     convertPercentToValue(percent: number): number{
-        let value = this._minValue + ((percent / 100) * (this._maxValue - this._minValue));
+        let value;
+        if( percent >= 100) {
+            value = this._maxValue;
+        } else if ( percent <= 0 ) {
+            value = this.minValue;
+        } else {
+            value = this._minValue + ((percent / 100) * (this._maxValue - this._minValue));
+        }
         return value;
     }
 
     convertValueToPercent(value: number): number{
-        let valueInPercent = ((value - this._minValue) / (this._maxValue - this._minValue)) * 100;
+        let valueInPercent;
+        if( value >= this.maxValue ) {
+            valueInPercent = 100;
+        } else if ( value <= this.minValue ) {
+            valueInPercent = 0;
+        } else {
+            valueInPercent = ((value - this._minValue) / (this._maxValue - this._minValue)) * 100;
+        }
         return valueInPercent;
     }
 
