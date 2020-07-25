@@ -7,7 +7,7 @@
     "sourceMap": true,
     "rootDir": "./src/js",
     "outDir": "./dist/js",
-    "strict": true,
+    "strictNullChecks": false,
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -15,6 +15,5 @@
   },
   "exclude": [
     "./node_modules"
-  ],
-  "files": ["./src/js/index.ts"]
+  ]
 }
