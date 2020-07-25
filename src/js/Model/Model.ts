@@ -3,12 +3,12 @@ import { IObserver } from '../View/IObserver';
 import { options } from '../View/View';
 
 export class Model implements IPublisher{
-    protected _isRange: boolean = true;
-    protected _maxValue: number = -100;
-    protected _minValue: number = -200;
-    protected values: number[] = [this._minValue, this._maxValue];
-    protected step: number = 5;
-    protected _observers: Set<IObserver> = new Set<IObserver>();
+    protected _isRange: boolean;
+    protected _maxValue: number;
+    protected _minValue: number;
+    private _values: number[] = [this._minValue, this._maxValue];
+    private _step: number;
+    private _observers: Set<IObserver> = new Set<IObserver>();
 
 
     constructor(options: options) {
@@ -16,8 +16,12 @@ export class Model implements IPublisher{
         this._maxValue = options.maxValue;
         this._maxValue = options.maxValue;
         this._minValue = options.minValue;
-        this.values = [options.startValueLow, options.startValueHigh];
-        this.step = options.step;
+        this._step = options.step;
+        this._values = [this._minValue, this._maxValue];
+        this.setLowValue(options.startValueLow);
+        if(this._isRange){
+            this.setHighValue(options.startValueHigh)
+        }
     }
 
     get isRange(): boolean {
@@ -30,14 +34,14 @@ export class Model implements IPublisher{
     }
 
     setMaxValue(value: number) {
-        if( value <= this.minValue || (value - this.minValue) < this.step ){
+        if( value <= this.minValue || (value - this.minValue) < this._step ){
             throw new Error('value is not valid');
         } else {
             this._maxValue = value;
             if( this._isRange ){
                 this.setHighValue(this.maxValue);
-                this.setLowValue(this.values[0]);
-            } else if (!this.isRange && this.values[0] > this.maxValue){
+                this.setLowValue(this._values[0]);
+            } else if (!this.isRange && this._values[0] > this.maxValue){
                 this.setLowValue(this.maxValue);
             }
             this.notify('max-value-change');
@@ -45,15 +49,15 @@ export class Model implements IPublisher{
     }
 
     setMinValue(value: number) {
-        if( value >= this.maxValue || (this.maxValue - value) < this.step ){
+        if( value >= this.maxValue || (this.maxValue - value) < this._step ){
             throw new Error('value is not valid');
         } else {
             this._minValue = value;
             if(this.isRange){
-                this.setLowValue(this.values[0]);
-                this.setHighValue(this.values[1]);
+                this.setLowValue(this._values[0]);
+                this.setHighValue(this._values[1]);
             } else {
-                this.setLowValue(this.values[0]);
+                this.setLowValue(this._values[0]);
             }
             this.notify('min-value-change');
         }
@@ -66,17 +70,17 @@ export class Model implements IPublisher{
 
     setLowValue(value: number): void {
         let newValue = this.validateValue(value);
-        if( newValue >= this.values[1] && this._isRange){
-            if( this.values[1] >= this.minValue + this.step ){
-                newValue = this.values[1] - this.step;
+        if( newValue >= (this._values[1] - this._step) && this._isRange){
+            if( this._values[1] >= this.minValue + this._step ){
+                newValue = this._values[1] - this._step;
             } else {
-                this.setHighValue(this._minValue + this.step);
-                this.values[0] = this.minValue;
+                this.setHighValue(this._minValue + this._step);
+                this._values[0] = this.minValue;
             }
         } else if (!this._isRange && newValue >= this._maxValue){
             newValue = this._maxValue;
         }
-        this.values[0] = newValue;
+        this._values[0] = newValue;
         this.notify('low-value-change');
     }
 
@@ -87,53 +91,41 @@ export class Model implements IPublisher{
     }
 
     setHighValueByPercents(percent: number): void {
-        if( !this._isRange ){
-            throw new Error("high value does not exits");
-        }
         let validatedPercent = this.validateValueInPercent(percent);
         let value = this.convertPercentToValue(validatedPercent);
         this.setHighValue(value);
     }
 
     setHighValue(value: number): void {
-        if( !this._isRange ){
-            throw new Error("high value does not exits");
-        }
         let newValue = this.validateValue(value);
-        if( newValue <= this.values[0]){
-            if(this.values[0] <= this.maxValue - this.step){
-                newValue = this.values[0] + this.step;
+        if( newValue <= (this._values[0] + this._step)){
+            if(this._values[0] <= this.maxValue - this._step){
+                newValue = this._values[0] + this._step;
             } else {
-                this.setLowValue(this.maxValue - this.step);
+                this.setLowValue(this.maxValue - this._step);
                 newValue = this.maxValue;
             }
         }
-        this.values[1] = newValue;
+        this._values[1] = newValue;
         this.notify('high-value-change');
     }
 
 
     getLowValue(): number {
-        return this.values[0];
+        return this._values[0];
     }
 
     getHighValue(): number {
-        if( !this._isRange ){
-            throw new Error("high value does not exits");
-        }
-        return this.values[1];
+        return this._values[1];
     }
 
     getLowValueInPercents(): number {
-        let value = this.convertValueToPercent(this.values[0]);
+        let value = this.convertValueToPercent(this._values[0]);
         return value;
     }
 
     getHighValueInPercents(): number {
-        if( !this._isRange ){
-            throw new Error("high value does not exits");
-        }
-        let value = this.convertValueToPercent(this.values[1]);
+        let value = this.convertValueToPercent(this._values[1]);
         return value;
     }
 
@@ -145,7 +137,7 @@ export class Model implements IPublisher{
         } else if ( value >= this._maxValue ) {
             validatedValue = this._maxValue;
         } else {
-            validatedValue = this._minValue + Math.round((value - this._minValue) / this.step) * this.step;
+            validatedValue = this._minValue + Math.round((value - this._minValue) / this._step) * this._step;
         }
         return validatedValue;
     }
@@ -157,7 +149,7 @@ export class Model implements IPublisher{
         } else if ( value <= 0 ) {
             validatedValue = 0
         } else {
-            let percentsInStep = (100 / (this._maxValue - this._minValue)) * this.step;
+            let percentsInStep = (100 / (this._maxValue - this._minValue)) * this._step;
             validatedValue = Math.round(value / percentsInStep) * percentsInStep;
         }
         return validatedValue;
@@ -189,20 +181,20 @@ export class Model implements IPublisher{
 
     setRangeMode(isRange: boolean): void{
         this._isRange = isRange;
-        if(isRange){
-            this.setHighValue(this.values[1]);
-        }
         this.notify('range-mode-change');
+        if(isRange){
+            this.setHighValue(this._values[1]);
+        }
     }
 
     setStep(value: number): void{
         if((value > (this._maxValue - this._minValue)) || (value <= 0)){
             throw new Error('Step value is not valid');
         } else {
-            this.step = value;
-            this.setLowValue(this.values[0]);
+            this._step = value;
+            this.setLowValue(this._values[0]);
             if(this.isRange){
-                this.setHighValue(this.values[1]);
+                this.setHighValue(this._values[1]);
             }
             this.notify('step-change');
         }
@@ -225,6 +217,15 @@ export class Model implements IPublisher{
         } else {
             this._observers.forEach((value: IObserver) => value.update(eventType));
         }
+    }
+
+
+    get values(): number[] {
+        return this._values;
+    }
+
+    get step(): number {
+        return this._step;
     }
 
 }

@@ -17,8 +17,11 @@ export class Controller implements IObserver{
         model.attach(this);
         if( isRange ){
             this._controllerHandler = new RangeControllerHandler(view, model);
+            this._controllerHandler.setLowRunnerPosition();
+            this._controllerHandler.setHighRunnerPosition();
         } else {
             this._controllerHandler = new SingleValueControllerHandler(view, model);
+            this._controllerHandler.setLowRunnerPosition();
         }
     }
 
@@ -29,15 +32,19 @@ export class Controller implements IObserver{
             this._controllerHandler.positionChangeByClickHandler(data);
         }else if(eventName === 'max-value-change' || eventName === 'min-value-change'){
             this._controllerHandler.reCreateScale();
-            this._controllerHandler.setHighRunnerPosition();
             this._controllerHandler.setLowRunnerPosition();
+            if( this._model.isRange){
+                this._controllerHandler.setHighRunnerPosition();
+            }
         } else if(eventName === 'low-value-change'){
             this._controllerHandler.setLowRunnerPosition();
         } else if(eventName === 'high-value-change'){
             this._controllerHandler.setHighRunnerPosition();
         } else if(eventName === 'step-change'){
             this._controllerHandler.setLowRunnerPosition();
-            this._controllerHandler.setHighRunnerPosition();
+            if(this._model.isRange){
+                this._controllerHandler.setHighRunnerPosition();
+            }
         } else if(eventName === 'range-mode-change') {
             let isRange = this._controllerHandler.isRange();
             this.setControllerHandler(isRange);

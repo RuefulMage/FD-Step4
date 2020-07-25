@@ -16,6 +16,8 @@ export class SingleValueControllerHandler implements IControllerHandler{
 
     setLowRunnerPosition(): void {
         this._view.setRunnerPosition(0, this._model.getLowValueInPercents());
+        this._view.setRange(0, this._model.getLowValueInPercents());
+        this._view.setRunnerTipText(0, this._model.getLowValue().toString());
     }
 
     setHighRunnerPosition(): void {

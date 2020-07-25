@@ -45,8 +45,10 @@ export class View extends ViewComponent implements IPublisher{
 
 
     init(options: options) {
+        this._orientation = options.orientation;
         let orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(options.orientation);
         this._strip = new Strip(this.DOMNode);
+        this._isTipsHidden = options.isTipsHidden;
         this._scale = new Scale(this.DOMNode, orientationBehavior, options.divisionsAmount,
             options.minValue, options.maxValue);
 
@@ -105,8 +107,12 @@ export class View extends ViewComponent implements IPublisher{
             return;
         }
         let runner = this.getRunners()[1];
+        let tip = this._runnersAndTips.get(runner);
         this._runnersAndTips.delete(runner);
         runner.destroy();
+        if( tip !== undefined ){
+            tip.destroy();
+        }
         this.setRange(0, this.getRunners()[0].position);
     }
 
@@ -120,6 +126,15 @@ export class View extends ViewComponent implements IPublisher{
         }
     }
 
+    public hideTips(){
+        this._isTipsHidden = true;
+        this._runnersAndTips.forEach((tip => tip.isHidden = true));
+    }
+
+    public showTips(){
+        this._isTipsHidden = false;
+        this._runnersAndTips.forEach(tip => tip.isHidden = false);
+    }
 
     protected addHadler(): void {
         let that: View = this;
@@ -184,9 +199,11 @@ export class View extends ViewComponent implements IPublisher{
     }
 
     set orientation(orientation: Orientation) {
-        this.DOMNode.removeClass(constants.orientationClassNames.get(this._orientation));
+
+        this.DOMNode.removeClass(<string>constants.orientationClassNames.get(this._orientation));
         this.DOMNode.addClass(<string>constants.orientationClassNames.get(orientation));
         this._orientation = orientation;
+        console.log(this._orientation);
         this._runnersAndTips.forEach((tip: Tip, runner: Runner) => {
             tip.orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(orientation);
             runner.orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(orientation);

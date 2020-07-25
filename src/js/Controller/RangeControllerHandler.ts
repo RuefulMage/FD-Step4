@@ -57,10 +57,14 @@ export class RangeControllerHandler implements IControllerHandler{
 
     setHighRunnerPosition(): void {
         this._view.setRunnerPosition(1, this._model.getHighValueInPercents());
+        this._view.setRunnerTipText(1, this._model.getHighValue().toString());
+        this._view.setRange(this._model.getLowValueInPercents(), this._model.getHighValueInPercents());
     }
 
     setLowRunnerPosition(): void {
-        this._view.setRunnerPosition(0, this._model.getHighValueInPercents());
+        this._view.setRunnerPosition(0, this._model.getLowValueInPercents());
+        this._view.setRunnerTipText(0, this._model.getLowValue().toString());
+        this._view.setRange(this._model.getLowValueInPercents(), this._model.getHighValueInPercents());
     }
 
 
