@@ -1,14 +1,14 @@
 import { IPublisher } from '../View/IPublisher';
 import { IObserver } from '../View/IObserver';
-import { options } from '../View/View';
+import { options } from '../Utils/types';
 
 export class Model implements IPublisher{
     protected _isRange: boolean;
     protected _maxValue: number;
     protected _minValue: number;
-    private _values: number[] = [this._minValue, this._maxValue];
-    private _step: number;
-    private _observers: Set<IObserver> = new Set<IObserver>();
+    protected _values: number[] = [this._minValue, this._maxValue];
+    protected _step: number;
+    protected _observers: Set<IObserver> = new Set<IObserver>();
 
 
     constructor(options: options) {

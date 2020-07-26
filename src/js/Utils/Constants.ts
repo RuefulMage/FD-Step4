@@ -1,4 +1,4 @@
-import { Orientation } from '../View/Orientation';
+import { Orientation } from './types';
 
 export let constants = {
     viewWrapperClassName: 'slider',

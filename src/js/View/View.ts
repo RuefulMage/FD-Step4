@@ -4,24 +4,11 @@ import { Runner } from './Runner';
 import { Scale } from './Scale';
 import { Range } from './Range';
 import { constants } from '../Utils/Constants';
-import { Orientation } from './Orientation';
+import { Orientation, options } from '../Utils/types';
 import { Tip } from './Tip';
 import { IPublisher } from './IPublisher';
 import { IObserver } from './IObserver';
 import { OrientaitionBehaviorBuilder } from './OrientaitionBehaviorBuilder';
-
-
-export type options = {
-        orientation: Orientation,
-        isRange: boolean,
-        isTipsHidden: boolean,
-        divisionsAmount: number,
-        minValue: number,
-        maxValue: number,
-        startValueLow: number,
-        startValueHigh: number,
-        step: number
-    };
 
 export class View extends ViewComponent implements IPublisher{
     // @ts-ignore
