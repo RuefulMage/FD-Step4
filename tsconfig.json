@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES5",
     "module": "CommonJS",
-    "lib": ["esnext", "dom"],
+    "lib": ["esnext", "dom", "ES5"],
     "declaration": true,
     "sourceMap": true,
     "rootDir": "./src/js",
@@ -11,7 +11,11 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "types": [
+      "jquery",
+      "jest"
+    ]
   },
   "exclude": [
     "./node_modules"
