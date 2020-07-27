@@ -1,4 +1,3 @@
-import { Orientation } from './View/Orientation';
 import { Slider } from './Slider';
 
 export class Demo{
@@ -17,8 +16,8 @@ export class Demo{
     protected isVerticalInput: HTMLInputElement;
 
     constructor(sliderElement: JQuery, panelElement: HTMLElement, minValue = -100, maxValue = 100, step = 1,
-                isRange = false, isTipsHidden = false, orientation = 0, divisionsAmount = 2, startLowValue = minValue,
-                startHighValue = maxValue) {
+                isRange = false, isTipsHidden = false, orientation = 'horizontal', divisionsAmount = 2, startLowValue = minValue,
+                startHighValue = 100) {
         this.panelElement = panelElement;
         this.sliderElement = sliderElement;
         console.log(startHighValue);
@@ -90,9 +89,9 @@ export class Demo{
         this.isVerticalInput = this.panelElement.querySelector('.js-vertical');
         this.isVerticalInput.addEventListener('change', function() {
             if( this.checked ){
-                that.slider.setOrientation(1);
+                that.slider.setOrientation('vertical');
             } else {
-                that.slider.setOrientation(0);
+                that.slider.setOrientation('horizontal');
             }
         });
 

@@ -1,6 +1,6 @@
 export enum Orientation{
-    HORIZONTAL,
-    VERTICAL
+    HORIZONTAL = 'horizontal',
+    VERTICAL = 'vertical'
 }
 
 export type options = {
