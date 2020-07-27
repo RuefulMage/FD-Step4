@@ -25,7 +25,7 @@ export class SingleValueControllerHandler implements IControllerHandler{
     }
 
     reCreateScale(): void {
-        this._view.setScale(this._model.minValue, this._model.maxValue);
+        this._view.setScale(this._model.getMinValue(), this._model.getMaxValue());
     }
 
     positionChangeByClickHandler(data: any): void {
@@ -49,6 +49,6 @@ export class SingleValueControllerHandler implements IControllerHandler{
     }
 
     isRange(): boolean {
-        return this._model.isRange;
+        return this._model.isRange();
     }
 }

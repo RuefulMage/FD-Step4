@@ -1,5 +1,3 @@
-import { View } from '../View/View';
-
 export interface IControllerHandler {
 
     positionChangeByRunnerHandler(data: any):void;

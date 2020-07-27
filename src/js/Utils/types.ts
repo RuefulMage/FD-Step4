@@ -15,3 +15,11 @@ export type options = {
     step: number
 }
 
+export type modelOptions = {
+    isRange: boolean,
+    minValue: number,
+    maxValue: number,
+    startValueLow: number,
+    startValueHigh: number,
+    step: number
+}

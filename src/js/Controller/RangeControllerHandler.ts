@@ -14,7 +14,7 @@ export class RangeControllerHandler implements IControllerHandler{
     }
 
     isRange(): boolean {
-        return this._model.isRange;
+        return this._model.isRange();
     }
 
     positionChangeByClickHandler(data: any): void {
@@ -52,7 +52,7 @@ export class RangeControllerHandler implements IControllerHandler{
     }
 
     reCreateScale(): void {
-        this._view.setScale(this._model.minValue, this._model.maxValue);
+        this._view.setScale(this._model.getMinValue(), this._model.getMaxValue());
     }
 
     setHighRunnerPosition(): void {

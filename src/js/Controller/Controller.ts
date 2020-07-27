@@ -33,16 +33,18 @@ export class Controller implements IObserver{
         }else if(eventName === 'max-value-change' || eventName === 'min-value-change'){
             this._controllerHandler.reCreateScale();
             this._controllerHandler.setLowRunnerPosition();
-            if( this._model.isRange){
+            if( this._model.isRange()){
                 this._controllerHandler.setHighRunnerPosition();
             }
         } else if(eventName === 'low-value-change'){
             this._controllerHandler.setLowRunnerPosition();
         } else if(eventName === 'high-value-change'){
-            this._controllerHandler.setHighRunnerPosition();
+            if( this._model.isRange()){
+                this._controllerHandler.setHighRunnerPosition();
+            }
         } else if(eventName === 'step-change'){
             this._controllerHandler.setLowRunnerPosition();
-            if(this._model.isRange){
+            if(this._model.isRange()){
                 this._controllerHandler.setHighRunnerPosition();
             }
         } else if(eventName === 'range-mode-change') {
