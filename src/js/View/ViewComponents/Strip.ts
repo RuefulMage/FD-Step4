@@ -1,9 +1,9 @@
 import { ViewComponent } from './ViewComponent';
-import { constants } from '../Utils/Constants';
+import { constants } from '../../Utils/Constants';
 
 export class Strip extends ViewComponent{
 
-    constructor(parentNode: JQuery<HTMLElement>) {
+    constructor(parentNode: HTMLElement) {
         super(parentNode, constants.stripClassName);
     }
 

@@ -1,6 +1,6 @@
 import { Model } from './Model';
 import { modelOptions } from '../Utils/types';
-import { IObserver } from '../View/IObserver';
+import { IObserver } from '../Observer/IObserver';
 import isMockFunction = jest.isMockFunction;
 
 describe('Class Model', function() {

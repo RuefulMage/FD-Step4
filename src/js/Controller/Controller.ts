@@ -1,6 +1,6 @@
-import { View } from '../View/View';
+import { View } from '../View/ViewComponents/View';
 import { Model } from '../Model/Model';
-import { IObserver } from '../View/IObserver';
+import { IObserver } from '../Observer/IObserver';
 import { IControllerHandler } from './IControllerHandler';
 import { RangeControllerHandler } from './RangeControllerHandler';
 import { SingleValueControllerHandler } from './SingleValueControllerHandler';

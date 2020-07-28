@@ -1,5 +1,5 @@
-import { IPublisher } from '../View/IPublisher';
-import { IObserver } from '../View/IObserver';
+import { IPublisher } from '../Observer/IPublisher';
+import { IObserver } from '../Observer/IObserver';
 import { modelOptions} from '../Utils/types';
 
 export class Model implements IPublisher{

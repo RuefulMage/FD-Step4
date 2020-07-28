@@ -1,27 +1,28 @@
 import { ViewComponent } from './ViewComponent';
-import { constants } from '../Utils/Constants';
-import { IOrientationBehavior } from './IOrientationBehavior';
+import { constants } from '../../Utils/Constants';
+import { IOrientationBehavior } from '../OrientationBehaviors/IOrientationBehavior';
 
 export class Tip extends ViewComponent{
 
     protected _isHidden: boolean = true;
     protected _orientationBehavior: IOrientationBehavior;
 
-    constructor(parentNode: JQuery<HTMLElement>, orientationBehavior: IOrientationBehavior,
+    constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior,
                 isHidden: boolean = true, isBelow: boolean = false) {
-        super(parentNode, isBelow ?
-            constants.tipClassName + ' ' + constants.tipBellowClassName:
-            constants.tipClassName);
+        super(parentNode, constants.tipClassName);
+        if( isBelow ){
+            this.DOMNode.classList.add(constants.tipBellowClassName);
+        }
         this.isHidden = isHidden;
         this._orientationBehavior = orientationBehavior;
     }
 
-    setPosition(newPosition: number){
+    public setPosition(newPosition: number){
         this.orientationBehavior.setPosition(newPosition, this.DOMNode);
     }
 
     public setInnerText(text: string): void{
-        this.DOMNode.text(text);
+        this.DOMNode.innerText = text;
     }
 
     protected addHadler(): void {
@@ -44,9 +45,9 @@ export class Tip extends ViewComponent{
     set isHidden(value: boolean) {
         this._isHidden = value;
         if( value ){
-            this.DOMNode.addClass(constants.tipHiddenClassName);
+            this.DOMNode.classList.add(constants.tipHiddenClassName);
         } else {
-            this.DOMNode.removeClass(constants.tipHiddenClassName);
+            this.DOMNode.classList.remove(constants.tipHiddenClassName);
         }
     }
 }

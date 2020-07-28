@@ -1,4 +1,4 @@
-import { Orientation } from '../Utils/types';
+import { Orientation } from '../../Utils/types';
 import { IOrientationBehavior } from './IOrientationBehavior';
 import { HorizontalOrientationBehavior } from './HorizontalOrientationBehavior';
 import { VerticalOrientationBehavior } from './VerticalOrientationBehavior';

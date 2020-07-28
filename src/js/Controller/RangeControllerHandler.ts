@@ -1,5 +1,5 @@
 import { IControllerHandler } from './IControllerHandler';
-import { View } from '../View/View';
+import { View } from '../View/ViewComponents/View';
 import { Model } from '../Model/Model';
 
 export class RangeControllerHandler implements IControllerHandler{

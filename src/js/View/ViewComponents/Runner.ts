@@ -1,13 +1,13 @@
 import { ViewComponent } from './ViewComponent';
-import { constants } from '../Utils/Constants';
-import { IOrientationBehavior } from './IOrientationBehavior';
+import { constants } from '../../Utils/Constants';
+import { IOrientationBehavior } from '../OrientationBehaviors/IOrientationBehavior';
 import TriggeredEvent = JQuery.TriggeredEvent;
 
 export class Runner extends ViewComponent {
     protected _position: number = 0;
     protected _orientationBehavior: IOrientationBehavior;
 
-    constructor(parentNode: JQuery<HTMLElement>,  orientationBehavior: IOrientationBehavior) {
+    constructor(parentNode: HTMLElement,  orientationBehavior: IOrientationBehavior) {
         super(parentNode, constants.runnerClassName);
         this._orientationBehavior = orientationBehavior;
         this.addHadler();
@@ -17,13 +17,13 @@ export class Runner extends ViewComponent {
     protected addHadler(): void {
         let that: Runner = this;
         
-        this.DOMNode.on('mousedown', mouseDownHandler);
+        this.DOMNode.addEventListener('mousedown', mouseDownHandler);
 
-        this.DOMNode.on('dragstart', function() {
-            return false;
+        this.DOMNode.addEventListener('dragstart', function() {
+           return false;
         });
 
-        function mouseDownHandler(event: TriggeredEvent) {
+        function mouseDownHandler(event: Event) {
             event.preventDefault();
             $(document).on('mousemove', mouseMoveHandler);
             $(document).on('mouseup', mouseUpHandler);
@@ -35,7 +35,7 @@ export class Runner extends ViewComponent {
                     that.DOMNode);
                 let changePositionEvent: CustomEvent = new CustomEvent('slider-runner-change',
                     {bubbles: true, cancelable: true, detail: {position: newPosition, target: that}});
-                that.DOMNode.get()[0].dispatchEvent(changePositionEvent);
+                that.DOMNode.dispatchEvent(changePositionEvent);
             } else {
                 throw new Error('no clientX and clientY');
             }
@@ -65,6 +65,5 @@ export class Runner extends ViewComponent {
         this._orientationBehavior.resetStyles(this.DOMNode);
         this._orientationBehavior = value;
     }
-
 
 }

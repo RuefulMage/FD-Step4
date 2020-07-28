@@ -3,36 +3,31 @@ import { Strip } from './Strip';
 import { Runner } from './Runner';
 import { Scale } from './Scale';
 import { Range } from './Range';
-import { constants } from '../Utils/Constants';
-import { Orientation, options } from '../Utils/types';
+import { constants } from '../../Utils/Constants';
+import { Orientation, options } from '../../Utils/types';
 import { Tip } from './Tip';
-import { IPublisher } from './IPublisher';
-import { IObserver } from './IObserver';
-import { OrientaitionBehaviorBuilder } from './OrientaitionBehaviorBuilder';
+import { IPublisher } from '../../Observer/IPublisher';
+import { IObserver } from '../../Observer/IObserver';
+import { OrientaitionBehaviorBuilder } from '../OrientationBehaviors/OrientaitionBehaviorBuilder';
 
 export class View extends ViewComponent implements IPublisher{
-    // @ts-ignore
     protected _strip: Strip;
-    // @ts-ignore
     protected _range: Range;
-    // @ts-ignore
     protected _scale: Scale;
-    // @ts-ignore
     protected _orientation: Orientation;
-    // @ts-ignore
     protected _runnersAndTips: Map<Runner, Tip>;
-    // @ts-ignore
     protected _isTipsHidden: boolean;
     protected _observers: Set<IObserver> = new Set<IObserver>();
 
-    constructor(parentNode: JQuery<HTMLElement>, options: options) {
-        super(parentNode, constants.viewWrapperClassName + ' ' + constants.orientationClassNames.get(options.orientation));
+    constructor(parentNode: HTMLElement, options: options) {
+        super(parentNode, constants.viewWrapperClassName);
         this.init(options);
     }
 
 
     init(options: options) {
         this._orientation = options.orientation;
+        this.DOMNode.classList.add(constants.orientationClassNames.get(options.orientation));
         let orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(options.orientation);
         this._strip = new Strip(this.DOMNode);
         this._isTipsHidden = options.isTipsHidden;
@@ -97,20 +92,14 @@ export class View extends ViewComponent implements IPublisher{
         let tip = this._runnersAndTips.get(runner);
         this._runnersAndTips.delete(runner);
         runner.destroy();
-        if( tip !== undefined ){
-            tip.destroy();
-        }
+        tip.destroy();
         this.setRange(0, this.getRunners()[0].position);
     }
 
     public setRunnerTipText(runnerIndex: number, text: string): void{
         let runner = this.getRunners()[runnerIndex];
         let tip = this._runnersAndTips.get(runner);
-        if( tip !== undefined ){
-            tip.setInnerText(text);
-        } else {
-            throw new Error('tip not found');
-        }
+        tip.setInnerText(text);
     }
 
     public hideTips(){
@@ -150,9 +139,8 @@ export class View extends ViewComponent implements IPublisher{
             }
         }
 
-        this.DOMNode.on('slider-runner-change', sliderRunnerChangeHandler);
-        this.DOMNode.on('slider-scale-click', sliderClickHandler);
-
+        this.DOMNode.addEventListener('slider-runner-change', sliderRunnerChangeHandler);
+        this.DOMNode.addEventListener('slider-scale-click', sliderClickHandler);
 
     }
 
@@ -187,17 +175,17 @@ export class View extends ViewComponent implements IPublisher{
 
     set orientation(orientation: Orientation) {
 
-        this.DOMNode.removeClass(<string>constants.orientationClassNames.get(this._orientation));
-        this.DOMNode.addClass(<string>constants.orientationClassNames.get(orientation));
+        this.DOMNode.classList.remove(<string>constants.orientationClassNames.get(this._orientation));
+        this.DOMNode.classList.add(<string>constants.orientationClassNames.get(orientation));
         this._orientation = orientation;
-        console.log(this._orientation);
+        let orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(orientation);
         this._runnersAndTips.forEach((tip: Tip, runner: Runner) => {
-            tip.orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(orientation);
-            runner.orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(orientation);
+            tip.orientationBehavior = orientationBehavior;
+            runner.orientationBehavior = orientationBehavior;
         })
         this.getRunners().forEach((runner: Runner, index: number) => this.setRunnerPosition(index, runner.position));
-        this._range.orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(orientation);
-        this._scale.orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(orientation);
+        this._range.orientationBehavior = orientationBehavior;
+        this._scale.orientationBehavior = orientationBehavior;
     }
 
     setScaleDivisionsAmount(divisionsAmount: number) {
@@ -214,5 +202,3 @@ export class View extends ViewComponent implements IPublisher{
 
 
 }
-
-

@@ -1,17 +1,17 @@
 import { Controller } from './Controller/Controller';
 import { Model } from './Model/Model';
-import { View} from './View/View';
-import { IObserver } from './View/IObserver';
+import { View} from './View/ViewComponents/View';
+import { IObserver } from './Observer/IObserver';
 import { options, Orientation } from './Utils/types';
 
 export class Slider implements IObserver{
     protected _view: View;
     protected _model: Model;
     protected _controller: Controller;
-    protected _rootElement: JQuery<HTMLElement>;
+    protected _rootElement: HTMLElement;
 
 
-    constructor(rootElement: JQuery<HTMLElement>, options: options) {
+    constructor(rootElement: HTMLElement, options: options) {
         this._rootElement = rootElement;
         this._model = new Model(options);
         this._model.attach(this);
@@ -88,7 +88,7 @@ export class Slider implements IObserver{
 
     update(eventName: string, data?: any): void {
         let changeEvent = new CustomEvent('slider-change', {bubbles: true, cancelable: true});
-        this._rootElement.get()[0].dispatchEvent(changeEvent);
+        this._rootElement.dispatchEvent(changeEvent);
     }
 }
 
@@ -99,7 +99,7 @@ export class Slider implements IObserver{
 
         return this.each(function(){
             if(!$(this).data('slider')){
-                let slider = new Slider($(this), options);
+                let slider = new Slider(this, options);
                 $(this).data('slider', slider);
             }
         });

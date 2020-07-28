@@ -1,13 +1,13 @@
 import { ViewComponent } from './ViewComponent';
-import { constants } from '../Utils/Constants';
-import { IOrientationBehavior } from './IOrientationBehavior';
+import { constants } from '../../Utils/Constants';
+import { IOrientationBehavior } from '../OrientationBehaviors/IOrientationBehavior';
 
 export class Range extends ViewComponent{
     protected _minEdge: number = 0;
     protected _maxEdge: number = 100;
     protected _orientationBehavior: IOrientationBehavior;
 
-    constructor(parentNode: JQuery<HTMLElement>,  orientationBehavior: IOrientationBehavior) {
+    constructor(parentNode: HTMLElement,  orientationBehavior: IOrientationBehavior) {
         super(parentNode, constants.rangeClassName);
         this._orientationBehavior = orientationBehavior;
     }
