@@ -5,12 +5,12 @@ import { VerticalOrientationBehavior } from './VerticalOrientationBehavior';
 
 export let OrientaitionBehaviorBuilder = {
     getOrientationBehaviorByOrientation(orientation: Orientation): IOrientationBehavior{
-        if( orientation === Orientation.HORIZONTAL ){
+        if( orientation == Orientation.HORIZONTAL ){
             return new HorizontalOrientationBehavior();
-        } else if( orientation === Orientation.VERTICAL ){
+        } else if( orientation == Orientation.VERTICAL ){
             return new VerticalOrientationBehavior()
         } else {
-            throw new Error(' this orientation does not exist');
+            throw new Error(' this orientation behavior does not exist');
         }
     }
 }
