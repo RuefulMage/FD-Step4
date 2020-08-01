@@ -7,11 +7,10 @@
     "sourceMap": true,
     "rootDir": "./src/js",
     "outDir": "./dist/js",
-    "strictNullChecks": false,
     "moduleResolution": "Node",
     "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
     "types": [
       "jquery",
       "jest"
