@@ -1,66 +1,58 @@
-import { View } from '../View/ViewComponents/View';
-import { Model } from '../Model/Model';
-import { IObserver } from '../Observer/IObserver';
-import { IControllerHandler } from './IControllerHandler';
-import { RangeControllerHandler } from './RangeControllerHandler';
-import { SingleValueControllerHandler } from './SingleValueControllerHandler';
+import View from '../View/ViewComponents/View';
+import Model from '../Model/Model';
+import IObserver from '../Observer/IObserver';
+import IControllerHandler from './IControllerHandler';
+import RangeControllerHandler from './RangeControllerHandler';
+import SingleValueControllerHandler from './SingleValueControllerHandler';
 
-export class Controller implements IObserver{
-    protected _model: Model;
-    protected _view: View;
-    protected _controllerHandler: IControllerHandler;
+export default class Controller implements IObserver {
+    protected model: Model;
+
+    protected view: View;
+
+    protected controllerHandler: IControllerHandler;
 
     constructor(view:View, model:Model, isRange: boolean) {
-        this._view = view;
-        this._model = model;
-        view.attach(this);
-        model.attach(this);
-        if( isRange ){
-            this._controllerHandler = new RangeControllerHandler(view, model);
-            this._controllerHandler.setLowRunnerPosition();
-            this._controllerHandler.setHighRunnerPosition();
-        } else {
-            this._controllerHandler = new SingleValueControllerHandler(view, model);
-            this._controllerHandler.setLowRunnerPosition();
-        }
+      this.init(view, model, isRange);
     }
 
-    update(eventName: string, data?: any): void {
-        if( eventName === 'position-change-by-runner'){
-            this._controllerHandler.positionChangeByRunnerHandler(data);
-        } else if( eventName === 'position-change-by-click'){
-            this._controllerHandler.positionChangeByClickHandler(data);
-        }else if(eventName === 'max-value-change' || eventName === 'min-value-change'){
-            this._controllerHandler.reCreateScale();
-            this._controllerHandler.setLowRunnerPosition();
-            if( this._model.isRange()){
-                this._controllerHandler.setHighRunnerPosition();
-            }
-        } else if(eventName === 'low-value-change'){
-            this._controllerHandler.setLowRunnerPosition();
-        } else if(eventName === 'high-value-change'){
-            if( this._model.isRange()){
-                this._controllerHandler.setHighRunnerPosition();
-            }
-        } else if(eventName === 'step-change'){
-            this._controllerHandler.setLowRunnerPosition();
-            if(this._model.isRange()){
-                this._controllerHandler.setHighRunnerPosition();
-            }
-        } else if(eventName === 'range-mode-change') {
-            let isRange = this._controllerHandler.isRange();
-            this.setControllerHandler(isRange);
-        } else{
-            throw new Error("unknown event");
-        }
+    protected init(view:View, model:Model, isRange: boolean) {
+      this.view = view;
+      this.model = model;
+      this.view.attach(this);
+      this.model.attach(this);
+      this.setControllerHandler(isRange);
+      this.controllerHandler.valueChangeHandler();
     }
 
-    setControllerHandler(isRange: boolean): void{
-        if( isRange ){
-            this._controllerHandler = new RangeControllerHandler(this._view, this._model);
-        } else {
-            this._controllerHandler = new SingleValueControllerHandler(this._view, this._model);
+    public update(eventName: string, data?: any): void {
+      if (eventName === 'position-change-by-runner') {
+        this.controllerHandler.positionChangeByRunnerHandler(data);
+      } else if (eventName === 'position-change-by-click') {
+        this.controllerHandler.positionChangeByClickHandler(data);
+      } else if (eventName === 'edge-value-change') {
+        this.controllerHandler.edgeValueChangeHandler();
+      } else if (eventName === 'value-change') {
+        this.controllerHandler.valueChangeHandler();
+      } else if (eventName === 'range-mode-change') {
+        if (data !== undefined) {
+          const { isRange } = data;
+          this.setControllerHandler(isRange);
         }
+      } else {
+        throw new Error('unknown event');
+      }
     }
 
+    public setControllerHandler(isRange: boolean): void{
+      if (isRange) {
+        this.controllerHandler = new RangeControllerHandler(this.view, this.model);
+      } else {
+        this.controllerHandler = new SingleValueControllerHandler(this.view, this.model);
+      }
+    }
+
+    public getControllerHandler(): IControllerHandler {
+      return this.controllerHandler;
+    }
 }

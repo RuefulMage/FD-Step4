@@ -1,54 +1,45 @@
-import { IControllerHandler } from './IControllerHandler';
-import { View } from '../View/ViewComponents/View';
-import { Model } from '../Model/Model';
+import IControllerHandler from './IControllerHandler';
+import View from '../View/ViewComponents/View';
+import Model from '../Model/Model';
 
-export class SingleValueControllerHandler implements IControllerHandler{
+export default class SingleValueControllerHandler implements IControllerHandler {
+    protected view: View;
 
-    protected _view: View;
-    protected _model: Model;
-
+    protected model: Model;
 
     constructor(view: View, model: Model) {
-        this._view = view;
-        this._model = model;
-        this._view.changeModeToSingle();
+      this.view = view;
+      this.model = model;
+      this.view.changeModeToSingle();
     }
 
-    setLowRunnerPosition(): void {
-        this._view.setRunnerPosition(0, this._model.getLowValueInPercents());
-        this._view.setRange(0, this._model.getLowValueInPercents());
-        this._view.setRunnerTipText(0, this._model.getLowValue().toString());
+    public edgeValueChangeHandler(): void {
+      this.view.setScale(this.model.getMinValue(), this.model.getMaxValue());
     }
 
-    setHighRunnerPosition(): void {
-        throw new Error('it is single runner mode');
+    public positionChangeByClickHandler(data: any): void {
+      this.model.setLowValueByPercents(data.position);
+      const newPosition = this.model.getLowValueInPercents();
+      this.view.setRunnerPosition(0, newPosition);
+      this.view.setRunnerTipText(0, this.model.getLowValue().toString());
+      this.view.setRange(0, this.model.getLowValueInPercents());
     }
 
-    reCreateScale(): void {
-        this._view.setScale(this._model.getMinValue(), this._model.getMaxValue());
+    public positionChangeByRunnerHandler(data: any): void {
+      if (data.runnerIndex === 0) {
+        this.model.setLowValueByPercents(data.position);
+        const newPosition = this.model.getLowValueInPercents();
+        this.view.setRunnerPosition(data.runnerIndex, newPosition);
+        this.view.setRange(0, this.model.getLowValueInPercents());
+        this.view.setRunnerTipText(0, this.model.getLowValue().toString());
+      } else {
+        throw new Error('slider in single value mode');
+      }
     }
 
-    positionChangeByClickHandler(data: any): void {
-        this._model.setLowValueByPercents(data.position);
-        let newPosition = this._model.getLowValueInPercents();
-        this._view.setRunnerPosition(0, newPosition);
-        this._view.setRange(0, this._model.getLowValueInPercents());
-        this._view.setRunnerTipText(0, this._model.getLowValue().toString());
-    }
-
-    positionChangeByRunnerHandler(data: any): void {
-        if ( data.runnerIndex === 0 ){
-            this._model.setLowValueByPercents(data.position);
-            let newPosition = this._model.getLowValueInPercents();
-            this._view.setRunnerPosition(data.runnerIndex, newPosition);
-            this._view.setRange(0, this._model.getLowValueInPercents());
-            this._view.setRunnerTipText(0, this._model.getLowValue().toString());
-        } else {
-            throw new Error('slider in single value mode');
-        }
-    }
-
-    isRange(): boolean {
-        return this._model.isRange();
+    public valueChangeHandler(): void {
+      this.view.setRunnerPosition(0, this.model.getLowValueInPercents());
+      this.view.setRunnerTipText(0, this.model.getLowValue().toString());
+      this.view.setRange(0, this.model.getLowValueInPercents());
     }
 }

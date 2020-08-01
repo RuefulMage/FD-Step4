@@ -1,6 +1,6 @@
-import { IOrientationBehavior} from './IOrientationBehavior';
+import IOrientationBehavior from './IOrientationBehavior';
 
-export class VerticalOrientationBehavior implements IOrientationBehavior{
+export default class VerticalOrientationBehavior implements IOrientationBehavior{
 
     setPosition(newPosition: number, domElement: HTMLElement): number {
         let parentHeight = domElement.parentElement.offsetHeight;

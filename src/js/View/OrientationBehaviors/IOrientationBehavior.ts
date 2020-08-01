@@ -1,4 +1,4 @@
-export interface IOrientationBehavior{
+export default interface IOrientationBehavior{
 
     setPosition(newPosition: number, domElement: HTMLElement): number;
 

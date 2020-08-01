@@ -1,6 +1,6 @@
-import { IOrientationBehavior } from './IOrientationBehavior';
+import IOrientationBehavior from './IOrientationBehavior';
 
-export class HorizontalOrientationBehavior implements IOrientationBehavior{
+export default class HorizontalOrientationBehavior implements IOrientationBehavior{
     setPosition(newPosition: number, domElement: HTMLElement): number {
         let parentWidth: number = domElement.parentElement.offsetWidth;
         let domElementWidthInProcents: number = (domElement.offsetWidth / parentWidth) * 100;

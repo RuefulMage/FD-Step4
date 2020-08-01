@@ -1,119 +1,134 @@
-import { Controller } from './Controller/Controller';
-import { Model } from './Model/Model';
-import { View} from './View/ViewComponents/View';
-import { IObserver } from './Observer/IObserver';
-import { options, Orientation } from './Utils/types';
+import Controller from './Controller/Controller';
+import Model from './Model/Model';
+import View from './View/ViewComponents/View';
+import IObserver from './Observer/IObserver';
+import Orientation from './Utils/Orientation';
+import SliderOptions from './Utils/SliderOptions';
 
-export class Slider implements IObserver{
-    protected _view: View;
-    protected _model: Model;
-    protected _controller: Controller;
-    protected _rootElement: HTMLElement;
+export default class Slider implements IObserver {
+    protected view: View;
 
+    protected model: Model;
 
-    constructor(rootElement: HTMLElement, options: options) {
-        this._rootElement = rootElement;
-        this._model = new Model(options);
-        this._model.attach(this);
-        this._view = new View(rootElement, options);
-        this._view.attach(this);
-        this._controller = new Controller(this._view, this._model, options.isRange);
+    protected controller: Controller;
+
+    protected rootElement: HTMLElement;
+
+    constructor(rootElement: HTMLElement, options: SliderOptions) {
+      this.rootElement = rootElement;
+      this.model = new Model(options);
+      this.model.attach(this);
+      this.view = new View(rootElement, options);
+      this.view.attach(this);
+      this.controller = new Controller(this.view, this.model, options.isRange);
     }
 
-
-    isRange(): boolean{
-        return this._model.isRange();
+    isRange(): boolean {
+      return this.model.getRangeStatus();
     }
 
-    getMinValue(): number{
-        return this._model.getMinValue();
+    getMinValue(): number {
+      return this.model.getMinValue();
     }
 
-    getMaxValue(): number{
-        return this._model.getMaxValue();
+    getMaxValue(): number {
+      return this.model.getMaxValue();
     }
 
-    getHighValue(): number{
-        return this._model.getHighValue();
+    getHighValue(): number {
+      return this.model.getHighValue();
     }
 
-    getLowValue(): number{
-        return this._model.getLowValue();
+    getLowValue(): number {
+      return this.model.getLowValue();
     }
 
-    getStep(): number{
-        return this._model.getStep();
+    getStep(): number {
+      return this.model.getStep();
     }
 
     setStep(step: number) {
-        this._model.setStep(step);
+      this.model.setStep(step);
     }
 
     setMaxValue(maxValue: number) {
-        this._model.setMaxValue(maxValue);
+      this.model.setMaxValue(maxValue);
     }
+
     setMinValue(minValue: number) {
-        this._model.setMinValue(minValue);
+      this.model.setMinValue(minValue);
     }
 
     setLowValue(lowValue: number) {
-        this._model.setLowValue(lowValue);
+      this.model.setLowValue(lowValue);
     }
 
     setHighValue(highValue: number) {
-        this._model.setHighValue(highValue);
+      this.model.setHighValue(highValue);
     }
 
-    setRangeMode(isRange: boolean){
-        console.log("setRangeMode " + isRange);
-        this._model.setRangeMode(isRange);
+    setRangeMode(isRange: boolean) {
+      this.model.setRangeMode(isRange);
     }
 
-    setOrientation(orientation: string){
-        this._view.orientation = orientation as Orientation;
+    getOrientation(): string {
+      return this.view.getOrientation();
     }
 
-    hideTips(){
-        this._view.hideTips();
+    setOrientation(orientation: string) {
+      this.view.setOrientation(orientation as Orientation);
     }
 
-    showTips(){
-        this._view.showTips();
+    hideTips() {
+      this.view.hideTips();
     }
 
-    setDivisionsAmount(divisionsAmount: number){
-        this._view.setScaleDivisionsAmount(divisionsAmount);
+    showTips() {
+      this.view.showTips();
+    }
 
+    getHideStatus(): boolean {
+      return this.view.getHideStatus();
+    }
+
+    getDivisionsAmount(): number {
+      return this.view.getDivisionsAmount();
+    }
+
+    setDivisionsAmount(divisionsAmount: number) {
+      this.view.setScaleDivisionsAmount(divisionsAmount);
     }
 
     update(eventName: string, data?: any): void {
-        let changeEvent = new CustomEvent('slider-change', {bubbles: true, cancelable: true});
-        this._rootElement.dispatchEvent(changeEvent);
+      const changeEvent = new CustomEvent('slider-change', { bubbles: true, cancelable: true });
+      this.rootElement.dispatchEvent(changeEvent);
     }
 }
 
+(function ($) {
+  // eslint-disable-next-line no-param-reassign
+  $.fn.slider = function (userOptions: SliderOptions) {
+    const options = $.extend(true, $.fn.slider.defaultOptions, userOptions);
 
-;(function($) {
-    $.fn.slider = function(userOptions: options){
-        let options = $.extend(true, $.fn.slider.defaultOptions, userOptions);
+    // eslint-disable-next-line no-param-reassign
+    return this.each(function () {
+      if (!$(this).data('slider')) {
+        const slider = new Slider(this, options);
+        $(this).data('slider', slider);
+      }
+    });
+  };
 
-        return this.each(function(){
-            if(!$(this).data('slider')){
-                let slider = new Slider(this, options);
-                $(this).data('slider', slider);
-            }
-        });
-    }
-
-    $.fn.slider.defaultOptions = {
-        divisionsAmount: 2,
-        isRange: false,
-        isTipsHidden: false,
-        maxValue: 100,
-        minValue: 0,
-        orientation: 'horizontal',
-        startValueHigh: 100,
-        startValueLow: 0,
-        step: 1
-    }
+  // eslint-disable-next-line no-param-reassign
+  $.fn.slider.defaultOptions = {
+    divisionsAmount: 2,
+    isRange: false,
+    isTipsHidden: false,
+    maxValue: 100,
+    minValue: 0,
+    orientation: 'horizontal',
+    startValueHigh: 100,
+    startValueLow: 0,
+    step: 1,
+  };
 }(jQuery));

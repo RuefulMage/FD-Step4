@@ -1,10 +1,6 @@
-export interface IControllerHandler {
-
+export default interface IControllerHandler {
     positionChangeByRunnerHandler(data: any):void;
-    positionChangeByClickHandler(data:any): void;
-    setLowRunnerPosition(): void;
-    setHighRunnerPosition(): void;
-    reCreateScale(): void;
-    isRange(): boolean;
-
+    positionChangeByClickHandler(data: any): void;
+    edgeValueChangeHandler(): void;
+    valueChangeHandler(): void;
 }

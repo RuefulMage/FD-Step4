@@ -1,107 +1,180 @@
-import { Slider } from './Slider';
+import Slider from './Slider';
+import SliderOptions from './Utils/SliderOptions';
 
-export class Demo{
-
+export default class Demo {
     protected sliderElement: JQuery<HTMLElement>;
+
     protected panelElement: HTMLElement;
+
     protected slider: Slider;
+
     protected maxValueInput: HTMLInputElement;
+
     protected minValueInput: HTMLInputElement;
+
     protected lowValueInput: HTMLInputElement;
+
     protected highValueInput: HTMLInputElement;
+
     protected stepInput: HTMLInputElement;
+
     protected divisionAmountInput: HTMLInputElement;
+
     protected isRangeInput: HTMLInputElement;
+
     protected isTipsHiddenInput: HTMLInputElement;
+
     protected isVerticalInput: HTMLInputElement;
 
-    constructor(sliderElement: JQuery, panelElement: HTMLElement, minValue = -100, maxValue = 100, step = 1,
-                isRange = false, isTipsHidden = false, orientation = 'horizontal', divisionsAmount = 2, startLowValue = minValue,
-                startHighValue = 100) {
-        this.panelElement = panelElement;
-        this.sliderElement = sliderElement;
-        console.log(startHighValue);
-        this.slider = sliderElement.slider({
-            divisionsAmount: divisionsAmount,
-            isRange: isRange,
-            isTipsHidden: isTipsHidden,
-            maxValue: maxValue,
-            minValue: minValue,
-            orientation: orientation,
-            startValueHigh: startHighValue,
-            startValueLow: startLowValue,
-            step: step
-        }).data('slider');
-        this.init();
+    constructor(sliderElement: JQuery, panelElement: HTMLElement, sliderOptions: SliderOptions) {
+      this.panelElement = panelElement;
+      this.sliderElement = sliderElement;
+      this.slider = sliderElement.slider(sliderOptions).data('slider');
+      this.init();
     }
 
-    init(): void{
-        let that = this;
-        this.maxValueInput = this.panelElement.querySelector('.js-max-value');
-        this.maxValueInput.addEventListener('change', function() {
-            this.min = Number(2).toString();
-            that.slider.setMaxValue(Number(this.value));
-        });
+    init(): void {
+      this.maxValueInputInit();
+      this.minValueInputInit();
+      this.lowValueInputInit();
+      this.highValueInputInit();
+      this.stepInputInit();
+      this.divisionAmountInputInit();
+      this.rangeInputInit();
+      this.tipsHiddenInputInit();
+      this.isVerticalInputInit();
 
-        this.minValueInput = this.panelElement.querySelector('.js-min-value');
-        this.minValueInput.addEventListener('change', function() {
-            that.slider.setMinValue(Number(this.value));
-        });
+      const that = this;
 
-        this.lowValueInput = this.panelElement.querySelector('.js-low-value');
-        this.lowValueInput.addEventListener('change', function() {
-            that.slider.setLowValue(Number(this.value));
-        });
+      function sliderChangeHandler() {
+        that.lowValueInput.value = that.slider.getLowValue().toString();
+        that.highValueInput.value = that.slider.getHighValue().toString();
+        that.minValueInput.value = that.slider.getMinValue().toString();
+        that.maxValueInput.value = that.slider.getMaxValue().toString();
+        that.stepInput.value = that.slider.getStep().toString();
+        that.divisionAmountInput.value = that.slider.getDivisionsAmount().toString();
+        that.isTipsHiddenInput.checked = that.slider.getHideStatus();
+        that.isRangeInput.checked = that.slider.isRange();
+        if (that.slider.getOrientation() === 'vertical') {
+          that.isVerticalInput.checked = true;
+        } else {
+          that.isVerticalInput.checked = false;
+        }
+      }
 
-        this.highValueInput = this.panelElement.querySelector('.js-high-value');
-        this.highValueInput.addEventListener('change', function() {
-            that.slider.setHighValue(Number(this.value));
-        });
+      this.sliderElement.on('slider-change', sliderChangeHandler);
+      sliderChangeHandler();
+    }
 
-        this.stepInput = this.panelElement.querySelector('.js-step');
-        this.stepInput.addEventListener('change', function() {
-            that.slider.setStep(Number(this.value));
-        });
+    private maxValueInputInit() {
+      const that = this;
+      this.maxValueInput = this.panelElement.querySelector('.js-max-value');
 
-        this.divisionAmountInput = this.panelElement.querySelector('.js-divisions-amount');
-        this.divisionAmountInput.addEventListener('change', function() {
-            that.slider.setDivisionsAmount(Number(this.value));
-        });
+      function maxValueChangeHandler() {
+        that.slider.setMaxValue(Number(that.maxValueInput.value));
+      }
 
-        this.isRangeInput = this.panelElement.querySelector('.js-range');
-        this.isRangeInput.addEventListener('change', function() {
-            that.slider.setRangeMode(this.checked);
-            if(!this.checked){
-                that.highValueInput.disabled = true;
-            }
-        });
+      this.maxValueInput.addEventListener('change', maxValueChangeHandler);
+    }
 
-        this.isTipsHiddenInput = this.panelElement.querySelector('.js-tips-hidden');
-        this.isTipsHiddenInput.addEventListener('change', function() {
-            if( this.checked ){
-                that.slider.hideTips();
-            } else {
-                that.slider.showTips();
-            }
-        });
+    private minValueInputInit() {
+      const that = this;
+      this.minValueInput = this.panelElement.querySelector('.js-min-value');
 
+      function minValueChangeHandler() {
+        that.slider.setMinValue(Number(that.minValueInput.value));
+      }
 
-        this.isVerticalInput = this.panelElement.querySelector('.js-vertical');
-        this.isVerticalInput.addEventListener('change', function() {
-            if( this.checked ){
-                that.slider.setOrientation('vertical');
-            } else {
-                that.slider.setOrientation('horizontal');
-            }
-        });
+      this.minValueInput.addEventListener('change', minValueChangeHandler);
+    }
 
+    private lowValueInputInit() {
+      const that = this;
+      this.lowValueInput = this.panelElement.querySelector('.js-low-value');
 
-        this.sliderElement.on('slider-change', function() {
-            that.lowValueInput.value = that.slider.getLowValue().toString();
-            that.highValueInput.value = that.slider.getHighValue().toString();
-            that.minValueInput.value = that.slider.getMinValue().toString();
-            that.maxValueInput.value = that.slider.getMaxValue().toString();
-            that.stepInput.value = that.slider.getStep().toString();
-        })
+      function lowValueChangeHandler() {
+        that.slider.setLowValue(Number(that.lowValueInput.value));
+      }
+
+      this.lowValueInput.addEventListener('change', lowValueChangeHandler);
+    }
+
+    private highValueInputInit() {
+      const that = this;
+      this.highValueInput = this.panelElement.querySelector('.js-high-value');
+
+      function highValueChangeHandler() {
+        that.slider.setHighValue(Number(that.highValueInput.value));
+      }
+
+      this.highValueInput.addEventListener('change', highValueChangeHandler);
+    }
+
+    private stepInputInit() {
+      const that = this;
+      this.stepInput = this.panelElement.querySelector('.js-step');
+
+      function stepChangeHandler() {
+        that.slider.setStep(Number(that.stepInput.value));
+      }
+
+      this.stepInput.addEventListener('change', stepChangeHandler);
+    }
+
+    private divisionAmountInputInit() {
+      const that = this;
+      this.divisionAmountInput = this.panelElement.querySelector('.js-divisions-amount');
+
+      function divisionAmountChangeHandler() {
+        that.slider.setDivisionsAmount(Number(that.divisionAmountInput.value));
+      }
+
+      this.divisionAmountInput.addEventListener('change', divisionAmountChangeHandler);
+    }
+
+    private rangeInputInit() {
+      const that = this;
+      this.isRangeInput = this.panelElement.querySelector('.js-range');
+
+      function rangeChangeHandler() {
+        that.slider.setRangeMode(that.isRangeInput.checked);
+        if (!that.isRangeInput.checked) {
+          that.highValueInput.disabled = true;
+        } else {
+          that.highValueInput.disabled = false;
+        }
+      }
+
+      this.isRangeInput.addEventListener('change', rangeChangeHandler);
+    }
+
+    private tipsHiddenInputInit() {
+      const that = this;
+      this.isTipsHiddenInput = this.panelElement.querySelector('.js-tips-hidden');
+
+      function tipsHiddenInputChangeHandler() {
+        if (that.isTipsHiddenInput.checked) {
+          that.slider.hideTips();
+        } else {
+          that.slider.showTips();
+        }
+      }
+
+      this.isTipsHiddenInput.addEventListener('change', tipsHiddenInputChangeHandler);
+    }
+
+    private isVerticalInputInit() {
+      const that = this;
+      this.isVerticalInput = this.panelElement.querySelector('.js-vertical');
+
+      function isVerticalInputChangeHandler() {
+        if (that.isVerticalInput.checked) {
+          that.slider.setOrientation('vertical');
+        } else {
+          that.slider.setOrientation('horizontal');
+        }
+      }
+
+      this.isVerticalInput.addEventListener('change', isVerticalInputChangeHandler);
     }
 }

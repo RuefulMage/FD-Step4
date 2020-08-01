@@ -1,13 +1,12 @@
-import { ViewComponent } from './ViewComponent';
-import { constants } from '../../Utils/Constants';
+import ViewComponent from './ViewComponent';
+import CONSTANTS from '../../Utils/Constants';
+import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 
-export class Strip extends ViewComponent{
+export default class Strip extends ViewComponent{
+
 
     constructor(parentNode: HTMLElement) {
-        super(parentNode, constants.stripClassName);
+        super(parentNode, CONSTANTS.stripClassName);
     }
 
-    protected addHadler(): void {
-        throw new Error('not implemented');
-    }
 }

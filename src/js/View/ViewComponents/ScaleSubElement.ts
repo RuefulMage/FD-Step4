@@ -1,25 +1,21 @@
-import { ViewComponent } from './ViewComponent';
-import { constants } from '../../Utils/Constants';
+import ViewComponent from './ViewComponent';
+import CONSTANTS from '../../Utils/Constants';
 
-export class ScaleSubElement extends ViewComponent{
-    protected _position: number;
+export default class ScaleSubElement extends ViewComponent{
+    protected position: number;
 
     constructor(parentNode: HTMLElement, position: number) {
-        super(parentNode, constants.scaleSubElementClassName);
-        this._position = position;
+        super(parentNode, CONSTANTS.scaleSubElementClassName);
+        this.position = position;
+    this.DOMNode.setAttribute('data-scale-position', this.position.toString());
+    }
+
+    public getPosition(): number {
+        return this.position;
+    }
+
+    public setPosition(position: number) {
+        this.position = position;
         this.DOMNode.setAttribute('data-scale-position', this.position.toString());
-    }
-
-    get position(): number {
-        return this._position;
-    }
-
-    set position(position: number) {
-        this._position = position;
-        this.DOMNode.setAttribute('data-scale-position', this.position.toString());
-    }
-
-    protected addHadler(): void {
-        throw new Error('not implemented');
     }
 }

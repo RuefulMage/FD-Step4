@@ -1,9 +1,9 @@
-import { Orientation } from '../../Utils/types';
-import { IOrientationBehavior } from './IOrientationBehavior';
-import { HorizontalOrientationBehavior } from './HorizontalOrientationBehavior';
-import { VerticalOrientationBehavior } from './VerticalOrientationBehavior';
+import IOrientationBehavior from './IOrientationBehavior';
+import HorizontalOrientationBehavior from './HorizontalOrientationBehavior';
+import VerticalOrientationBehavior from './VerticalOrientationBehavior';
+import Orientation from '../../Utils/Orientation';
 
-export let OrientaitionBehaviorBuilder = {
+let OrientaitionBehaviorBuilder = {
     getOrientationBehaviorByOrientation(orientation: Orientation): IOrientationBehavior{
         if( orientation == Orientation.HORIZONTAL ){
             return new HorizontalOrientationBehavior();
@@ -14,3 +14,5 @@ export let OrientaitionBehaviorBuilder = {
         }
     }
 }
+
+export default OrientaitionBehaviorBuilder;

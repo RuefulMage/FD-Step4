@@ -1,48 +1,43 @@
-import { ViewComponent } from './ViewComponent';
-import { constants } from '../../Utils/Constants';
-import { IOrientationBehavior } from '../OrientationBehaviors/IOrientationBehavior';
+import ViewComponent from './ViewComponent';
+import CONSTANTS from '../../Utils/Constants';
+import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 
-export class Range extends ViewComponent{
-    protected _minEdge: number = 0;
-    protected _maxEdge: number = 100;
-    protected _orientationBehavior: IOrientationBehavior;
+export default class Range extends ViewComponent{
+    protected minEdge: number = 0;
+    protected maxEdge: number = 100;
+    protected orientationBehavior: IOrientationBehavior;
 
     constructor(parentNode: HTMLElement,  orientationBehavior: IOrientationBehavior) {
-        super(parentNode, constants.rangeClassName);
-        this._orientationBehavior = orientationBehavior;
+        super(parentNode, CONSTANTS.rangeClassName);
+        this.orientationBehavior = orientationBehavior;
     }
 
-    get minEdge(): number {
-        return this._minEdge;
+    public getMinEdge(): number {
+        return this.minEdge;
     }
 
 
-    set minEdge(value: number) {
-        this._minEdge = value;
+    public setMinEdge(value: number) {
+        this.minEdge = value;
         this.orientationBehavior.setRangePositions(this.minEdge, this.maxEdge, this.DOMNode);
     }
 
-    get maxEdge(): number {
-        return this._maxEdge;
+    public getMaxEdge(): number {
+        return this.maxEdge;
     }
 
-    set maxEdge(value: number) {
-        this._maxEdge = value;
+    public setMaxEdge(value: number) {
+        this.maxEdge = value;
         this.orientationBehavior.setRangePositions(this.minEdge, this.maxEdge, this.DOMNode);
     }
 
-    get orientationBehavior(): IOrientationBehavior {
-        return this._orientationBehavior;
+    public getOrientationBehavior(): IOrientationBehavior {
+        return this.orientationBehavior;
     }
 
-    set orientationBehavior(value: IOrientationBehavior) {
-        this._orientationBehavior = value;
+    public setOrientationBehavior(value: IOrientationBehavior) {
+        this.orientationBehavior = value;
         this.orientationBehavior.resetStyles(this.DOMNode);
         this.orientationBehavior.setRangePositions(this.minEdge, this.maxEdge, this.DOMNode);
     }
-
-    protected addHadler(): void {
-        throw new Error('not implemented');
-    }
-
 }

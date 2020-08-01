@@ -1,18 +1,18 @@
-import {ViewComponent} from './ViewComponent';
-import {constants} from '../../Utils/Constants';
-import { ScaleSubElement } from './ScaleSubElement';
-import { IOrientationBehavior } from '../OrientationBehaviors/IOrientationBehavior';
+import ViewComponent from './ViewComponent';
+import CONSTANTS from '../../Utils/Constants';
+import ScaleSubElement from './ScaleSubElement';
+import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 
-export class Scale extends ViewComponent{
-    protected _subElements: ScaleSubElement[] = [];
-    protected _orientationBehavior: IOrientationBehavior;
-    protected _divisionsAmount: number;
+export default class Scale extends ViewComponent{
+    protected subElements: ScaleSubElement[] = [];
+    protected orientationBehavior: IOrientationBehavior;
+    protected divisionsAmount: number;
 
     constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior, divisionsAmount: number,
                 minValue: number = 0, maxValue: number = 100) {
-        super(parentNode, constants.scaleClassName);
-        this._divisionsAmount = divisionsAmount;
-        this._orientationBehavior = orientationBehavior;
+        super(parentNode, CONSTANTS.scaleClassName);
+        this.divisionsAmount = divisionsAmount;
+        this.orientationBehavior = orientationBehavior;
         this.setScale(minValue, maxValue);
         this.addHadler();
     }
@@ -22,29 +22,29 @@ export class Scale extends ViewComponent{
             throw new Error('Invalid scale parameters');
         }
         this.DOMNode.innerHTML = '';
-        this._subElements = [];
+        this.subElements = [];
         let currentElementText = minValue;
-        let step = (maxValue - minValue) / (this._divisionsAmount - 1);
-        for(let i = 0; i < this._divisionsAmount; i++){
+        let step = (maxValue - minValue) / (this.divisionsAmount - 1);
+        for(let i = 0; i < this.divisionsAmount; i++){
             let elementPosition;
             if( i === 0){
                 elementPosition = 0;
-            } else if (i === this._divisionsAmount - 1){
+            } else if (i === this.divisionsAmount - 1){
                 elementPosition = 100;
                 currentElementText = maxValue;
             } else {
-                elementPosition = this._subElements[i - 1].position + 100/(this._divisionsAmount - 1);
+                elementPosition = this.subElements[i - 1].getPosition() + 100/(this.divisionsAmount - 1);
             }
-            this._subElements.push(new ScaleSubElement(this.DOMNode, elementPosition));
-            this._subElements[i].DOMNode.innerText = currentElementText.toString();
+            this.subElements.push(new ScaleSubElement(this.DOMNode, elementPosition));
+            this.subElements[i].getDOMNode().innerText = currentElementText.toString();
             currentElementText = Number((currentElementText + step).toFixed(2));
-            this._orientationBehavior.setPosition(elementPosition, this._subElements[i].DOMNode);
+            this.orientationBehavior.setPosition(elementPosition, this.subElements[i].getDOMNode());
         }
     }
 
-    reCreateScale(){
-        let minValue: number = Number(this._subElements[0].DOMNode.innerText);
-        let maxValue: number = Number(this._subElements[this._subElements.length - 1].DOMNode.innerText);
+    public reCreateScale(){
+        let minValue: number = Number(this.subElements[0].getDOMNode().innerText);
+        let maxValue: number = Number(this.subElements[this.subElements.length - 1].getDOMNode().innerText);
         this.setScale(minValue, maxValue);
     }
 
@@ -67,25 +67,25 @@ export class Scale extends ViewComponent{
     }
 
 
-    get orientationBehavior(): IOrientationBehavior {
-        return this._orientationBehavior;
+    public getOrientationBehavior(): IOrientationBehavior {
+        return this.orientationBehavior;
     }
 
-    set orientationBehavior(value: IOrientationBehavior) {
-        this._orientationBehavior = value;
+    public setOrientationBehavior(value: IOrientationBehavior) {
+        this.orientationBehavior = value;
         this.reCreateScale();
     }
 
 
-    get divisionsAmount(): number {
-        return this._divisionsAmount;
+    public getDivisionsAmount(): number {
+        return this.divisionsAmount;
     }
 
-    set divisionsAmount(value: number) {
+    public setDivisionsAmount(value: number) {
         if(value < 2){
             throw new Error("divisionsAmount must be more or equal than 1");
         }
-        this._divisionsAmount = value;
+        this.divisionsAmount = value;
         this.reCreateScale();
     }
 }

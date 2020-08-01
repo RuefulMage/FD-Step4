@@ -1,25 +1,18 @@
-import $ from 'jquery';
-
-export abstract class ViewComponent{
-    protected _DOMNode: HTMLElement;
+export default abstract class ViewComponent{
+    protected DOMNode: HTMLElement;
     protected constructor(parentNode: HTMLElement, classList: string) {
-        this._DOMNode = document.createElement('div');
-        this._DOMNode.classList.add(classList);
-        parentNode.append(this._DOMNode);
+        this.DOMNode = document.createElement('div');
+        this.DOMNode.classList.add(classList);
+        parentNode.append(this.DOMNode);
     };
 
 
-    get DOMNode(): HTMLElement {
-        return this._DOMNode;
+    getDOMNode(): HTMLElement {
+        return this.DOMNode;
     }
 
-    set DOMNode(value: HTMLElement) {
-        this._DOMNode = value;
-    }
-
-    protected abstract addHadler(): void;
 
     destroy(): void{
-        this._DOMNode.remove();
+        this.DOMNode.remove();
     }
 };
