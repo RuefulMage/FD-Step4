@@ -17,12 +17,6 @@ module.exports = {
                 test: /\.ts?$/,
                 enforce: 'pre',
                 use: [
-                    // {
-                    //     options: {
-                    //         eslintPath: require.resolve('eslint'),
-                    //     },
-                    //     loader: require.resolve('eslint-loader'),
-                    // },
                     {
                         loader: 'ts-loader',
                         options: {

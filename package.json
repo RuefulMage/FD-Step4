@@ -8,7 +8,9 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "dev": "webpack-dev-server --open --config webpack-config/webpack.dev.config.js",
-    "build": "webpack --config webpack-config/webpack.build.config.js"
+    "build": "webpack --config webpack-config/webpack.build.config.js",
+    "lint": "eslint src/**/*.ts --ignore-pattern src/**/?(*.)+(spec|test).+(ts|tsx|js)",
+    "deploy": "gh-pages -d dist"
   },
   "repository": {
     "type": "git",
@@ -37,9 +39,14 @@
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.6.0",
     "cssnano": "^4.1.10",
+    "eslint-config-airbnb-typescript": "^9.0.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-loader": "^4.0.2",
+    "eslint-plugin-fsd": "^1.0.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^23.20.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.1.0",
     "mini-css-extract-plugin": "^0.9.0",
