@@ -1,26 +1,37 @@
-import { HorizontalOrientationBehavior } from './HorizontalOrientationBehavior';
+import HorizontalOrientationBehavior from './HorizontalOrientationBehavior';
 
 describe('Horizontal orientation behavior class', function() {
 
-    let domElement;
+    let parentElement: HTMLElement;
+    let domElement: HTMLElement;
     let horizontalOrientationBehavior: HorizontalOrientationBehavior;
     beforeEach(function() {
-        domElement = {
-            parentElement: {
-                offsetWidth: 100,
-                getBoundingClientRect(){
-                    return {
-                      left: 10,
-                      right: 15
-                    };
+        parentElement = document.createElement('div');
+        Object.defineProperties(parentElement, {
+            offsetWidth: {
+                get() {
+                    return 100;
                 }
             },
-            style: {
-                left: '',
-                right: ''
-            },
-            offsetWidth: 40
-        }
+            getBoundingClientRect: {
+                get() {
+                    return function() {
+                        return {
+                            left: 10,
+                            right: 15
+                        };
+                    }
+                }
+            }
+        });
+        document.body.append(parentElement);
+        domElement = document.createElement('div');
+        Object.defineProperties(domElement, {
+            offsetWidth: {
+                get() { return 40}
+            }
+        });
+        parentElement.appendChild(domElement);
         horizontalOrientationBehavior = new HorizontalOrientationBehavior();
     });
 

@@ -1,27 +1,38 @@
-import { VerticalOrientationBehavior } from './VerticalOrientationBehavior';
+import VerticalOrientationBehavior from './VerticalOrientationBehavior';
 
 
 describe('Horizontal orientation behavior class', function() {
-
-    let domElement;
+    let parentElement: HTMLElement;
+    let domElement: HTMLElement;
     let verticalOrientationBehavior: VerticalOrientationBehavior;
     beforeEach(function() {
-        domElement = {
-            parentElement: {
-                offsetHeight: 100,
-                getBoundingClientRect(){
-                    return {
-                        top: 10,
-                        bottom: 15
-                    };
+        parentElement = document.createElement('div');
+        Object.defineProperties(parentElement, {
+            offsetHeight: {
+                get() {
+                    return 100;
                 }
             },
-            style: {
-                top: '',
-                bottom: ''
-            },
-            offsetHeight: 40
-        }
+            getBoundingClientRect: {
+                get() {
+                    return function() {
+                        return {
+                            top: 10,
+                            bottom: 15
+                        };
+                    }
+                }
+            }
+        });
+        document.body.append(parentElement);
+        domElement = document.createElement('div');
+        Object.defineProperties(domElement, {
+            offsetHeight: {
+                get() { return 40}
+            }
+        });
+        parentElement.appendChild(domElement);
+
         verticalOrientationBehavior = new VerticalOrientationBehavior();
     });
 

@@ -1,7 +1,7 @@
-import { OrientaitionBehaviorBuilder } from './OrientaitionBehaviorBuilder';
-import { Orientation } from '../../Utils/types';
-import { HorizontalOrientationBehavior } from './HorizontalOrientationBehavior';
-import { VerticalOrientationBehavior } from './VerticalOrientationBehavior';
+import OrientaitionBehaviorBuilder from './OrientaitionBehaviorBuilder';
+import HorizontalOrientationBehavior from './HorizontalOrientationBehavior';
+import VerticalOrientationBehavior from './VerticalOrientationBehavior';
+import Orientation from '../../Utils/Orientation';
 
 describe('Orientaition Behavior Builder object', function(){
     describe('Get correct behavior from input orientation', function(){
