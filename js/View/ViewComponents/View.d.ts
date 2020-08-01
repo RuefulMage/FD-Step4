@@ -33,6 +33,7 @@ export default class View extends ViewComponent implements IPublisher {
     getOrientation(): Orientation;
     setOrientation(orientation: Orientation): void;
     setScaleDivisionsAmount(divisionsAmount: number): void;
+    getDivisionsAmount(): number;
     setScale(minValue: number, maxValue: number): void;
     reCreateScale(): void;
     attach(observer: IObserver): void;

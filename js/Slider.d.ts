@@ -26,6 +26,7 @@ export default class Slider implements IObserver {
     hideTips(): void;
     showTips(): void;
     getHideStatus(): boolean;
+    getDivisionsAmount(): number;
     setDivisionsAmount(divisionsAmount: number): void;
     update(eventName: string, data?: any): void;
 }
