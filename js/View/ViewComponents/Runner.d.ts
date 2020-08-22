@@ -4,7 +4,8 @@ export default class Runner extends ViewComponent {
     protected position: number;
     protected orientationBehavior: IOrientationBehavior;
     constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior);
-    protected addHadler(): void;
+    protected addMouseEventsHandler(): void;
+    protected addTouchEventsHandler(): void;
     getPosition(): number;
     setPosition(value: number): void;
     getOrientationBehavior(): IOrientationBehavior;
