@@ -1,6 +1,6 @@
-export default interface IOrientationBehavior{
+interface IOrientationBehavior{
 
-    setPosition(newPosition: number, domElement: HTMLElement): number;
+    setPosition(newPosition: number, domElement: HTMLElement): void;
 
     getPositionFromCoordinates(clientX: number, clientY: number, domElement: HTMLElement): number;
 
@@ -8,3 +8,5 @@ export default interface IOrientationBehavior{
 
     resetStyles(runner: HTMLElement): void;
 }
+
+export default IOrientationBehavior;
