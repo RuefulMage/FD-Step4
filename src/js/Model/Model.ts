@@ -1,8 +1,7 @@
 import IPublisher from '../Observer/IPublisher';
 import IObserver from '../Observer/IObserver';
-import ModelOptions from '../Utils/ModelOptions';
 
-export default class Model implements IPublisher {
+class Model implements IPublisher {
     protected isRange: boolean;
 
     protected maxValue: number;
@@ -17,26 +16,43 @@ export default class Model implements IPublisher {
 
     protected observers: Set<IObserver> = new Set<IObserver>();
 
-    constructor(options: ModelOptions) {
-      if (options.maxValue <= options.minValue || options.step <= 0) {
-        throw new Error('options is not valid');
-      }
-      this.isRange = options.isRange;
-      this.maxValue = options.maxValue;
-      this.maxValue = options.maxValue;
-      this.minValue = options.minValue;
-      this.step = options.step;
-      this.lowValue = this.minValue;
-      this.highValue = this.maxValue;
-      this.setLowValue(options.startValueLow);
-      this.setHighValue(options.startValueHigh);
+    constructor(options: { isRange?: boolean, minValue?: number,
+        maxValue?: number, startValueLow?: number,
+        startValueHigh?: number, step?: number }) {
+      this.init(options);
     }
 
-    getRangeStatus(): boolean {
+    protected init(options: { isRange?: boolean, minValue?: number,
+                       maxValue?: number, startValueLow?: number,
+                       startValueHigh?: number, step?: number, }) {
+      const {
+        isRange = false, minValue = 0, maxValue = 100,
+        startValueLow = 0, startValueHigh = 100, step = 1,
+      } = options;
+
+      const isOptionsNotValid = (maxValue <= minValue) || (step <= 0);
+
+      if (isOptionsNotValid) {
+        throw new Error('options is not valid');
+      }
+      this.isRange = isRange;
+      this.maxValue = maxValue;
+      this.maxValue = maxValue;
+      this.minValue = minValue;
+      this.step = step;
+      this.lowValue = this.minValue;
+      this.highValue = this.maxValue;
+      this.setLowValue(startValueLow);
+      this.setHighValue(startValueHigh);
+    }
+
+    // Возвращает true, если стоит режим промежутка
+    public getRangeStatus(): boolean {
       return this.isRange;
     }
 
-    setRangeMode(isRange: boolean): void{
+    // Изменяет режим промежутка
+    public setRangeMode(isRange: boolean): void {
       this.isRange = isRange;
       this.notify('range-mode-change', { isRange });
       if (isRange) {
@@ -44,31 +60,37 @@ export default class Model implements IPublisher {
       }
     }
 
-    getMaxValue(): number {
+    public getMaxValue(): number {
       return this.maxValue;
     }
 
-    setMaxValue(value: number) {
-      if (value <= this.minValue || (value - this.minValue) < this.step) {
+    public setMaxValue(value: number) {
+      const isValueValid = !((value <= this.minValue) || ((value - this.minValue) < this.step));
+
+      if (!isValueValid) {
         throw new Error('value is not valid');
       } else {
         this.maxValue = value;
+
         if (this.highValue > value) {
           this.highValue = value;
         } else {
           this.setHighValue(this.highValue);
         }
+
         this.setLowValue(this.lowValue);
         this.notify('edge-value-change');
       }
     }
 
-    getMinValue(): number {
+    public getMinValue(): number {
       return this.minValue;
     }
 
-    setMinValue(value: number) {
-      if (value >= this.maxValue || (this.maxValue - value) < this.step) {
+    public setMinValue(value: number) {
+      const isValueValid = !((value >= this.maxValue) || ((this.maxValue - value) < this.step));
+
+      if (!isValueValid) {
         throw new Error('value is not valid');
       } else {
         this.minValue = value;
@@ -82,60 +104,66 @@ export default class Model implements IPublisher {
       }
     }
 
-    getLowValue(): number {
+    public getLowValue(): number {
       return this.lowValue;
     }
 
-    getLowValueInPercents(): number {
+    public getLowValueInPercent(): number {
       const value = this.convertValueToPercent(this.lowValue);
       return value;
     }
 
-    setLowValue(value: number): void {
-      let newValue = this.validateValue(value);
-      if (newValue >= (this.highValue - this.step) && this.isRange) {
-        newValue = this.highValue - this.step;
+    public setLowValue(value: number): void {
+      let newLowValue = this.validateValue(value);
+      const isValueTooCloseToHighValue = newLowValue >= (this.highValue - this.step)
+          && this.isRange;
+
+      if (isValueTooCloseToHighValue) {
+        newLowValue = this.highValue - this.step;
       }
-      this.lowValue = newValue;
+      this.lowValue = newLowValue;
       this.notify('value-change');
     }
 
-    setLowValueByPercents(percent: number): void {
-      const validatedPercent = this.validateValueInPercent(percent);
-      const value = this.convertPercentToValue(validatedPercent);
-      this.setLowValue(value);
+    public setLowValueByPercent(valueInPercent: number): void {
+      const validatedValue = this.validateValueInPercent(valueInPercent);
+      const newLowValue = this.convertPercentToValue(validatedValue);
+      this.setLowValue(newLowValue);
     }
 
-    getHighValue(): number {
+    public getHighValue(): number {
       return this.highValue;
     }
 
-    getHighValueInPercents(): number {
+    public getHighValueInPercent(): number {
       const value = this.convertValueToPercent(this.highValue);
       return value;
     }
 
-    setHighValueByPercents(percent: number): void {
-      const validatedPercent = this.validateValueInPercent(percent);
-      const value = this.convertPercentToValue(validatedPercent);
-      this.setHighValue(value);
+    public setHighValueByPercent(valueInPercent: number): void {
+      const validatedValue = this.validateValueInPercent(valueInPercent);
+      const newHighValue = this.convertPercentToValue(validatedValue);
+      this.setHighValue(newHighValue);
     }
 
-    setHighValue(value: number): void {
+    public setHighValue(value: number): void {
       let newValue = this.validateValue(value);
       if (newValue <= (this.lowValue + this.step)) {
         newValue = this.lowValue + this.step;
       }
+
       this.highValue = newValue;
       this.notify('value-change');
     }
 
-    getStep(): number {
+    public getStep(): number {
       return this.step;
     }
 
-    setStep(value: number): void{
-      if ((value > (this.maxValue - this.minValue)) || (value <= 0)) {
+    public setStep(value: number): void {
+      const isValueValid = !((value > (this.maxValue - this.minValue)) || (value <= 0));
+
+      if (!isValueValid) {
         throw new Error('Step value is not valid');
       } else {
         this.step = value;
@@ -144,6 +172,25 @@ export default class Model implements IPublisher {
       }
     }
 
+    public attach(observer: IObserver): void {
+      this.observers.add(observer);
+    }
+
+    public detach(observer: IObserver): void {
+      this.observers.delete(observer);
+    }
+
+    public notify(eventType: string, data?: any): void {
+      if (data !== undefined) {
+        this.observers.forEach((value: IObserver) => value.update(eventType, data));
+      } else {
+        this.observers.forEach((value: IObserver) => value.update(eventType));
+      }
+    }
+
+    // Проверяет значение на то, что оно находится в промежутке [minValue: maxValue]
+    // и изменяет его на ближайшее число,
+    // которое соответствует шагу.
     protected validateValue(value: number): number {
       let validatedValue;
       if (value <= this.minValue) {
@@ -152,11 +199,14 @@ export default class Model implements IPublisher {
         validatedValue = this.maxValue;
       } else {
         validatedValue = this.minValue
-            + Math.round((value - this.minValue) / this.step) * this.step;
+                + Math.round((value - this.minValue) / this.step) * this.step;
       }
       return validatedValue;
     }
 
+    // Проверяет значение на то, что оно находится в промежутке [0; 100]
+    // и изменяет его на ближайшее число,
+    // которое соответствует шагу.
     protected validateValueInPercent(value: number): number {
       let validatedValue;
       if (value >= 100) {
@@ -170,15 +220,8 @@ export default class Model implements IPublisher {
       return validatedValue;
     }
 
-    protected convertPercentToValue(percent: number): number {
-      let value;
-      if (percent >= 100) {
-        value = this.maxValue;
-      } else if (percent <= 0) {
-        value = this.minValue;
-      } else {
-        value = this.minValue + ((percent / 100) * (this.maxValue - this.minValue));
-      }
+    protected convertPercentToValue(valueInPercent: number): number {
+      const value = this.minValue + ((valueInPercent / 100) * (this.maxValue - this.minValue));
       return value;
     }
 
@@ -186,20 +229,6 @@ export default class Model implements IPublisher {
       const valueInPercent = ((value - this.minValue) / (this.maxValue - this.minValue)) * 100;
       return valueInPercent;
     }
-
-    attach(observer: IObserver): void {
-      this.observers.add(observer);
-    }
-
-    detach(observer: IObserver): void {
-      this.observers.delete(observer);
-    }
-
-    notify(eventType: string, data?: any): void {
-      if (data !== undefined) {
-        this.observers.forEach((value: IObserver) => value.update(eventType, data));
-      } else {
-        this.observers.forEach((value: IObserver) => value.update(eventType));
-      }
-    }
 }
+
+export default Model;

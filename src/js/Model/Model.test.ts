@@ -23,6 +23,12 @@ describe('Class Model', () => {
       expect(model).toBeDefined();
     });
 
+    test('When options is empty, should be created with default options', () => {
+      const model = new Model({});
+
+      expect(model).toBeDefined();
+    })
+
     test('Should be thrown an error in created an instance of model, because options is not valid', () => {
       options.minValue = 0;
       options.maxValue = 0;
@@ -221,13 +227,13 @@ describe('Class Model', () => {
       options.startValueLow = 15;
       let model = new Model(options);
 
-      expect(model.getLowValueInPercents()).toBe(15);
+      expect(model.getLowValueInPercent()).toBe(15);
 
       options.minValue = -50;
       options.maxValue = 150;
       model = new Model(options);
 
-      expect(model.getLowValueInPercents()).toBe(32.5);
+      expect(model.getLowValueInPercent()).toBe(32.5);
     });
   });
 
@@ -236,7 +242,7 @@ describe('Class Model', () => {
       options.minValue = -50;
       options.maxValue = 100;
       const model = new Model(options);
-      model.setLowValueByPercents(15);
+      model.setLowValueByPercent(15);
 
       expect(model.getLowValue()).toBe(-27);
     });
@@ -245,14 +251,14 @@ describe('Class Model', () => {
       options.minValue = -50;
       options.maxValue = 100;
       let model = new Model(options);
-      model.setLowValueByPercents(150);
+      model.setLowValueByPercent(150);
 
       expect(model.getLowValue()).toBe(100);
 
       options.startValueHigh = 50;
       options.isRange = true;
       model = new Model(options);
-      model.setLowValueByPercents(110);
+      model.setLowValueByPercent(110);
 
       expect(model.getLowValue()).toBe(49);
     });
@@ -260,7 +266,7 @@ describe('Class Model', () => {
     test('When given value less than 0, should bet set low value to min value', () => {
       options.minValue = -100;
       const model = new Model(options);
-      model.setLowValueByPercents(-10);
+      model.setLowValueByPercent(-10);
 
       expect(model.getLowValue()).toBe(-100);
     });
@@ -326,13 +332,13 @@ describe('Class Model', () => {
       options.startValueHigh = 25;
       let model = new Model(options);
 
-      expect(model.getHighValueInPercents()).toBe(25);
+      expect(model.getHighValueInPercent()).toBe(25);
 
       options.minValue = -50;
       options.maxValue = 150;
       model = new Model(options);
 
-      expect(model.getHighValueInPercents()).toBe(37.5);
+      expect(model.getHighValueInPercent()).toBe(37.5);
     });
   });
 
@@ -342,7 +348,7 @@ describe('Class Model', () => {
         options.maxValue = 150;
         options.minValue = 0;
         const model = new Model(options);
-        model.setHighValueByPercents(20);
+        model.setHighValueByPercent(20);
 
         expect(model.getHighValue()).toBe(30);
       });
@@ -350,7 +356,7 @@ describe('Class Model', () => {
     test('When given value bigger than 100, should be set high value to max value', () => {
       options.maxValue = 150;
       const model = new Model(options);
-      model.setHighValueByPercents(120);
+      model.setHighValueByPercent(120);
 
       expect(model.getHighValue()).toBe(model.getMaxValue());
     });
