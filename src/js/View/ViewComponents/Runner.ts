@@ -9,11 +9,12 @@ export default class Runner extends ViewComponent {
     constructor(parentNode: HTMLElement,  orientationBehavior: IOrientationBehavior) {
         super(parentNode, CONSTANTS.runnerClassName);
         this.orientationBehavior = orientationBehavior;
-        this.addHadler();
+        this.addMouseEventsHandler();
+        this.addTouchEventsHandler();
     }
 
 
-    protected addHadler(): void {
+    protected addMouseEventsHandler(): void {
         let that: Runner = this;
         
         this.DOMNode.addEventListener('mousedown', mouseDownHandler);
@@ -39,6 +40,39 @@ export default class Runner extends ViewComponent {
         function mouseUpHandler(event: MouseEvent): void {
             document.removeEventListener('mousemove', mouseMoveHandler);
             document.removeEventListener('mouseup', mouseUpHandler);
+        }
+    }
+
+
+    protected addTouchEventsHandler(): void {
+        let that: Runner = this;
+
+        this.DOMNode.addEventListener('touchstart', mouseDownHandler);
+
+        this.DOMNode.addEventListener('dragstart', function() {
+           return false;
+        });
+
+        function mouseDownHandler(event: MouseEvent) {
+            event.preventDefault();
+            document.addEventListener('touchmove', touchMoveHandler);
+            document.addEventListener('touchend', touchEndHandler);
+            document.addEventListener('touchcancel', touchEndHandler);
+        }
+
+        function touchMoveHandler(event: TouchEvent): void {
+            let touch: Touch = event.targetTouches[0];
+            let newPosition = that.getOrientationBehavior().getPositionFromCoordinates(touch.clientX,
+                touch.clientY, that.DOMNode);
+            let changePositionEvent: CustomEvent = new CustomEvent('slider-runner-change',
+                {bubbles: true, cancelable: true, detail: {position: newPosition, target: that}});
+            that.DOMNode.dispatchEvent(changePositionEvent);
+        }
+
+        function touchEndHandler(event: MouseEvent): void {
+            document.removeEventListener('touchmove', touchMoveHandler);
+            document.removeEventListener('touchend', touchEndHandler);
+            document.removeEventListener('touchcancel', touchEndHandler);
         }
     }
 
