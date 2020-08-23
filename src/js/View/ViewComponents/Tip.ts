@@ -8,15 +8,12 @@ export default class Tip extends ViewComponent{
     protected orientationBehavior: IOrientationBehavior;
 
     constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior,
-                isHidden: boolean = true, isBelow: boolean = false) {
+                isHidden: boolean = true) {
         super(parentNode, CONSTANTS.tipClassName);
-        this.init(orientationBehavior, isHidden, isBelow);
+        this.init(orientationBehavior, isHidden);
     }
 
-    protected init( orientationBehavior: IOrientationBehavior, isHidden: boolean, isBelow: boolean){
-        if( isBelow ){
-            this.DOMNode.classList.add(CONSTANTS.tipBellowClassName);
-        }
+    protected init( orientationBehavior: IOrientationBehavior, isHidden: boolean){
         if(isHidden){
             this.DOMNode.classList.add(CONSTANTS.tipHiddenClassName);
         }
