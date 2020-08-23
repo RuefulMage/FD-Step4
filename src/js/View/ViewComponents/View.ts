@@ -7,7 +7,7 @@ import CONSTANTS from '../../Utils/Constants';
 import Tip from './Tip';
 import IPublisher from '../../Observer/IPublisher';
 import IObserver from '../../Observer/IObserver';
-import OrientaitionBehaviorBuilder from '../OrientationBehaviors/OrientaitionBehaviorBuilder';
+import OrientationBehaviorBuilder from '../OrientationBehaviors/OrientaitionBehaviorBuilder';
 import Orientation from '../../Utils/Orientation';
 import ViewOptions from '../../Utils/ViewOptions';
 
@@ -16,7 +16,7 @@ export default class View extends ViewComponent implements IPublisher{
     protected range: Range;
     protected scale: Scale;
     protected orientation: Orientation;
-    protected runnersAndTips: Map<Runner, Tip>;
+    protected runnersAndTips: Map<number, {runner: Runner, tip: Tip}>;
     protected isTipsHidden: boolean;
     protected observers: Set<IObserver> = new Set<IObserver>();
 
@@ -29,51 +29,62 @@ export default class View extends ViewComponent implements IPublisher{
     protected init(options: ViewOptions) {
         this.orientation = options.orientation;
         this.DOMNode.classList.add(CONSTANTS.orientationClassNames.get(options.orientation));
-        let orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(options.orientation);
+        let orientationBehavior = OrientationBehaviorBuilder.getOrientationBehaviorByOrientation(options.orientation);
 
-        this.strip = new Strip(this.DOMNode);
+        this.strip = new Strip(this.DOMNode, orientationBehavior);
         this.isTipsHidden = options.isTipsHidden;
         this.scale = new Scale(this.DOMNode, orientationBehavior, options.divisionsAmount,
             options.minValue, options.maxValue);
 
         if(options.isRange){
-            this.runnersAndTips = new Map<Runner, Tip>([
-                        [new Runner(this.strip.getDOMNode(), orientationBehavior),
-                            new Tip(this.strip.getDOMNode(), orientationBehavior, options.isTipsHidden)],
-                        [new Runner(this.strip.getDOMNode(), orientationBehavior),
-                            new Tip(this.strip.getDOMNode(), orientationBehavior, options.isTipsHidden, true)]
-                    ]);
+            let lowValueRunner =  new Runner(this.strip.getDOMNode(), orientationBehavior);
+            let lowValueTip = new Tip(this.strip.getDOMNode(), orientationBehavior, options.isTipsHidden);
+
+            let highValueRunner = new Runner(this.strip.getDOMNode(), orientationBehavior);
+            let highValueTip = new Tip(this.strip.getDOMNode(), orientationBehavior, options.isTipsHidden);
+
+
+            this.runnersAndTips = new Map([
+                        [0 , {runner: lowValueRunner, tip: lowValueTip}],
+                        [1 , {runner: highValueRunner, tip: highValueTip}]]);
+
             this.range = new Range(this.strip.getDOMNode(), orientationBehavior);
         } else {
-            this.runnersAndTips = new Map<Runner, Tip>([
-                [new Runner(this.strip.getDOMNode(), orientationBehavior),
-                    new Tip(this.strip.getDOMNode(), orientationBehavior, options.isTipsHidden)]
-            ]);
+
+            let lowValueRunner =  new Runner(this.strip.getDOMNode(), orientationBehavior);
+            let lowValueTip = new Tip(this.strip.getDOMNode(), orientationBehavior, options.isTipsHidden);
+
+            this.runnersAndTips = new Map([[0,{runner: lowValueRunner, tip: lowValueTip}]]);
             this.range = new Range(this.strip.getDOMNode(), orientationBehavior);
         }
-        this.addHadler();
+        this.addHandlers();
     }
 
 
     public getRunnersAmount(): number{
-        return this.getRunners().length;
+        return this.runnersAndTips.size;
     }
 
     public setRunnerPosition(runnerIndex: number, position: number): void{
-        if(runnerIndex >= this.getRunners().length || runnerIndex < 0){
+        if(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0){
             throw new Error('runner with this index does not exits');
         }
-        this.getRunners()[runnerIndex].setPosition( position );
-        let tip = this.runnersAndTips.get(this.getRunners()[runnerIndex]);
+        this.runnersAndTips.get(runnerIndex).runner.setPosition( position );
+    }
+
+    public setTipPosition(tipIndex: number, position: number){
+        if(tipIndex >= this.getRunnersAmount() || tipIndex < 0){
+            throw new Error('runner with this index does not exits');
+        }
+        let tip = this.runnersAndTips.get(tipIndex).tip;
         tip.setPosition(position);
     }
 
-
     public getRunnerPosition(index: number){
-        if(index >= this.getRunners().length || index < 0){
+        if(index >= this.getRunnersAmount() || index < 0){
             throw new Error('runner with this index does not exits');
         }
-        return this.getRunners()[index].getPosition();
+        return this.runnersAndTips.get(index).runner.getPosition();
     }
 
     public setRange(minEdge: number, maxEdge: number){
@@ -83,57 +94,67 @@ export default class View extends ViewComponent implements IPublisher{
 
 
     public changeModeToRange(highRunnerPosition: number, highRunnerValue: number): void{
-        if(this.runnersAndTips.size == 2){
+        if(this.runnersAndTips.size === 2){
             return;
         }
-        let orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(this.orientation);
+
+        let orientationBehavior = OrientationBehaviorBuilder.getOrientationBehaviorByOrientation(this.orientation);
 
         let runner = new Runner(this.strip.getDOMNode(), orientationBehavior);
         runner.setPosition( highRunnerPosition );
 
-        let tip = new Tip(this.strip.getDOMNode(), orientationBehavior, this.isTipsHidden, true);
-        tip.setPosition(highRunnerPosition);
+        let tip = new Tip(this.strip.getDOMNode(), orientationBehavior, this.isTipsHidden);
         tip.setInnerText(highRunnerValue.toString());
+        tip.setPosition(highRunnerPosition);
 
-        this.runnersAndTips.set(runner, tip);
-        this.setRange(this.getRunners()[0].getPosition(), this.getRunners()[1].getPosition());
+        this.runnersAndTips.set(1 ,{runner: runner, tip: tip});
+        this.setRange(this.runnersAndTips.get(0).runner.getPosition(), this.runnersAndTips.get(1).runner.getPosition());
     }
 
     public changeModeToSingle(): void{
-        if(this.runnersAndTips.size == 1){
+        if(this.runnersAndTips.size === 1){
             return;
         }
-        let runner = this.getRunners()[1];
-        let tip = this.runnersAndTips.get(runner);
 
-        this.runnersAndTips.delete(runner);
+        let runner = this.runnersAndTips.get(1).runner;
+        let tip = this.runnersAndTips.get(1).tip;
+
+        this.runnersAndTips.delete(1);
         runner.destroy();
         tip.destroy();
 
-        this.setRange(0, this.getRunners()[0].getPosition());
+        this.setRange(0, this.runnersAndTips.get(0).runner.getPosition());
     }
 
-    public setRunnerTipText(runnerIndex: number, text: string): void{
-        let runner = this.getRunners()[runnerIndex];
-        let tip = this.runnersAndTips.get(runner);
+    public setTipText(tipIndex: number, text: string): void{
+        let tip = this.runnersAndTips.get(tipIndex).tip;
         tip.setInnerText(text);
     }
 
     public hideTips(){
         this.isTipsHidden = true;
-        this.runnersAndTips.forEach((tip => tip.hide()));
+        this.runnersAndTips.forEach((item => item.tip.hide()));
+    }
+
+    public hideTip(tipIndex: number){
+        this.runnersAndTips.get(tipIndex).tip.hide();
     }
 
     public showTips(){
         this.isTipsHidden = false;
-        this.runnersAndTips.forEach(tip => tip.show());
+        this.runnersAndTips.forEach(item => item.tip.show());
+    }
+
+    public showTip(tipIndex: number){
+        this.isTipsHidden = false;
+        this.runnersAndTips.get(tipIndex).tip.show();
     }
 
     public getHideStatus(){
         return this.isTipsHidden;
     }
 
-    protected addHadler(): void {
+    protected addHandlers(): void {
         let that: View = this;
 
         function sliderRunnerChangeHandler(event: Event) {
@@ -141,8 +162,8 @@ export default class View extends ViewComponent implements IPublisher{
                 throw new Error('not a custom event');
             } else {
                 let runnerIndex: number = 0;
-                that.getRunners().forEach((runner, index)  => {
-                    if(runner === event.detail.target){
+                that.runnersAndTips.forEach((item, index)  => {
+                    if(item.runner === event.detail.target){
                         runnerIndex = index;
                     }
                 })
@@ -160,7 +181,7 @@ export default class View extends ViewComponent implements IPublisher{
             }
         }
 
-        function resizeHandler(event: Event): void {
+        function resizeHandler(): void {
             for (let i = 0; i < that.getRunnersAmount(); i++){
                 let runnerPosition = that.getRunnerPosition(i);
                 that.setRunnerPosition(i, runnerPosition);
@@ -178,10 +199,6 @@ export default class View extends ViewComponent implements IPublisher{
     }
 
 
-    protected getRunners(): Runner[] {
-        return Array.from(this.runnersAndTips.keys());
-    }
-
 
     public getOrientation(): Orientation {
         return this.orientation;
@@ -193,17 +210,19 @@ export default class View extends ViewComponent implements IPublisher{
         this.DOMNode.classList.add(<string>CONSTANTS.orientationClassNames.get(orientation));
 
         this.orientation = orientation;
-        let orientationBehavior = OrientaitionBehaviorBuilder.getOrientationBehaviorByOrientation(orientation);
+        let orientationBehavior = OrientationBehaviorBuilder.getOrientationBehaviorByOrientation(orientation);
 
-        this.runnersAndTips.forEach((tip: Tip, runner: Runner) => {
-            tip.setOrientationBehavior(orientationBehavior);
-            runner.setOrientationBehavior(orientationBehavior);
-        })
-        this.getRunners().forEach((runner: Runner, index: number) =>
-            this.setRunnerPosition(index, runner.getPosition()));
+        this.runnersAndTips.forEach(item => {
+            item.tip.setOrientationBehavior(orientationBehavior);
+            item.tip.setPosition(item.runner.getPosition());
+
+            item.runner.setOrientationBehavior(orientationBehavior);
+            item.runner.setPosition(item.runner.getPosition());
+        });
 
         this.range.setOrientationBehavior( orientationBehavior );
         this.scale.setOrientationBehavior(orientationBehavior);
+        this.strip.setOrientationBehavior(orientationBehavior);
     }
 
     public setScaleDivisionsAmount(divisionsAmount: number) {

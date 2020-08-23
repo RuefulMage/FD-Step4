@@ -1,151 +1,130 @@
 body{
-  padding: 20px;
+  padding: 40px;
 }
 
+.slider {
+  &_vertical {
+    display: flex;
+    height: 100%;
+    min-height: 500px;
+  }
 
-.sel{
-}
+  &_horizontal {
+    width: 100%;
+  }
 
-.slider_horizontal {
-  box-sizing: border-box;
-  width: 100%;
-  height: 80px;
-  .slider {
-
+  &__strip {
     position: relative;
+    background: red;
+  }
 
-    &__strip{
-      position: relative;
-      background: brown;
-      height: 30px;
-      width: 100%;
-      margin-bottom: 20px;
+  &_vertical &__strip {
+    margin-right: 40px;
+    width: 20px;
+  }
+
+  &_horizontal &__strip {
+    margin-bottom: 40px;
+    height: 20px;
+  }
+
+
+  &__tip {
+    position: absolute;
+
+    &_hidden{
+      visibility: hidden;
     }
+  }
 
-    &__scale {
-      display: flex;
-      position: relative;
-      justify-content: space-between;
-      height: 30px;
-      width: 100%;
-      background: greenyellow;
-    }
 
-    &__scale-subelement{
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      background: blue;
-    }
+  &_vertical &__tip {
+    right: 100%;
+    margin-right: 10px;
+  }
 
-    &__tip{
-      position: absolute;
-      height: 20px;
-      top: -20px;
 
-      &_below{
-        top: 100%;
-      }
+  &_horizontal &__tip {
+    bottom: 100%;
+    margin-bottom: 10px;
+  }
 
-      &_hidden{
-        visibility: hidden;
-      }
-    }
+  &__runner {
+    position: absolute;
+    z-index: 1;
+    background: black;
+    border-radius: 100%;
+    border: 5px solid red;
+  }
 
-    &__runner {
-      position: absolute;
-      width: 30px;
-      height: 100%;
-      top: 0;
-      z-index: 1000;
-      background: red;
-    }
+  &_vertical &__runner{
+    width: 100%;
+    height: 20px;
+    left: -5px;
+  }
 
-    &__range {
-      position: absolute;
-      height: 100%;
-      background: black;
-    }
+  &_horizontal &__runner{
+    height: 100%;
+    width: 20px;
+    top: -5px;
+  }
+
+
+
+
+  &__range {
+    position: absolute;
+    background: #691A1A;
+  }
+
+  &_vertical &__range{
+    width: 100%;
+  }
+
+  &_horizontal &__range{
+    height: 100%;
+  }
+
+
+
+  &__scale {
+    position: relative;
+  }
+
+  &_vertical &__scale{
+    min-width: 30px;
+  }
+
+  &_horizontal &__scale{
+    min-height: 30px;
+  }
+
+  &__scale-subelement {
+    box-sizing: border-box;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid black;
+  }
+
+  &_vertical &__scale-subelement{
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  &_horizontal &__scale-subelement{
+    height: 100%;
+    padding: 0 10px;
   }
 }
 
 
 
 
+// Demo styles
 
-
-
-
-
-
-
-
-
-
-
-.slider_vertical{
-  display: flex;
-  width: 80px;
-  height: 500px;
-  margin: 20px;
-
-  .slider{
-
-    &__strip{
-      background: green;
-      height: 100%;
-      width: 30px;
-      position: relative;
-      margin-right: 30px;
-    }
-
-
-    &__scale{
-      height: 100%;
-      width: 30px;
-      position: relative;
-      background: greenyellow;
-    }
-
-    &__scale-subelement{
-      height: 20px;
-      position: absolute;
-      width: 20px;
-      background: blue;
-    }
-
-    &__runner{
-      position: absolute;
-      width: 100%;
-      height: 30px;
-      left: 0;
-      z-index: 1000;
-      background: red;
-    }
-
-    &__range{
-      position: absolute;
-      width: 100%;
-      background: black;
-    }
-
-    &__tip{
-
-      position: absolute;
-      background: yellow;
-      width: 20px;
-      height: 20px;
-      left: -30px;
-
-      &_below{
-        left: 100%;
-      }
-
-      &_hidden{
-        visibility: hidden;
-      }
-    }
-  }
+.panel{
+  margin-bottom: 40px;
+  margin-top: 40px;
 }
-
-.panel{ margin-bottom: 20px;}
