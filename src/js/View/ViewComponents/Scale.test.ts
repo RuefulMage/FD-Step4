@@ -24,13 +24,13 @@ describe('Scale class', function(){
 
     beforeEach(function(){
         let orientationBehavior = new OrientationBehavior();
-        scale = new Scale(parentElement, orientationBehavior, 2, 0, 100);
+        scale = new Scale(parentElement, {orientationBehavior: orientationBehavior});
     });
 
     describe('Set scale', function() {
        test('Should recreate scale with new min and max values with current divisions amount',
            function() {
-           scale.setScale(10, 900);
+           scale.setScaleEdges(10, 900);
            let firstScaleSubElement = scale.getDOMNode().firstChild as HTMLElement;
            let firstScaleSubElementValue = firstScaleSubElement.innerText;
            let lastScaleSubElement = scale.getDOMNode().lastChild as HTMLElement;
@@ -43,7 +43,7 @@ describe('Scale class', function(){
        });
 
        test('When min value >= max value, should throw error', function() {
-           expect(() => {scale.setScale(5, 4)}).toThrowError();;
+           expect(() => {scale.setScaleEdges(5, 4)}).toThrowError();;
        });
     });
 
@@ -109,7 +109,7 @@ describe('Scale class', function(){
                 cancelable: true
             });
             let mockClickHandler = jest.fn();
-            scale.getDOMNode().addEventListener('slider-scale-click', mockClickHandler);
+            scale.getDOMNode().addEventListener('slider-click', mockClickHandler);
             scale.getDOMNode().firstChild.dispatchEvent(click);
 
             expect(mockClickHandler.mock.calls.length).toBe(1);

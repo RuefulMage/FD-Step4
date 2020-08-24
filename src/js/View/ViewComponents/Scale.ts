@@ -1,69 +1,85 @@
-import ViewComponent from './ViewComponent';
 import CONSTANTS from '../../Utils/Constants';
-import ScaleSubElement from './ScaleSubElement';
 import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
+import ViewComponent from './ViewComponent';
+import ScaleSubElement from './ScaleSubElement';
 
-export default class Scale extends ViewComponent{
+class Scale extends ViewComponent{
     protected subElements: ScaleSubElement[] = [];
     protected orientationBehavior: IOrientationBehavior;
     protected divisionsAmount: number;
 
-    constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior, divisionsAmount: number,
-                minValue: number = 0, maxValue: number = 100) {
+    constructor(parentNode: HTMLElement, options: {orientationBehavior: IOrientationBehavior, divisionsAmount?: number,
+                minValue?: number, maxValue?: number}) {
         super(parentNode, CONSTANTS.scaleClassName);
+
+        let {orientationBehavior, divisionsAmount = 2, minValue = 0, maxValue = 100} = options;
         this.divisionsAmount = divisionsAmount;
         this.orientationBehavior = orientationBehavior;
-        this.setScale(minValue, maxValue);
-        this.addHadler();
+        this.setScaleEdges(minValue, maxValue);
+        this.addHandler();
     }
 
-    public setScale(minValue: number, maxValue: number): void {
+    // Пересоздает шкалу с новыми значениями
+    public setScaleEdges(minValue: number, maxValue: number): void {
         if( minValue >= maxValue){
             throw new Error('Invalid scale parameters');
         }
+
         this.DOMNode.innerHTML = '';
         this.subElements = [];
-        let currentElementText = minValue;
         let step = (maxValue - minValue) / (this.divisionsAmount - 1);
-        for(let i = 0; i < this.divisionsAmount; i++){
+
+        // Для каждого index создается элемент ScaleSubElement с вычислелнными значениями и сохраняется в
+        // массив subElements и размещает его на шкале
+        for(let index = 0; index < this.divisionsAmount; index++){
             let elementPosition;
-            if( i === 0){
+            let currentElementText;
+            if( index === 0){
                 elementPosition = 0;
-            } else if (i === this.divisionsAmount - 1){
+                currentElementText = minValue;
+            } else if (index === this.divisionsAmount - 1){
                 elementPosition = 100;
                 currentElementText = maxValue;
             } else {
-                elementPosition = this.subElements[i - 1].getPosition() + 100/(this.divisionsAmount - 1);
+                elementPosition = this.subElements[index - 1].getPosition() + 100/(this.divisionsAmount - 1);
+                currentElementText = Number(minValue + (step * index).toFixed(2));
             }
-            this.subElements.push(new ScaleSubElement(this.DOMNode, elementPosition));
-            this.subElements[i].getDOMNode().innerText = currentElementText.toString();
-            currentElementText = Number((currentElementText + step).toFixed(2));
-            this.orientationBehavior.setPosition(elementPosition, this.subElements[i].getDOMNode());
+            let subElement: ScaleSubElement = new ScaleSubElement(this.DOMNode, elementPosition);
+            subElement.getDOMNode().innerText = currentElementText.toString();
+            this.subElements.push(subElement);
+            this.orientationBehavior.setPosition(elementPosition, this.subElements[index].getDOMNode());
         }
     }
 
+    // Пересоздает шкалу со старыми значениями
     public reCreateScale(){
         let minValue: number = Number(this.subElements[0].getDOMNode().innerText);
         let maxValue: number = Number(this.subElements[this.subElements.length - 1].getDOMNode().innerText);
-        this.setScale(minValue, maxValue);
+        this.setScaleEdges(minValue, maxValue);
     }
 
-    protected addHadler(): void {
+    // Навершивает обработчик события клик на шкалу
+    protected addHandler(): void {
         let that: Scale = this;
-        this.DOMNode.addEventListener('click', function(event) {
-                if (event.target !== event.currentTarget) {
-                    let target = event.target as HTMLElement;
-                    let customEvent = new CustomEvent('slider-scale-click',
-                        {
-                            bubbles: true, cancelable: true,
-                            detail: {
-                                position: target.getAttribute('data-scale-position')
-                            }
-                        });
-                    that.DOMNode.dispatchEvent(customEvent);
-                }
+        this.DOMNode.addEventListener('click', handleRangeCLick);
+
+        // Если элемент, на который кликнули является дочерним, то создается
+        // пользовательское событие, содержащее позицию места клика. Позиция берется из пользовательского
+        // аттрибута "data-scale-position"
+        function handleRangeCLick(event: MouseEvent){
+            if (event.target !== event.currentTarget) {
+                let target = event.target as HTMLElement;
+                let customEvent = new CustomEvent('slider-click',
+                    {
+                        bubbles: true, cancelable: true,
+                        detail: {
+                            position: target.getAttribute('data-scale-position')
+                        }
+                    });
+                that.DOMNode.dispatchEvent(customEvent);
             }
-        );
+
+        }
     }
 
 
@@ -89,3 +105,5 @@ export default class Scale extends ViewComponent{
         this.reCreateScale();
     }
 }
+
+export default Scale;

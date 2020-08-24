@@ -1,34 +1,37 @@
-import ViewComponent from './ViewComponent';
 import CONSTANTS from '../../Utils/Constants';
 import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
+import ViewComponent from './ViewComponent';
 
-export default class Range extends ViewComponent{
-    protected minEdge: number = 0;
-    protected maxEdge: number = 100;
+class Range extends ViewComponent{
+    protected lowEdge: number;
+    protected highEdge: number;
     protected orientationBehavior: IOrientationBehavior;
 
-    constructor(parentNode: HTMLElement,  orientationBehavior: IOrientationBehavior) {
+    constructor(parentNode: HTMLElement,  orientationBehavior: IOrientationBehavior,
+                lowEdge: number = 0, highEdge: number = 100) {
         super(parentNode, CONSTANTS.rangeClassName);
         this.orientationBehavior = orientationBehavior;
+        this.lowEdge = lowEdge;
+        this.highEdge = highEdge;
     }
 
-    public getMinEdge(): number {
-        return this.minEdge;
+    public getLowEdge(): number {
+        return this.lowEdge;
     }
 
 
-    public setMinEdge(value: number) {
-        this.minEdge = value;
-        this.orientationBehavior.setRangePositions(this.minEdge, this.maxEdge, this.DOMNode);
+    public setLowEdge(value: number) {
+        this.lowEdge = value;
+        this.orientationBehavior.setRangePositions(this.lowEdge, this.highEdge, this.DOMNode);
     }
 
-    public getMaxEdge(): number {
-        return this.maxEdge;
+    public getHighEdge(): number {
+        return this.highEdge;
     }
 
-    public setMaxEdge(value: number) {
-        this.maxEdge = value;
-        this.orientationBehavior.setRangePositions(this.minEdge, this.maxEdge, this.DOMNode);
+    public setHighEdge(value: number) {
+        this.highEdge = value;
+        this.orientationBehavior.setRangePositions(this.lowEdge, this.highEdge, this.DOMNode);
     }
 
     public getOrientationBehavior(): IOrientationBehavior {
@@ -38,6 +41,8 @@ export default class Range extends ViewComponent{
     public setOrientationBehavior(value: IOrientationBehavior) {
         this.orientationBehavior = value;
         this.orientationBehavior.resetStyles(this.DOMNode);
-        this.orientationBehavior.setRangePositions(this.minEdge, this.maxEdge, this.DOMNode);
+        this.orientationBehavior.setRangePositions(this.lowEdge, this.highEdge, this.DOMNode);
     }
 }
+
+export default Range;

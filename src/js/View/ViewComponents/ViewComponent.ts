@@ -1,4 +1,4 @@
-export default abstract class ViewComponent{
+abstract class ViewComponent{
     protected DOMNode: HTMLElement;
     protected constructor(parentNode: HTMLElement, classList: string) {
         this.DOMNode = document.createElement('div');
@@ -6,13 +6,13 @@ export default abstract class ViewComponent{
         parentNode.append(this.DOMNode);
     };
 
-
     getDOMNode(): HTMLElement {
         return this.DOMNode;
     }
 
-
     destroy(): void{
         this.DOMNode.remove();
     }
-};
+}
+
+export default ViewComponent;

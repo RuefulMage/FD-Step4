@@ -1,8 +1,8 @@
-import ViewComponent from './ViewComponent';
 import CONSTANTS from '../../Utils/Constants';
 import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
+import ViewComponent from './ViewComponent';
 
-export default class Strip extends ViewComponent{
+class Strip extends ViewComponent{
 
     protected orientationBehavior: IOrientationBehavior;
 
@@ -21,17 +21,20 @@ export default class Strip extends ViewComponent{
         return this.orientationBehavior;
     }
 
+    // Навешивает обработчик клика на дорожку бегунков
     protected addHandlers(){
         let that: Strip = this;
 
         this.DOMNode.addEventListener('click', clickHandler);
 
+        // Если клик был не по бегунку, то вычисляется позиция клика относительно род. элемента
+        // и создается пользовательское событие 'slider-click', содержащее вычисленную позицию
         function clickHandler(event: MouseEvent) {
             let runners = that.DOMNode.getElementsByClassName(CONSTANTS.runnerClassName);
             let isTargetRunner = false;
 
-            for (let runnersKey in runners) {
-                if( event.target === runners[runnersKey]){
+            for (let runnerKey in runners) {
+                if( event.target === runners[runnerKey]){
                     isTargetRunner = true;
                 }
             }
@@ -41,7 +44,7 @@ export default class Strip extends ViewComponent{
                 let position = that.orientationBehavior
                     .getPositionFromCoordinates(event.clientX, event.clientY, that.DOMNode);
 
-                let customEvent = new CustomEvent('slider-scale-click',
+                let customEvent = new CustomEvent('slider-click',
                     {
                         bubbles: true, cancelable: true,
                         detail: {
@@ -50,8 +53,8 @@ export default class Strip extends ViewComponent{
                     });
                 that.DOMNode.dispatchEvent(customEvent);
             }
-
         }
     }
-
 }
+
+export default Strip;

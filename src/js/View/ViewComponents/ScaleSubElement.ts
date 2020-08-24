@@ -1,13 +1,13 @@
-import ViewComponent from './ViewComponent';
 import CONSTANTS from '../../Utils/Constants';
+import ViewComponent from './ViewComponent';
 
-export default class ScaleSubElement extends ViewComponent{
+class ScaleSubElement extends ViewComponent {
     protected position: number;
 
     constructor(parentNode: HTMLElement, position: number) {
         super(parentNode, CONSTANTS.scaleSubElementClassName);
         this.position = position;
-    this.DOMNode.setAttribute('data-scale-position', this.position.toString());
+        this.DOMNode.setAttribute('data-scale-position', this.position.toString());
     }
 
     public getPosition(): number {
@@ -19,3 +19,5 @@ export default class ScaleSubElement extends ViewComponent{
         this.DOMNode.setAttribute('data-scale-position', this.position.toString());
     }
 }
+
+export default ScaleSubElement;

@@ -1,10 +1,10 @@
-import ViewComponent from './ViewComponent';
-import CONSTANTS from '../../Utils/Constants';
 import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
+import CONSTANTS from '../../Utils/Constants';
+import ViewComponent from './ViewComponent';
 
-export default class Tip extends ViewComponent{
+class Tip extends ViewComponent{
 
-    protected isHidden: boolean = true;
+    protected isHidden: boolean;
     protected orientationBehavior: IOrientationBehavior;
 
     constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior,
@@ -20,7 +20,6 @@ export default class Tip extends ViewComponent{
         this.isHidden = isHidden;
         this.orientationBehavior = orientationBehavior;
     }
-
 
     public setPosition(newPosition: number){
         this.getOrientationBehavior().setPosition(newPosition, this.DOMNode);
@@ -58,3 +57,5 @@ export default class Tip extends ViewComponent{
         this.isHidden = false;
     }
 }
+
+export default Tip;
