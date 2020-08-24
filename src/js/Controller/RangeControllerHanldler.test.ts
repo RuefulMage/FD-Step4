@@ -39,14 +39,52 @@ describe('RangeControllerHandler class', () => {
     controllerHandler = new RangeControllerHandler(view, model);
   });
 
+  describe('Update runners positions', function() {
+    test('Should change runners positions to values from model', function() {
+      model.setHighValueByPercent(15);
+      model.setLowValueByPercent(5);
+      controllerHandler.updateRunnersPosition();
+
+      expect(Number(view.getRunnerPosition(0))).toBe(5);
+      expect(Number(view.getRunnerPosition(1))).toBe(15);
+    });
+  });
+
+  describe('Update tips positions and text', function() {
+    test('Should change tips positions and inner text to values from model', function() {
+      view.showTips();
+      model.setHighValueByPercent(55);
+      model.setLowValueByPercent(5);
+      controllerHandler.updateTipsPositionAndText();
+
+      let tips = view.getDOMNode().querySelectorAll('.' + CONSTANTS.tipClassName);
+      let lowTip =  tips[0] as HTMLElement;
+      let highTip = tips[1] as HTMLElement;
+
+      expect(Number(lowTip.innerText)).toBe(model.getLowValue());
+      expect(Number(highTip.innerText)).toBe(model.getHighValue());
+    });
+
+    test('When tips is too close, should join it', function() {
+      model.setLowValueByPercent(5);
+      model.setHighValueByPercent(5 + CONSTANTS.tipsJoinDistance);
+      controllerHandler.updateTipsPositionAndText();
+
+      let tips = view.getDOMNode().querySelectorAll('.' + CONSTANTS.tipClassName);
+      let lowTip =  tips[0] as HTMLElement;
+
+      expect(lowTip.innerText).toBe(model.getLowValue() + ' - ' + model.getHighValue());
+    });
+  });
+
   describe('Value change handler', () => {
     test('Should change runners positions in view to positions in model'
             + 'and change range', () => {
       model.setHighValue(60);
-      controllerHandler.valueChangeHandler();
+      controllerHandler.handleValueChange();
 
-      expect(view.getRunnerPosition(0)).toBe(model.getLowValueInPercents());
-      expect(view.getRunnerPosition(1)).toBe(model.getHighValueInPercents());
+      expect(view.getRunnerPosition(0)).toBe(model.getLowValueInPercent());
+      expect(view.getRunnerPosition(1)).toBe(model.getHighValueInPercent());
 
       const rangeNode = view.getDOMNode()
         .getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
@@ -62,15 +100,15 @@ describe('RangeControllerHandler class', () => {
     test('Should validate input position and set one of runners(who is nearer) position to validated value'
             + 'and update range',
     () => {
-      controllerHandler.positionChangeByClickHandler({ position: 20 });
+      controllerHandler.handlePositionChangeByClick({ position: 20 });
 
       expect(view.getRunnerPosition(0)).toBe(20);
-      expect(model.getLowValueInPercents()).toBe(20);
+      expect(model.getLowValueInPercent()).toBe(20);
 
-      controllerHandler.positionChangeByClickHandler({ position: 80 });
+      controllerHandler.handlePositionChangeByClick({ position: 80 });
 
       expect(view.getRunnerPosition(1)).toBe(80);
-      expect(model.getHighValueInPercents()).toBe(80);
+      expect(model.getHighValueInPercent()).toBe(80);
 
       const rangeNode = view.getDOMNode()
         .getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
@@ -82,17 +120,17 @@ describe('RangeControllerHandler class', () => {
     });
   });
 
-  describe('Position change by runner handler', () => {
+  describe('Position change by drag handler', () => {
     test('Should set runner with input index position in view and in model and update range', () => {
-      controllerHandler.positionChangeByRunnerHandler({ runnerIndex: 0, position: 30 });
+      controllerHandler.handlePositionChangeByDrag({ runnerIndex: 0, position: 30 });
 
       expect(view.getRunnerPosition(0)).toBe(30);
-      expect(model.getLowValueInPercents()).toBe(30);
+      expect(model.getLowValueInPercent()).toBe(30);
 
-      controllerHandler.positionChangeByRunnerHandler({ runnerIndex: 1, position: 70 });
+      controllerHandler.handlePositionChangeByDrag({ runnerIndex: 1, position: 70 });
 
       expect(view.getRunnerPosition(1)).toBe(70);
-      expect(model.getHighValueInPercents()).toBe(70);
+      expect(model.getHighValueInPercent()).toBe(70);
 
       const rangeNode = view.getDOMNode()
         .getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
@@ -106,7 +144,7 @@ describe('RangeControllerHandler class', () => {
 
   describe('Edge value change handler', () => {
     test('Should set view scale with new max or min values', () => {
-      controllerHandler.edgeValueChangeHandler();
+      controllerHandler.handleEdgeValueChange();
 
       const firstScaleSubElement = view.getDOMNode()
         .getElementsByClassName(CONSTANTS.scaleClassName)[0].firstChild as HTMLElement;

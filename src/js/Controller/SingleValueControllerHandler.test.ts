@@ -43,9 +43,9 @@ describe('SingleValueControllerHandler class', () => {
     test('Should change runner position in view to positions in model'
             + 'and change range', () => {
       model.setLowValue(20);
-      controllerHandler.valueChangeHandler();
+      controllerHandler.handleValueChange();
 
-      expect(view.getRunnerPosition(0)).toBe(model.getLowValueInPercents());
+      expect(view.getRunnerPosition(0)).toBe(model.getLowValueInPercent());
 
       const rangeNode = view.getDOMNode()
         .getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
@@ -61,15 +61,15 @@ describe('SingleValueControllerHandler class', () => {
     test('Should validate input position and set runner position to validated value'
             + 'and update range',
     () => {
-      controllerHandler.positionChangeByClickHandler({ position: 20 });
+      controllerHandler.handlePositionChangeByClick({ position: 20 });
 
       expect(view.getRunnerPosition(0)).toBe(20);
-      expect(model.getLowValueInPercents()).toBe(20);
+      expect(model.getLowValueInPercent()).toBe(20);
 
-      controllerHandler.positionChangeByClickHandler({ position: 80 });
+      controllerHandler.handlePositionChangeByClick({ position: 80 });
 
       expect(view.getRunnerPosition(0)).toBe(80);
-      expect(model.getLowValueInPercents()).toBe(80);
+      expect(model.getLowValueInPercent()).toBe(80);
 
       const rangeNode = view.getDOMNode()
         .getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
@@ -83,10 +83,10 @@ describe('SingleValueControllerHandler class', () => {
 
   describe('Position change by runner handler', () => {
     test('Should set runner with input index position in view and in model and update range', () => {
-      controllerHandler.positionChangeByRunnerHandler({ runnerIndex: 0, position: 30 });
+      controllerHandler.handlePositionChangeByDrag({ runnerIndex: 0, position: 30 });
 
       expect(view.getRunnerPosition(0)).toBe(30);
-      expect(model.getLowValueInPercents()).toBe(30);
+      expect(model.getLowValueInPercent()).toBe(30);
 
       const rangeNode = view.getDOMNode()
         .getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
@@ -99,14 +99,14 @@ describe('SingleValueControllerHandler class', () => {
 
     test('When runnerIndex != 0, should throw Error', () => {
       expect(() => {
-        controllerHandler.positionChangeByRunnerHandler({ runnerIndex: 1, position: 30 });
+        controllerHandler.handlePositionChangeByDrag({ runnerIndex: 1, position: 30 });
       }).toThrowError();
     });
   });
 
   describe('Edge value change handler', () => {
     test('Should set view scale with new max or min values', () => {
-      controllerHandler.edgeValueChangeHandler();
+      controllerHandler.handleEdgeValueChange();
 
       const firstScaleSubElement = view.getDOMNode()
         .getElementsByClassName(CONSTANTS.scaleClassName)[0].firstChild as HTMLElement;

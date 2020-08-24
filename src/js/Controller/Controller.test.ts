@@ -40,10 +40,10 @@ describe('Controller class', () => {
     document.body.append(parentElement);
     const view = new View(parentElement, viewOptions);
     const model = new Model(modelOptions);
-    RangeControllerHandler.prototype.positionChangeByClickHandler = mockPositionChangeByClick;
-    RangeControllerHandler.prototype.positionChangeByRunnerHandler = mockPositionChangeByRunner;
-    RangeControllerHandler.prototype.valueChangeHandler = mockValueChange;
-    RangeControllerHandler.prototype.edgeValueChangeHandler = mockEdgeValueChange;
+    RangeControllerHandler.prototype.handlePositionChangeByClick = mockPositionChangeByClick;
+    RangeControllerHandler.prototype.handlePositionChangeByDrag = mockPositionChangeByRunner;
+    RangeControllerHandler.prototype.handleValueChange = mockValueChange;
+    RangeControllerHandler.prototype.handleEdgeValueChange = mockEdgeValueChange;
 
     controller = new Controller(view, model, true);
   });
@@ -71,10 +71,10 @@ describe('Controller class', () => {
   });
 
   describe('Update method', () => {
-    test('When position-change-by-runner happens, should call positionChangeByRunnerHandler  of controller handler with data',
+    test('When position-change-by-drag happens, should call positionChangeByRunnerHandler  of controller handler with data',
       () => {
         mockPositionChangeByRunner.mock.calls.length = 0;
-        controller.update('position-change-by-runner', { runnerIndex: 0, position: 80 });
+        controller.update('position-change-by-drag', { runnerIndex: 0, position: 80 });
 
         expect(mockPositionChangeByRunner.mock.calls.length).toBe(1);
         expect(mockPositionChangeByRunner.mock.calls[0][0])

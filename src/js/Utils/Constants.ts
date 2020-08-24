@@ -13,7 +13,7 @@ const CONSTANTS = {
   tipClassName: 'slider__tip',
   tipHiddenClassName: 'slider__tip_hidden',
   tipBellowClassName: 'slider__tip_below',
-  tipsJoinDistance: 10
+  tipsJoinDistance: 10,
 };
 
 export default CONSTANTS;
