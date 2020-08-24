@@ -1,8 +1,8 @@
-import IControllerHandler from './IControllerHandler';
 import View from '../View/ViewComponents/View';
 import Model from '../Model/Model';
+import IControllerHandler from './IControllerHandler';
 
-export default class SingleValueControllerHandler implements IControllerHandler {
+class SingleValueControllerHandler implements IControllerHandler {
     protected view: View;
     protected model: Model;
 
@@ -51,3 +51,5 @@ export default class SingleValueControllerHandler implements IControllerHandler 
       this.view.setTipText(0, this.model.getLowValue().toString());
     }
 }
+
+export default SingleValueControllerHandler;
