@@ -1,2 +1,5 @@
-import './Slider';
-import '../scss/app.scss';
+import './Slider/Slider';
+import './demo/init';
+import './Slider/slider.scss';
+import './demo/demo.scss';
+import './index.scss';

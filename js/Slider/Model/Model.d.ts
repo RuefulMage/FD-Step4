@@ -1,0 +1,51 @@
+import IPublisher from '../Observer/IPublisher';
+import IObserver from '../Observer/IObserver';
+declare class Model implements IPublisher {
+    protected isRange: boolean;
+    protected maxValue: number;
+    protected minValue: number;
+    protected lowValue: number;
+    protected highValue: number;
+    protected step: number;
+    protected observers: Set<IObserver>;
+    constructor(options: {
+        isRange?: boolean;
+        minValue?: number;
+        maxValue?: number;
+        startValueLow?: number;
+        startValueHigh?: number;
+        step?: number;
+    });
+    protected init(options: {
+        isRange?: boolean;
+        minValue?: number;
+        maxValue?: number;
+        startValueLow?: number;
+        startValueHigh?: number;
+        step?: number;
+    }): void;
+    getRangeStatus(): boolean;
+    setRangeMode(isRange: boolean): void;
+    getMaxValue(): number;
+    setMaxValue(value: number): void;
+    getMinValue(): number;
+    setMinValue(value: number): void;
+    getLowValue(): number;
+    getLowValueInPercent(): number;
+    setLowValue(value: number): void;
+    setLowValueByPercent(valueInPercent: number): void;
+    getHighValue(): number;
+    getHighValueInPercent(): number;
+    setHighValueByPercent(valueInPercent: number): void;
+    setHighValue(value: number): void;
+    getStep(): number;
+    setStep(value: number): void;
+    attach(observer: IObserver): void;
+    detach(observer: IObserver): void;
+    notify(eventType: string, data?: any): void;
+    protected validateValue(value: number): number;
+    protected validateValueInPercent(value: number): number;
+    protected convertPercentToValue(valueInPercent: number): number;
+    protected convertValueToPercent(value: number): number;
+}
+export default Model;

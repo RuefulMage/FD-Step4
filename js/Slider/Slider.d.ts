@@ -1,0 +1,33 @@
+import IObserver from './Observer/IObserver';
+import View from './View/ViewComponents/View';
+import Model from './Model/Model';
+import Controller from './Controller/Controller';
+import SliderOptions from './Utils/SliderOptions';
+declare class Slider implements IObserver {
+    protected view: View;
+    protected model: Model;
+    protected controller: Controller;
+    protected rootElement: HTMLElement;
+    constructor(rootElement: HTMLElement, options: SliderOptions);
+    isRange(): boolean;
+    setRangeMode(isRange: boolean): void;
+    getMinValue(): number;
+    setMinValue(minValue: number): boolean;
+    getMaxValue(): number;
+    setMaxValue(maxValue: number): boolean;
+    getHighValue(): number;
+    setHighValue(highValue: number): void;
+    getLowValue(): number;
+    setLowValue(lowValue: number): void;
+    getStep(): number;
+    setStep(step: number): boolean;
+    getOrientation(): string;
+    setOrientation(orientation: string): void;
+    hideTips(): void;
+    showTips(): void;
+    getHideStatus(): boolean;
+    getDivisionsAmount(): number;
+    setDivisionsAmount(divisionsAmount: number): boolean;
+    update(eventName: string, data?: any): void;
+}
+export default Slider;
