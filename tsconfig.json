@@ -5,7 +5,7 @@
     "lib": ["esnext", "dom", "ES5"],
     "declaration": true,
     "sourceMap": true,
-    "rootDir": "./src/js",
+    "rootDir": "./src",
     "outDir": "./dist/js",
     "moduleResolution": "Node",
     "esModuleInterop": true,

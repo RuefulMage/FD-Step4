@@ -1,0 +1,31 @@
+.demo {
+
+  &__slider {
+    margin-bottom: 20px;
+  }
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 5px;
+    border: 2px solid gray;
+    border-radius: 4px;
+  }
+
+  &__panel-component {
+    display: flex;
+    justify-content: space-between;
+    max-width: 250px;
+    margin-bottom: 5px;
+  }
+
+  &__panel-label {
+    margin-right: 5px;
+  }
+
+  &__panel-input {
+    max-width: 100px;
+    width: 100%;
+  }
+}

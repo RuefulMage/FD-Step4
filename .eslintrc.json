@@ -20,6 +20,7 @@
     "import/extensions": 0,
     "import/no-unresolved": 0,
     "semi": "off",
-    "class-methods-use-this": ["error", { "exceptMethods": ["update"] }]
+    "class-methods-use-this": ["error", { "exceptMethods": ["update"] }],
+    "no-undef": "off"
   }
 }
