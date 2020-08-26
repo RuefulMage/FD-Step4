@@ -81,16 +81,17 @@ $('#my-slider').slider(options);
 == Использованные библиотеки и плагины:
 
 . https://jquery.com/[JQuery]
-. [AirBnb]
+. https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb[AirBnB ESLint plugin]
+. https://github.com/lndbaryshnikov/eslint-plugin-fsd[FSD ESLint plugin]
 
 == Использованные технологии:
 
-. [TypeScript]
-. [Jest]
-. [ESLint]
-. [Webpack]
-. [Pug]
-. [SCSS]
+. TypeScript
+. Jest
+. ESLint
+. Webpack
+. Pug
+. SCSS
 
 == API Слайдера
 
