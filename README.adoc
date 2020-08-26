@@ -242,4 +242,4 @@ IControllerHandler.
 
 == UML-диаграма
 
-image::https://asciidoctor.org/images/octocat.jpg[GitHub mascot]
+image::https://github.com/RuefulMage/FD-Step4/blob/master/Slider-diagram.png[UML-diagram]
