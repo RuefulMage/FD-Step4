@@ -17,6 +17,7 @@ body {
   &__strip {
     position: relative;
     background: red;
+    cursor: pointer;
   }
 
   &_vertical &__strip {
@@ -107,6 +108,7 @@ body {
     align-items: center;
     justify-content: center;
     border: 1px solid black;
+    cursor: pointer;
   }
 
   &_vertical &__scale-subelement {
