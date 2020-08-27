@@ -71,7 +71,7 @@ describe('RangeControllerHandler class', () => {
       const tips = view.getDOMNode().querySelectorAll(`.${CONSTANTS.tipClassName}`);
       const lowTip = tips[0] as HTMLElement;
 
-      expect(lowTip.innerText).toBe(`${model.getLowValue()} - ${model.getHighValue()}`);
+      expect(lowTip.innerText).toBe(`${model.getLowValue()} – ${model.getHighValue()}`);
     });
   });
 
