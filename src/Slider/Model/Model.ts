@@ -1,3 +1,4 @@
+import Big from 'big.js';
 import IPublisher from '../Observer/IPublisher';
 import IObserver from '../Observer/IObserver';
 
@@ -123,7 +124,7 @@ class Model implements IPublisher {
             && this.isRange;
 
       if (isValueTooCloseToHighValue) {
-        newLowValue = this.highValue - this.step;
+        newLowValue = Number(Big(this.highValue).minus(this.step));
       }
       this.lowValue = newLowValue;
       this.notify('value-change');
@@ -153,7 +154,7 @@ class Model implements IPublisher {
     public setHighValue(value: number): void {
       let newValue = this.validateValue(value);
       if (newValue <= (this.lowValue + this.step)) {
-        newValue = this.lowValue + this.step;
+        newValue = Number(Big(this.lowValue).plus(this.step));
       }
 
       this.highValue = newValue;
@@ -202,8 +203,15 @@ class Model implements IPublisher {
       } else if (value >= this.maxValue) {
         validatedValue = this.maxValue;
       } else {
-        validatedValue = this.minValue
-                + Math.round((value - this.minValue) / this.step) * this.step;
+        const amountOfStepSegments = Math.round(
+          Number(Big(value)
+            .minus(this.getMinValue())
+            .div(this.step)),
+        );
+
+        const lengthFromStart = Big(amountOfStepSegments).times(this.step);
+
+        validatedValue = Number(Big(this.minValue).plus(lengthFromStart));
       }
       return validatedValue;
     }
@@ -218,20 +226,27 @@ class Model implements IPublisher {
       } else if (value <= 0) {
         validatedValue = 0;
       } else {
-        const percentsInStep = (100 / (this.maxValue - this.minValue)) * this.step;
-        validatedValue = Math.round(value / percentsInStep) * percentsInStep;
+        const differenceBetweenMaxAndMin = Number(Big(this.maxValue).minus(this.minValue));
+        const percentsInStep = Big(100 / differenceBetweenMaxAndMin).times(this.step);
+        const amountOfStepSegments = Math.round(Number(Big(value).div(percentsInStep)));
+        validatedValue = Number(Big(amountOfStepSegments).times(percentsInStep));
       }
       return validatedValue;
     }
 
     protected convertPercentToValue(valueInPercent: number): number {
-      const value = this.minValue + ((valueInPercent / 100) * (this.maxValue - this.minValue));
-      return value;
+      const differenceBetweenMaxAndMin = Big(this.maxValue).minus(this.minValue);
+      const valuePartOfTotal = Big(valueInPercent).div(100);
+      const value = Big(this.minValue).plus((valuePartOfTotal.times(differenceBetweenMaxAndMin)));
+      return Number(value);
     }
 
     protected convertValueToPercent(value: number): number {
-      const valueInPercent = ((value - this.minValue) / (this.maxValue - this.minValue)) * 100;
-      return valueInPercent;
+      const differenceBetweenMaxAndMin = Big(this.maxValue).minus(this.minValue);
+      const differenceBetweenvalueAndMin = Big(value).minus(this.minValue);
+      const valueInPercent = (differenceBetweenvalueAndMin.div(differenceBetweenMaxAndMin))
+        .times(100);
+      return Number(valueInPercent);
     }
 }
 
