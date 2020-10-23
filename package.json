@@ -29,6 +29,7 @@
   "devDependencies": {
     "@babel/core": "^7.10.3",
     "@babel/preset-env": "^7.10.3",
+    "@types/big.js": "^6.0.0",
     "@types/jest": "^26.0.7",
     "@types/jquery": "^3.5.0",
     "@types/node": "^14.0.13",
@@ -70,6 +71,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "big.js": "^5.2.2",
     "eslint": "^7.4.0",
     "jquery": "^3.5.1"
   }
