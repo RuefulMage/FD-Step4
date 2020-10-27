@@ -21,9 +21,7 @@ class View extends ViewComponent implements IPublisher {
     protected observers: Set<IObserver> = new Set<IObserver>();
 
     constructor(parentNode: HTMLElement, options: {
-        orientation?: Orientation, isRange?: boolean,
-        isTipsHidden?: boolean, divisionsAmount?: number,
-        minValue?: number, maxValue?: number
+        orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
     }) {
 
         super(parentNode, CONSTANTS.viewWrapperClassName);
@@ -32,13 +30,11 @@ class View extends ViewComponent implements IPublisher {
 
 
     protected init(options: {
-        orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean, divisionsAmount?: number,
-        minValue?: number, maxValue?: number
+        orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
     }): void {
 
         let {
-            orientation = Orientation.HORIZONTAL, isRange = false, isTipsHidden = true, divisionsAmount = 2,
-            minValue = 0, maxValue = 100,
+            orientation = Orientation.HORIZONTAL, isRange = false, isTipsHidden = true
         } = options;
 
         this.orientation = orientation;
@@ -47,7 +43,6 @@ class View extends ViewComponent implements IPublisher {
 
         this.strip = new Strip(this.DOMNode, orientationBehavior);
         this.isTipsHidden = isTipsHidden;
-        this.scale = new Scale(this.DOMNode, { orientationBehavior, divisionsAmount, minValue, maxValue });
 
         if (isRange) {
             let lowValueRunner = new Runner(this.strip.getDOMNode(), orientationBehavior);
@@ -206,20 +201,44 @@ class View extends ViewComponent implements IPublisher {
 
 
     // Ф-ии чтения и изменения св-в шкалы
-    public setScaleDivisionsAmount(divisionsAmount: number): void {
-        this.scale.setDivisionsAmount(divisionsAmount);
-    }
+    public setScale(valuesAndPositions: Map<number, number>): void {
+        if( this.scale === undefined ){
+            let orientationBehavior = OrientationBehaviorBuilder.getOrientationBehaviorByOrientation(this.orientation);
+            this.scale = new Scale(this.getDOMNode(),
+                {valuesAndPositions: valuesAndPositions, orientationBehavior: orientationBehavior});
+        } else {
+            this.scale.setScale(valuesAndPositions);
+        }
 
-    public getDivisionsAmount(): number {
-        return this.scale.getDivisionsAmount();
     }
-
-    public setScaleEdges(minValue: number, maxValue: number): void {
-        this.scale.setScaleEdges(minValue, maxValue);
-    }
-
+    // Пересоздает шкалу со старыми делениями
     public reCreateScale(): void {
         this.scale.reCreateScale();
+    }
+
+    // По размерам слайдера, вычисляет кол-во делений шкалы
+    public getDivisionsAmount(): number {
+        let scaleDivisionsAmount;
+        let sliderSize;
+        if (this.orientation === Orientation.HORIZONTAL){
+            sliderSize = this.getDOMNode().clientWidth;
+        } else {
+            sliderSize = this.getDOMNode().clientHeight;
+        }
+
+        if( sliderSize >  1000){
+            scaleDivisionsAmount = 10;
+        } else if( sliderSize > 800 ){
+            scaleDivisionsAmount = 8;
+        } else if( sliderSize > 600 ){
+            scaleDivisionsAmount = 6;
+        } else if ( sliderSize > 400 ){
+            scaleDivisionsAmount = 4;
+        } else {
+            scaleDivisionsAmount = 2;
+        }
+
+        return scaleDivisionsAmount;
     }
 
 
@@ -278,20 +297,20 @@ class View extends ViewComponent implements IPublisher {
 
         }
 
-        // Обновляет позиции бегунков и подсказок и перезадает шкалу
+        // Оповещает подписщиков об изменении размеров окна
+        // и передает им высчитанное кол-во делений шкалы
         function handleResize(): void {
-            for (let index = 0; index < that.getRunnersAmount(); index++) {
-                let runnerPosition = that.getRunnerPosition(index);
-                that.setRunnerPosition(index, runnerPosition);
-                that.setTipPosition(index, runnerPosition);
-            }
-            that.reCreateScale();
+            let scaleDivisionsAmount = that.getDivisionsAmount();
+            that.notify('resize', {scaleDivisionsAmount: scaleDivisionsAmount});
         }
 
         function isCustomEvent(event: Event): event is CustomEvent {
             return (event as CustomEvent).detail !== undefined;
         }
     }
+
+
 }
+
 
 export default View;

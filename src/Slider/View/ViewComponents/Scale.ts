@@ -6,51 +6,35 @@ import ScaleSubElement from './ScaleSubElement';
 class Scale extends ViewComponent {
     protected subElements: ScaleSubElement[] = [];
     protected orientationBehavior: IOrientationBehavior;
-    protected divisionsAmount: number;
 
     constructor(parentNode: HTMLElement, options: {
-        orientationBehavior: IOrientationBehavior, divisionsAmount?: number,
-        minValue?: number, maxValue?: number
+        orientationBehavior: IOrientationBehavior,
+        valuesAndPositions: Map<number, number>
     }) {
         super(parentNode, CONSTANTS.scaleClassName);
+        let { orientationBehavior, valuesAndPositions } = options;
+        this.init(orientationBehavior, valuesAndPositions);
+    }
 
-        let { orientationBehavior, divisionsAmount = 2, minValue = 0, maxValue = 100 } = options;
-        this.divisionsAmount = divisionsAmount;
+    public init(orientationBehavior: IOrientationBehavior,
+                valuesAndPositions: Map<number, number>){
         this.orientationBehavior = orientationBehavior;
-        this.setScaleEdges(minValue, maxValue);
+        this.setScale(valuesAndPositions);
         this.addHandler();
     }
 
-    // Пересоздает шкалу с новыми значениями
-    public setScaleEdges(minValue: number, maxValue: number): void {
-        if (minValue >= maxValue) {
-            throw new Error('Invalid scale parameters');
-        }
-
-        this.DOMNode.innerHTML = '';
+    public setScale(valuesAndPositions: Map<number, number>): void {
+        this.getDOMNode().innerHTML = '';
         this.subElements = [];
-        let step = (maxValue - minValue) / (this.divisionsAmount - 1);
-
-        // Для каждого index создается элемент ScaleSubElement с вычислелнными значениями и сохраняется в
-        // массив subElements и размещает его на шкале
-        for (let index = 0; index < this.divisionsAmount; index++) {
-            let elementPosition;
-            let currentElementText;
-            if (index === 0) {
-                elementPosition = 0;
-                currentElementText = minValue;
-            } else if (index === this.divisionsAmount - 1) {
-                elementPosition = 100;
-                currentElementText = maxValue;
-            } else {
-                elementPosition = this.subElements[index - 1].getPosition() + 100 / (this.divisionsAmount - 1);
-                currentElementText = Number((minValue + (step * index)).toFixed(2));
+        valuesAndPositions.forEach((position,value) => {
+            let isSubElementTooCloseToEdge = !((100 - position) > 5 || (position === 100));
+            if( !isSubElementTooCloseToEdge ){
+                let subElement = new ScaleSubElement(this.getDOMNode(), position);
+                subElement.getDOMNode().innerText = value.toString();
+                this.subElements.push(subElement);
+                this.orientationBehavior.setPosition(position, subElement.getDOMNode());
             }
-            let subElement: ScaleSubElement = new ScaleSubElement(this.DOMNode, elementPosition);
-            subElement.getDOMNode().innerText = currentElementText.toString();
-            this.subElements.push(subElement);
-            this.orientationBehavior.setPosition(elementPosition, this.subElements[index].getDOMNode());
-        }
+        });
     }
 
     public getOrientationBehavior(): IOrientationBehavior {
@@ -62,26 +46,17 @@ class Scale extends ViewComponent {
         this.reCreateScale();
     }
 
-    public getDivisionsAmount(): number {
-        return this.divisionsAmount;
-    }
-
-
-    public setDivisionsAmount(value: number): void {
-        let isAmountInValidRange = !((value < 2) || (value > CONSTANTS.scaleSubElementMaxAmount));
-
-        if (!isAmountInValidRange) {
-            throw new Error('divisionsAmount must be in range: [1:' + CONSTANTS.scaleSubElementMaxAmount + ']');
-        }
-        this.divisionsAmount = value;
-        this.reCreateScale();
-    }
-
     // Пересоздает шкалу со старыми значениями
     public reCreateScale(): void {
-        let minValue: number = Number(this.subElements[0].getDOMNode().innerText);
-        let maxValue: number = Number(this.subElements[this.subElements.length - 1].getDOMNode().innerText);
-        this.setScaleEdges(minValue, maxValue);
+        this.subElements.forEach((element, index) => {
+            let position = element.getPosition();
+            let value = element.getDOMNode().innerText;
+            let subElement = new ScaleSubElement(this.getDOMNode(), position);
+            subElement.getDOMNode().innerText = value;
+            this.orientationBehavior.setPosition(position, subElement.getDOMNode());
+            this.subElements[index].destroy();
+            this.subElements[index] = subElement;
+        });
     }
 
     // Навершивает обработчик события клик на шкалу
