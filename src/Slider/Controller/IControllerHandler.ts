@@ -7,7 +7,13 @@ interface IControllerHandler {
 
     handleValueChange(): void;
 
+    handleResize(data: any): void;
+
+    handleStepChange(): void;
+
     updateTipsPositionAndText(): void;
+
+    getScalePositions(divisionsAmount: number): Map<number, number>;
 }
 
 export default IControllerHandler;

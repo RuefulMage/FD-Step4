@@ -1,3 +1,4 @@
+import Big from 'big.js';
 import View from '../View/ViewComponents/View';
 import Model from '../Model/Model';
 import IControllerHandler from './IControllerHandler';
@@ -46,12 +47,63 @@ class SingleValueControllerHandler implements IControllerHandler {
 
     // Вызывает при изменении значений maxValue и minValue в Модели
     public handleEdgeValueChange(): void {
-      this.view.setScaleEdges(this.model.getMinValue(), this.model.getMaxValue());
+      const divisionsAmount = this.view.getDivisionsAmount();
+      this.updateScale(divisionsAmount);
+    }
+
+    // Вызывается при изменении окна браузера
+    public handleResize(data: any): void {
+      this.updateScale(data.scaleDivisionsAmount);
+      const runnerPosition = this.model.getLowValueInPercent();
+      this.view.setRunnerPosition(0, runnerPosition);
+      this.updateTipsPositionAndText();
+      this.view.setRange(0, this.model.getLowValueInPercent());
+    }
+
+    // Вызывается при изменении шага
+    public handleStepChange(): void {
+      const divisionsAmount = this.view.getDivisionsAmount();
+      this.updateScale(divisionsAmount);
+      this.updateTipsPositionAndText();
+      const runnerPosition = this.model.getLowValueInPercent();
+      this.view.setRunnerPosition(0, runnerPosition);
     }
 
     public updateTipsPositionAndText(): void {
       this.view.setTipText(0, this.model.getLowValue().toString());
       this.view.setTipPosition(0, this.model.getLowValueInPercent());
+    }
+
+    public updateScale(divisionsAmount: number) {
+      const validatedDivisionsAmount = this.validateDivisionsAmount(divisionsAmount);
+      this.view.setScale(this.getScalePositions(validatedDivisionsAmount));
+    }
+
+    public getScalePositions(scaleDivisionsAmount: number): Map<number, number> {
+      const maxAndMinDifference = this.model.getMaxValue() - this.model.getMinValue();
+      const scalePositions = new Map<number, number>();
+      let currentPosition = this.model.getMinValue();
+      let currentPositionInPercents = 0;
+      let growht = 0;
+      while (growht < (maxAndMinDifference / scaleDivisionsAmount)) {
+        growht += this.model.getStep();
+      }
+      do {
+        currentPosition = this.model.validateValue(currentPosition);
+        currentPositionInPercents = this.model.convertValueToPercent(currentPosition);
+        scalePositions.set(currentPosition, currentPositionInPercents);
+        currentPosition += growht;
+      } while (currentPositionInPercents < 100);
+      return scalePositions;
+    }
+
+    protected validateDivisionsAmount(divisionsAmount: number): number {
+      const maxAndMinDifference = Big(this.model.getMaxValue()).minus(this.model.getMinValue());
+      const stepsInRange = Number(maxAndMinDifference.div(this.model.getStep()));
+      if (stepsInRange >= divisionsAmount) {
+        return divisionsAmount;
+      }
+      return stepsInRange;
     }
 }
 

@@ -23,6 +23,9 @@ class Controller implements IObserver {
       this.model.attach(this);
       this.setControllerHandler(isRange);
       this.controllerHandler.handleValueChange();
+      const divisionsAmount = this.view.getDivisionsAmount();
+      const valuesAndPositions = this.controllerHandler.getScalePositions(divisionsAmount);
+      this.view.setScale(valuesAndPositions);
     }
 
     // Вызывает соответствующий метод в зависимости от события
@@ -38,6 +41,10 @@ class Controller implements IObserver {
       } else if (eventName === 'range-mode-change') {
         const { isRange } = data;
         this.setControllerHandler(isRange);
+      } else if (eventName === 'resize') {
+        this.controllerHandler.handleResize(data);
+      } else if (eventName === 'step-change') {
+        this.controllerHandler.handleStepChange();
       } else {
         throw new Error('unknown event');
       }
