@@ -125,6 +125,7 @@ class Model implements IPublisher {
 
       if (isValueTooCloseToHighValue) {
         newLowValue = Number(Big(this.highValue).minus(this.step));
+        newLowValue = this.validateValue(newLowValue);
       }
       this.lowValue = newLowValue;
       this.notify('value-change');
@@ -174,6 +175,7 @@ class Model implements IPublisher {
         this.step = value;
         this.setLowValue(this.lowValue);
         this.setHighValue(this.highValue);
+        this.notify('step-change');
       }
     }
 
@@ -196,7 +198,7 @@ class Model implements IPublisher {
     // Проверяет значение на то, что оно находится в промежутке [minValue: maxValue]
     // и изменяет его на ближайшее число,
     // которое соответствует шагу.
-    protected validateValue(value: number): number {
+    public validateValue(value: number): number {
       let validatedValue;
       if (value <= this.minValue) {
         validatedValue = this.minValue;
@@ -219,7 +221,7 @@ class Model implements IPublisher {
     // Проверяет значение на то, что оно находится в промежутке [0; 100]
     // и изменяет его на ближайшее число,
     // которое соответствует шагу.
-    protected validateValueInPercent(value: number): number {
+    public validateValueInPercent(value: number): number {
       let validatedValue;
       if (value >= 100) {
         validatedValue = 100;
@@ -234,14 +236,14 @@ class Model implements IPublisher {
       return validatedValue;
     }
 
-    protected convertPercentToValue(valueInPercent: number): number {
+    public convertPercentToValue(valueInPercent: number): number {
       const differenceBetweenMaxAndMin = Big(this.maxValue).minus(this.minValue);
       const valuePartOfTotal = Big(valueInPercent).div(100);
       const value = Big(this.minValue).plus((valuePartOfTotal.times(differenceBetweenMaxAndMin)));
       return Number(value);
     }
 
-    protected convertValueToPercent(value: number): number {
+    public convertValueToPercent(value: number): number {
       const differenceBetweenMaxAndMin = Big(this.maxValue).minus(this.minValue);
       const differenceBetweenvalueAndMin = Big(value).minus(this.minValue);
       const valueInPercent = (differenceBetweenvalueAndMin.div(differenceBetweenMaxAndMin))
