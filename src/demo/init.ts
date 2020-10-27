@@ -3,7 +3,6 @@ import Demo from './Demo';
 
 function initDemo(element: Element): Demo {
   const options = {
-    divisionsAmount: Number(element.getAttribute('data-divisions-amount')),
     isRange: (element.getAttribute('data-is-range') === 'true'),
     isTipsHidden: (element.getAttribute('data-tips-hidden') === 'true'),
     maxValue: Number(element.getAttribute('data-max-value')),

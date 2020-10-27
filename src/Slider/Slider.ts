@@ -112,20 +112,6 @@ class Slider implements IObserver {
       return this.view.getHideStatus();
     }
 
-    public getDivisionsAmount(): number {
-      return this.view.getDivisionsAmount();
-    }
-
-    public setDivisionsAmount(divisionsAmount: number): boolean {
-      try {
-        this.view.setScaleDivisionsAmount(divisionsAmount);
-        return true;
-      } catch (error) {
-        Logger.logWarning('Model', error.message);
-        return false;
-      }
-    }
-
     public update(eventName: string, data?: any): void {
       const changeEvent = new CustomEvent('slider-change', { bubbles: true, cancelable: true });
       this.rootElement.dispatchEvent(changeEvent);
@@ -148,7 +134,6 @@ class Slider implements IObserver {
 
   // eslint-disable-next-line no-param-reassign
   $.fn.slider.defaultOptions = {
-    divisionsAmount: 2,
     isRange: false,
     isTipsHidden: false,
     maxValue: 100,

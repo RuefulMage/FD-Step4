@@ -18,8 +18,6 @@ class Demo {
 
     protected stepInput: HTMLInputElement;
 
-    protected divisionAmountInput: HTMLInputElement;
-
     protected isRangeInput: HTMLInputElement;
 
     protected isTipsHiddenInput: HTMLInputElement;
@@ -39,7 +37,6 @@ class Demo {
       this.initLowValueInput();
       this.initHighValueInput();
       this.initStepInput();
-      this.initDivisionAmountInput();
       this.initRangeInput();
       this.initTipsHiddenInput();
       this.initIsVerticalInput();
@@ -52,7 +49,6 @@ class Demo {
         that.minValueInput.value = that.slider.getMinValue().toString();
         that.maxValueInput.value = that.slider.getMaxValue().toString();
         that.stepInput.value = that.slider.getStep().toString();
-        that.divisionAmountInput.value = that.slider.getDivisionsAmount().toString();
         that.isTipsHiddenInput.checked = that.slider.getHideStatus();
         that.isRangeInput.checked = that.slider.isRange();
         if (that.slider.getOrientation() === 'vertical') {
@@ -134,23 +130,6 @@ class Demo {
       }
 
       this.stepInput.addEventListener('change', stepChangeHandler);
-    }
-
-    private initDivisionAmountInput(): void {
-      const that = this;
-      this.divisionAmountInput = this.panelElement.querySelector('.js-divisions-amount');
-
-      function divisionAmountChangeHandler(event: Event) {
-        const isChangeSuccessful = that.slider
-          .setDivisionsAmount(Number(that.divisionAmountInput.value));
-
-        if (!isChangeSuccessful) {
-          // eslint-disable-next-line no-param-reassign
-          (event.target as HTMLInputElement).value = that.slider.getDivisionsAmount().toString();
-        }
-      }
-
-      this.divisionAmountInput.addEventListener('change', divisionAmountChangeHandler);
     }
 
     private initRangeInput(): void {
