@@ -3,57 +3,58 @@ import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
 
 class Strip extends ViewComponent {
-
     protected orientationBehavior: IOrientationBehavior;
 
     constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior) {
-        super(parentNode, CONSTANTS.stripClassName);
-        this.orientationBehavior = orientationBehavior;
-        this.addHandlers();
+      super(parentNode, CONSTANTS.stripClassName);
+      this.orientationBehavior = orientationBehavior;
+      this.addHandlers();
     }
 
-
     public setOrientationBehavior(orientationBehavior: IOrientationBehavior): void {
-        this.orientationBehavior = orientationBehavior;
+      this.orientationBehavior = orientationBehavior;
     }
 
     public getOrientationBehavior(): IOrientationBehavior {
-        return this.orientationBehavior;
+      return this.orientationBehavior;
     }
 
     // Навешивает обработчик клика на дорожку бегунков
     protected addHandlers(): void {
-        let that: Strip = this;
+      const that: Strip = this;
 
-        this.DOMNode.addEventListener('click', clickHandler);
+      // Если клик был не по бегунку, то вычисляется позиция клика относительно род. элемента
+      // и создается пользовательское событие 'slider-click', содержащее вычисленную позицию
+      function clickHandler(event: MouseEvent): void {
+        const runners = that.DOMNode.getElementsByClassName(CONSTANTS.runnerClassName);
+        let isTargetRunner = false;
 
-        // Если клик был не по бегунку, то вычисляется позиция клика относительно род. элемента
-        // и создается пользовательское событие 'slider-click', содержащее вычисленную позицию
-        function clickHandler(event: MouseEvent): void {
-            let runners = that.DOMNode.getElementsByClassName(CONSTANTS.runnerClassName);
-            let isTargetRunner = false;
-
-            for (let runnerKey in runners) {
-                if (event.target === runners[runnerKey]) {
-                    isTargetRunner = true;
-                }
+        Object.entries(runners).forEach((key) => {
+          if (typeof key === 'number') {
+            if (event.target === runners[key]) {
+              isTargetRunner = true;
             }
+          }
+        });
 
-            if (!isTargetRunner) {
-                let target = event.target as HTMLElement;
-                let position = that.orientationBehavior
-                    .getPositionFromCoordinates(event.clientX, event.clientY, that.DOMNode);
+        if (!isTargetRunner) {
+          const target = event.target as HTMLElement;
+          const position = that.orientationBehavior
+            .getPositionFromCoordinates(event.clientX, event.clientY, that.DOMNode);
 
-                let customEvent = new CustomEvent('slider-click',
-                    {
-                        bubbles: true, cancelable: true,
-                        detail: {
-                            position: position,
-                        },
-                    });
-                that.DOMNode.dispatchEvent(customEvent);
-            }
+          const customEvent = new CustomEvent('slider-click',
+            {
+              bubbles: true,
+              cancelable: true,
+              detail: {
+                position,
+              },
+            });
+          that.DOMNode.dispatchEvent(customEvent);
         }
+      }
+
+      this.DOMNode.addEventListener('click', clickHandler);
     }
 }
 

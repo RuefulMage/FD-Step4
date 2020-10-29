@@ -3,18 +3,17 @@ import IObserver from '../../Observer/IObserver';
 import Orientation from '../../Utils/Orientation';
 import View from './View';
 
-let mockUpdate = jest.fn();
+const mockUpdate = jest.fn();
 
 class Observer implements IObserver {
-    update(eventName: string, data?: any): void {
-        mockUpdate(eventName, data);
-    }
+  update(eventName: string, data?: any): void {
+    mockUpdate(eventName, data);
+  }
 }
 
-describe('View class', function() {
-    let parentElement: HTMLElement;
-    let view: View;
-    let options: {
+describe('View class', () => {
+  let parentElement: HTMLElement;
+  let options: {
         isRange: boolean,
         isTipsHidden: boolean,
         maxValue: number,
@@ -22,497 +21,484 @@ describe('View class', function() {
         orientation: Orientation
     };
 
-    beforeEach(function() {
-        options = {
-            isRange: true,
-            isTipsHidden: true,
-            maxValue: 100,
-            minValue: 0,
-            orientation: Orientation.HORIZONTAL,
-        };
+  beforeEach(() => {
+    options = {
+      isRange: true,
+      isTipsHidden: true,
+      maxValue: 100,
+      minValue: 0,
+      orientation: Orientation.HORIZONTAL,
+    };
 
-        parentElement = document.createElement('div');
-        document.body.append(parentElement);
+    parentElement = document.createElement('div');
+    document.body.append(parentElement);
+  });
 
+  describe('Create view', () => {
+    test('Should create view with range', () => {
+      options.isRange = true;
+      const view = new View(parentElement, options);
+      const runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
+
+      expect(runnersAmount).toBe(2);
     });
 
+    test('Should create view with one runner', () => {
+      options.isRange = false;
+      const view = new View(parentElement, options);
+      const runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
 
-    describe('Create view', function() {
-        test('Should create view with range', function() {
-            options.isRange = true;
-            view = new View(parentElement, options);
-            let runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
-
-            expect(runnersAmount).toBe(2);
-        });
-
-        test('Should create view with one runner', function() {
-            options.isRange = false;
-            view = new View(parentElement, options);
-            let runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
-
-            expect(runnersAmount).toBe(1);
-        });
-
-        test('When options is empty, should create view with default values', function() {
-            let options = {};
-            view = new View(parentElement, options);
-
-            expect(view).toBeDefined();
-        });
+      expect(runnersAmount).toBe(1);
     });
 
+    test('When options is empty, should create view with default values', () => {
+      const emptyOptions = {};
+      const view = new View(parentElement, emptyOptions);
 
-    describe('Get runner position', function() {
-        test('Should return current runner position. Default position is 0.', function() {
-            options.isRange = true;
-            let view = new View(parentElement, options);
+      expect(view).toBeDefined();
+    });
+  });
 
-            expect(view.getRunnerPosition(0)).toBe(0);
-        });
+  describe('Get runner position', () => {
+    test('Should return current runner position. Default position is 0.', () => {
+      options.isRange = true;
+      const view = new View(parentElement, options);
 
-
-        test('When runner with with index does not exists, should throw Error', function() {
-            let view = new View(parentElement, options);
-
-            expect(() => {
-                view.getRunnerPosition(3);
-            }).toThrowError();
-
-            expect(() => {
-                view.getRunnerPosition(-1);
-            }).toThrowError();
-        });
+      expect(view.getRunnerPosition(0)).toBe(0);
     });
 
-    describe('Set runner position', function() {
-        test('Should set runner position',
-            function() {
-                let view = new View(parentElement, options);
-                view.setRunnerPosition(0, 60);
-                let expectedRunnerPosition = view.getRunnerPosition(0);
+    test('When runner with with index does not exists, should throw Error', () => {
+      const view = new View(parentElement, options);
 
-                expect(expectedRunnerPosition).toBe(60);
-            });
+      expect(() => {
+        view.getRunnerPosition(3);
+      }).toThrowError();
 
-        test('When runner with with index does not exists, should throw Error', function() {
-            let view = new View(parentElement, options);
+      expect(() => {
+        view.getRunnerPosition(-1);
+      }).toThrowError();
+    });
+  });
 
-            expect(() => {
-                view.setRunnerPosition(3, 90);
-            }).toThrowError();
+  describe('Set runner position', () => {
+    test('Should set runner position',
+      () => {
+        const view = new View(parentElement, options);
+        view.setRunnerPosition(0, 60);
+        const expectedRunnerPosition = view.getRunnerPosition(0);
 
-            expect(() => {
-                view.setRunnerPosition(-1, 80);
-            }).toThrowError();
-        });
+        expect(expectedRunnerPosition).toBe(60);
+      });
+
+    test('When runner with with index does not exists, should throw Error', () => {
+      const view = new View(parentElement, options);
+
+      expect(() => {
+        view.setRunnerPosition(3, 90);
+      }).toThrowError();
+
+      expect(() => {
+        view.setRunnerPosition(-1, 80);
+      }).toThrowError();
+    });
+  });
+
+  describe('Set range', () => {
+    test('Should set range min and max edges', () => {
+      const view = new View(parentElement, options);
+      view.setRange(30, 60);
+      const rangeNode = view.getDOMNode()
+        .getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
+      const minEdge = parseFloat(rangeNode.style.left);
+      const maxEdge = 100 - parseFloat(rangeNode.style.right);
+
+      expect(minEdge).toBe(30);
+      expect(maxEdge).toBe(60);
+    });
+  });
+
+  describe('Change mode to range', () => {
+    test('Should create runner and tip and change range position', () => {
+      options.isRange = false;
+      const view = new View(parentElement, options);
+      view.changeModeToRange(80, 80);
+      const runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
+      const tipsAmount = parentElement.getElementsByClassName(CONSTANTS.tipClassName).length;
+
+      expect(runnersAmount).toBe(2);
+      expect(tipsAmount).toBe(2);
+
+      const lowRunnerPosition = view.getRunnerPosition(0);
+      const highRunnerPosition = view.getRunnerPosition(1);
+      const rangeNode = view.getDOMNode()
+        .getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
+      const minEdge = parseFloat(rangeNode.style.left);
+      const maxEdge = 100 - parseFloat(rangeNode.style.right);
+
+      expect(minEdge).toBe(lowRunnerPosition);
+      expect(maxEdge).toBe(highRunnerPosition);
     });
 
-    describe('Set range', function() {
-        test('Should set range min and max edges', function() {
-            let view = new View(parentElement, options);
-            view.setRange(30, 60);
-            let rangeNode = view.getDOMNode().getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
-            let minEdge = parseFloat(rangeNode.style.left);
-            let maxEdge = 100 - parseFloat(rangeNode.style.right);
+    test('When range mode already is range, should keep view withuot changes', () => {
+      options.isRange = true;
+      const view = new View(parentElement, options);
+      view.changeModeToRange(80, 80);
+      const runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
+      const tipsAmount = parentElement.getElementsByClassName(CONSTANTS.tipClassName).length;
 
-            expect(minEdge).toBe(30);
-            expect(maxEdge).toBe(60);
-        });
+      expect(runnersAmount).toBe(2);
+      expect(tipsAmount).toBe(2);
+    });
+  });
+
+  describe('Change mode to single value', () => {
+    test('Should delete onw runner and tip and set range.', () => {
+      options.isRange = true;
+      const view = new View(parentElement, options);
+      view.changeModeToSingle();
+      const runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
+      const tipsAmount = parentElement.getElementsByClassName(CONSTANTS.tipClassName).length;
+
+      expect(runnersAmount).toBe(1);
+      expect(tipsAmount).toBe(1);
+
+      const lowRunnerPosition = view.getRunnerPosition(0);
+      const rangeNode = view.getDOMNode()
+        .getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
+      const minEdge = parseFloat(rangeNode.style.left);
+      const maxEdge = 100 - parseFloat(rangeNode.style.right);
+
+      expect(minEdge).toBe(0);
+      expect(maxEdge).toBe(lowRunnerPosition);
     });
 
-    describe('Change mode to range', function() {
-        test('Should create runner and tip and change range position', function() {
-            options.isRange = false;
-            let view = new View(parentElement, options);
-            view.changeModeToRange(80, 80);
-            let runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
-            let tipsAmount = parentElement.getElementsByClassName(CONSTANTS.tipClassName).length;
+    test('When range mode is already single, should keep view without changes', () => {
+      options.isRange = false;
+      const view = new View(parentElement, options);
+      view.changeModeToSingle();
+      const runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
+      const tipsAmount = parentElement.getElementsByClassName(CONSTANTS.tipClassName).length;
 
-            expect(runnersAmount).toBe(2);
-            expect(tipsAmount).toBe(2);
+      expect(runnersAmount).toBe(1);
+      expect(tipsAmount).toBe(1);
+    });
+  });
 
-            let lowRunnerPosition = view.getRunnerPosition(0);
-            let highRunnerPosition = view.getRunnerPosition(1);
-            let rangeNode = view.getDOMNode().getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
-            let minEdge = parseFloat(rangeNode.style.left);
-            let maxEdge = 100 - parseFloat(rangeNode.style.right);
+  describe('Set tip position', () => {
+    test('If tip with input index does not exist, should throw error', () => {
+      const view = new View(parentElement, options);
+      view.setTipPosition(0, 67);
 
-            expect(minEdge).toBe(lowRunnerPosition);
-            expect(maxEdge).toBe(highRunnerPosition);
-        });
+      expect(() => {
+        view.setTipPosition(3, 108);
+      }).toThrowError();
+    });
+  });
 
-        test('When range mode already is range, should keep view withuot changes', function() {
+  describe('Set runner tip test', () => {
+    test('Should set tip dom element text to input text', () => {
+      const view = new View(parentElement, options);
+      view.setTipText(0, 'test text');
+      const tipDOMElement = parentElement
+        .getElementsByClassName(CONSTANTS.tipClassName)[0] as HTMLElement;
 
-            options.isRange = true;
-            let view = new View(parentElement, options);
-            view.changeModeToRange(80, 80);
-            let runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
-            let tipsAmount = parentElement.getElementsByClassName(CONSTANTS.tipClassName).length;
+      expect(tipDOMElement.innerText).toBe('test text');
+    });
+  });
 
-            expect(runnersAmount).toBe(2);
-            expect(tipsAmount).toBe(2);
-        });
+  describe('Hide tips', () => {
+    test('Should hide tips by adding css-class to tips dom element', () => {
+      options.isTipsHidden = false;
+      const view = new View(parentElement, options);
+      view.hideTips();
+      const tipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0];
+
+      expect(tipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(true);
     });
 
-    describe('Change mode to single value', function() {
-        test('Should delete onw runner and tip and set range.', function() {
+    test('Should hide tip with input index by adding css-class to tips dom element', () => {
+      options.isTipsHidden = false;
+      const view = new View(parentElement, options);
+      view.hideTip(0);
+      const hiddenTipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0];
+      const showedTipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[1];
 
-            options.isRange = true;
-            let view = new View(parentElement, options);
-            view.changeModeToSingle();
-            let runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
-            let tipsAmount = parentElement.getElementsByClassName(CONSTANTS.tipClassName).length;
+      expect(hiddenTipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(true);
+      expect(showedTipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(false);
+    });
+  });
 
-            expect(runnersAmount).toBe(1);
-            expect(tipsAmount).toBe(1);
+  describe('Show tips', () => {
+    test('Should show tips by removing css-class from tips classList', () => {
+      options.isTipsHidden = true;
+      const view = new View(parentElement, options);
+      view.showTips();
+      const tipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0];
 
-            let lowRunnerPosition = view.getRunnerPosition(0);
-            let rangeNode = view.getDOMNode().getElementsByClassName(CONSTANTS.rangeClassName)[0] as HTMLElement;
-            let minEdge = parseFloat(rangeNode.style.left);
-            let maxEdge = 100 - parseFloat(rangeNode.style.right);
+      expect(tipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(false);
+    });
+  });
 
-            expect(minEdge).toBe(0);
-            expect(maxEdge).toBe(lowRunnerPosition);
-        });
+  describe('Show tip', () => {
+    test('Should show tip with input index by removing css-class from tips classList', () => {
+      options.isTipsHidden = true;
+      const view = new View(parentElement, options);
+      view.showTip(0);
+      const showedTipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0];
+      const hiddenTipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[1];
 
+      expect(showedTipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(false);
+      expect(hiddenTipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(true);
+    });
+  });
 
-        test('When range mode is already single, should keep view without changes', function() {
+  describe('Get orientation', () => {
+    test('Should return current orientation', () => {
+      options.orientation = Orientation.VERTICAL;
+      const view = new View(parentElement, options);
+      const output = view.getOrientation();
 
-            options.isRange = false;
-            let view = new View(parentElement, options);
-            view.changeModeToSingle();
-            let runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
-            let tipsAmount = parentElement.getElementsByClassName(CONSTANTS.tipClassName).length;
+      expect(output).toEqual(Orientation.VERTICAL);
+    });
+  });
 
-            expect(runnersAmount).toBe(1);
-            expect(tipsAmount).toBe(1);
-        });
+  describe('Get divisions amount', () => {
+    test('Should return correct divisions amount. Orientation is horizontal', () => {
+      let view = new View(parentElement, options);
+      let output = view.getDivisionsAmount();
+
+      expect(output).toBe(2);
+
+      view = new View(parentElement, options);
+      Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 1100 });
+      output = view.getDivisionsAmount();
+
+      expect(output).toBe(10);
+
+      view = new View(parentElement, options);
+      Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 900 });
+      output = view.getDivisionsAmount();
+
+      expect(output).toBe(8);
+
+      view = new View(parentElement, options);
+      Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 700 });
+      output = view.getDivisionsAmount();
+
+      expect(output).toBe(6);
+
+      view = new View(parentElement, options);
+      Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 500 });
+      output = view.getDivisionsAmount();
+
+      expect(output).toBe(4);
     });
 
-    describe('Set tip position', function() {
-        test('If tip with input index does not exist, should throw error', function() {
-            let view = new View(parentElement, options);
-            view.setTipPosition(0, 67);
+    test('Should return correct divisions amount. Orientation is vertical', () => {
+      options.orientation = Orientation.VERTICAL;
+      let view = new View(parentElement, options);
+      let output = view.getDivisionsAmount();
 
-            expect(() => {
-                view.setTipPosition(3, 108);
-            }).toThrowError();
-        });
+      expect(output).toBe(2);
+
+      view = new View(parentElement, options);
+      Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 1100 });
+      output = view.getDivisionsAmount();
+
+      expect(output).toBe(10);
+
+      view = new View(parentElement, options);
+      Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 900 });
+      output = view.getDivisionsAmount();
+
+      expect(output).toBe(8);
+
+      view = new View(parentElement, options);
+      Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 700 });
+      output = view.getDivisionsAmount();
+
+      expect(output).toBe(6);
+
+      view = new View(parentElement, options);
+      Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 500 });
+      output = view.getDivisionsAmount();
+
+      expect(output).toBe(4);
+    });
+  });
+
+  describe('Set orientation', () => {
+    test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes'
+            + 'When scale is not defined case.',
+    () => {
+      options.orientation = Orientation.HORIZONTAL;
+      const view = new View(parentElement, options);
+      view.setOrientation(Orientation.VERTICAL);
+      const orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
+
+      expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
+      expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
     });
 
-    describe('Set runner tip test', function() {
-        test('Should set tip dom element text to input text', function() {
-            let view = new View(parentElement, options);
-            view.setTipText(0, 'test text');
-            let tipDOMElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0] as HTMLElement;
+    test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes.'
+            + 'When scale is defined case',
+    () => {
+      options.orientation = Orientation.HORIZONTAL;
+      const view = new View(parentElement, options);
+      view.setOrientation(Orientation.VERTICAL);
+      const valuesAndPositions = new Map<number, number>();
+      valuesAndPositions.set(0, 0).set(50, 50).set(100, 100);
+      view.setScale(valuesAndPositions);
+      const orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
 
-            expect(tipDOMElement.innerText).toBe('test text');
-        });
+      expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
+      expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
+    });
+  });
+
+  describe('Set scale', () => {
+    test('Recreate scale with new input values', () => {
+      const view = new View(parentElement, options);
+      const startValuesAndPositions = new Map<number, number>();
+      startValuesAndPositions.set(40, 0).set(60, 50).set(70, 100);
+      view.setScale(startValuesAndPositions);
+      const valuesAndPositions = new Map<number, number>();
+      valuesAndPositions.set(0, 0).set(50, 50).set(100, 100);
+
+      view.setScale(valuesAndPositions);
+
+      const firstScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+        .firstChild as HTMLElement;
+      const secondScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+        .children[1] as HTMLElement;
+      const lastScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+        .lastChild as HTMLElement;
+      const resultValues = [firstScaleDivision.innerText,
+        secondScaleDivision.innerText, lastScaleDivision.innerText];
+      const expectedValues = ['0', '50', '100'];
+
+      expect(resultValues).toEqual(expectedValues);
     });
 
-    describe('Hide tips', function() {
-        test('Should hide tips by adding css-class to tips dom element', function() {
-            options.isTipsHidden = false;
-            let view = new View(parentElement, options);
-            view.hideTips();
-            let tipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0];
+    test('If scale is not exists, should create scale with input values', () => {
+      const view = new View(parentElement, options);
+      const valuesAndPositions = new Map<number, number>();
+      valuesAndPositions.set(0, 0).set(50, 50).set(100, 100);
 
-            expect(tipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(true);
-        });
+      view.setScale(valuesAndPositions);
+
+      const firstScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+        .firstChild as HTMLElement;
+      const secondScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+        .children[1] as HTMLElement;
+      const lastScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+        .lastChild as HTMLElement;
+      const resultValues = [firstScaleDivision.innerText,
+        secondScaleDivision.innerText, lastScaleDivision.innerText];
+      const expectedValues = ['0', '50', '100'];
+
+      expect(resultValues).toEqual(expectedValues);
+    });
+  });
+
+  describe('Recreate scale', () => {
+    test('Should recreate scale with current values', () => {
+      const view = new View(parentElement, options);
+      view.setScale(new Map<number, number>([[10, 0], [50, 50], [110, 100]]));
+      view.reCreateScale();
+      const divisionsAmount = parentElement
+        .getElementsByClassName(CONSTANTS.scaleSubElementClassName).length;
+
+      const firstScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+        .firstChild as HTMLElement;
+
+      const lastScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+        .lastChild as HTMLElement;
+      const minValue = parseFloat(firstScaleDivision.innerText);
+      const maxValue = parseFloat(lastScaleDivision.innerText);
+
+      expect(minValue).toBe(10);
+      expect(divisionsAmount).toBe(3);
+      expect(maxValue).toBe(110);
+    });
+  });
+
+  describe('Publishers methods', () => {
+    test('Attach and detach methods. Should add to observer list input observer '
+            + 'and after that remove it from list', () => {
+      const view = new View(parentElement, options);
+      const observer = new Observer();
+      view.attach(observer);
+      const expectedSetOfObservers = new Set();
+      expectedSetOfObservers.add(observer);
+      let expectedObject = { observers: expectedSetOfObservers };
+
+      expect(view).toMatchObject(expectedObject);
+
+      view.detach(observer);
+      expectedObject = { observers: new Set() };
+
+      expect(view).toMatchObject(expectedObject);
     });
 
-    describe('Hide tips', function() {
-        test('Should hide tip with input index by adding css-class to tips dom element', function() {
-            options.isTipsHidden = false;
-            let view = new View(parentElement, options);
-            view.hideTip(0);
-            let hiddenTipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0];
-            let showedTipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[1];
+    test('Should call update method of all in observers list. And after detach, should delete observer'
+            + 'from list', () => {
+      const observer = new Observer();
+      const view = new View(parentElement, options);
+      view.attach(observer);
+      view.notify('smth');
 
-            expect(hiddenTipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(true);
-            expect(showedTipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(false);
-        });
+      expect(mockUpdate.mock.calls.length).toBe(1);
+
+      view.notify('smth', { data: 'smth' });
+
+      expect(mockUpdate.mock.calls.length).toBe(2);
+
+      mockUpdate.mock.calls.length = 0;
+    });
+  });
+
+  describe('Event handlers', () => {
+    test('When slider-drag happens should notify all observers and get data of event',
+      () => {
+        const observer = new Observer();
+        const view = new View(parentElement, options);
+        view.attach(observer);
+        const runnerDOMElement = parentElement.getElementsByClassName(CONSTANTS.runnerClassName)[0];
+        const runnerChangeEvent = new CustomEvent('slider-drag',
+          { bubbles: true, cancelable: true, detail: { position: 40, target: runnerDOMElement } });
+        runnerDOMElement.dispatchEvent(runnerChangeEvent);
+
+        expect(mockUpdate.mock.calls[0][1]).toEqual({ runnerIndex: 0, position: 40 });
+        expect(mockUpdate.mock.calls.length).toBe(1);
+
+        mockUpdate.mock.calls.length = 0;
+      });
+
+    test('When slider-click happens, should notify all observers', () => {
+      const observer = new Observer();
+      const view = new View(parentElement, options);
+      view.attach(observer);
+      const runnerDOMElement = parentElement.getElementsByClassName(CONSTANTS.runnerClassName)[0];
+      const runnerChangeEvent = new CustomEvent('slider-click',
+        { bubbles: true, cancelable: true, detail: { position: 40 } });
+      runnerDOMElement.dispatchEvent(runnerChangeEvent);
+
+      expect(mockUpdate.mock.calls[0][1]).toEqual({ position: 40 });
+      expect(mockUpdate.mock.calls.length).toBe(1);
+
+      mockUpdate.mock.calls.length = 0;
     });
 
-    describe('Show tips', function() {
-        test('Should show tips by removing css-class from tips classList', function() {
-            options.isTipsHidden = true;
-            let view = new View(parentElement, options);
-            view.showTips();
-            let tipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0];
+    test('When resize happens, should notify all observers', () => {
+      const observer = new Observer();
+      const mockUpdateFunc = jest.fn();
+      observer.update = mockUpdateFunc;
+      const view = new View(parentElement, options);
+      view.attach(observer);
+      window.dispatchEvent(new Event('resize'));
 
-            expect(tipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(false);
-        });
+      expect(mockUpdateFunc.mock.calls.length).toBe(1);
     });
-
-    describe('Show tip', function() {
-        test('Should show tip with input index by removing css-class from tips classList', function() {
-            options.isTipsHidden = true;
-            let view = new View(parentElement, options);
-            view.showTip(0);
-            let showedTipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0];
-            let hiddenTipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[1];
-
-            expect(showedTipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(false);
-            expect(hiddenTipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(true);
-        });
-    });
-
-    describe('Get orientation', function() {
-        test('Should return current orientation', function() {
-            options.orientation = Orientation.VERTICAL;
-            let view = new View(parentElement, options);
-            let output = view.getOrientation();
-
-            expect(output).toEqual(Orientation.VERTICAL);
-        });
-    });
-
-    describe('Get divisions amount', function() {
-        test('Should return correct divisions amount. Orientation is horizontal', function() {
-            let view = new View(parentElement, options);
-            let output = view.getDivisionsAmount();
-
-            expect(output).toBe(2);
-
-            view = new View(parentElement, options);
-            Object.defineProperty(view.getDOMNode(), 'clientWidth', {value: 1100});
-            output = view.getDivisionsAmount();
-
-            expect(output).toBe(10);
-
-            view = new View(parentElement, options);
-            Object.defineProperty(view.getDOMNode(), 'clientWidth', {value: 900});
-            output = view.getDivisionsAmount();
-
-            expect(output).toBe(8);
-
-            view = new View(parentElement, options);
-            Object.defineProperty(view.getDOMNode(), 'clientWidth', {value: 700});
-            output = view.getDivisionsAmount();
-
-            expect(output).toBe(6);
-
-            view = new View(parentElement, options);
-            Object.defineProperty(view.getDOMNode(), 'clientWidth', {value: 500});
-            output = view.getDivisionsAmount();
-
-            expect(output).toBe(4);
-        });
-
-        test('Should return correct divisions amount. Orientation is vertical', function() {
-            options.orientation = Orientation.VERTICAL;
-            let view = new View(parentElement, options);
-            let output = view.getDivisionsAmount();
-
-            expect(output).toBe(2);
-
-            view = new View(parentElement, options);
-            Object.defineProperty(view.getDOMNode(), 'clientHeight', {value: 1100});
-            output = view.getDivisionsAmount();
-
-            expect(output).toBe(10);
-
-            view = new View(parentElement, options);
-            Object.defineProperty(view.getDOMNode(), 'clientHeight', {value: 900});
-            output = view.getDivisionsAmount();
-
-            expect(output).toBe(8);
-
-            view = new View(parentElement, options);
-            Object.defineProperty(view.getDOMNode(), 'clientHeight', {value: 700});
-            output = view.getDivisionsAmount();
-
-            expect(output).toBe(6);
-
-            view = new View(parentElement, options);
-            Object.defineProperty(view.getDOMNode(), 'clientHeight', {value: 500});
-            output = view.getDivisionsAmount();
-
-            expect(output).toBe(4);
-        });
-
-    });
-
-    describe('Set orientation', function() {
-        test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes' +
-            'When scale is not defined case.',
-            function() {
-                options.orientation = Orientation.HORIZONTAL;
-                let view = new View(parentElement, options);
-                view.setOrientation(Orientation.VERTICAL);
-                let orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
-
-                expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
-                expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
-            });
-
-        test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes.' +
-            'When scale is defined case',
-            function() {
-                options.orientation = Orientation.HORIZONTAL;
-                let view = new View(parentElement, options);
-                view.setOrientation(Orientation.VERTICAL);
-                let valuesAndPositions = new Map<number, number>();
-                valuesAndPositions.set(0, 0).set(50, 50).set(100, 100);
-                view.setScale(valuesAndPositions);
-                let orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
-
-                expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
-                expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
-            });
-    });
-
-    describe('Set scale', function() {
-        test('Recreate scale with new input values', function() {
-            let view = new View(parentElement, options);
-            let startValuesAndPositions = new Map<number, number>();
-            startValuesAndPositions.set(40,0).set(60,50).set(70, 100);
-            view.setScale(startValuesAndPositions);
-            let valuesAndPositions = new Map<number, number>();
-            valuesAndPositions.set(0, 0).set(50,50).set(100,100);
-
-            view.setScale(valuesAndPositions);
-
-            let firstScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
-                .firstChild as HTMLElement;
-            let secondScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
-                .children[1] as HTMLElement;
-            let lastScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
-                .lastChild as HTMLElement;
-            let resultValues = [firstScaleDivision.innerText,
-                secondScaleDivision.innerText, lastScaleDivision.innerText];
-            let expectedValues = ['0', '50', '100'];
-
-            expect(resultValues).toEqual(expectedValues);
-        });
-
-        test('If scale is not exists, should create scale with input values', function () {
-            let view = new View(parentElement, options);
-            let valuesAndPositions = new Map<number, number>();
-            valuesAndPositions.set(0, 0).set(50,50).set(100,100);
-
-            view.setScale(valuesAndPositions);
-
-            let firstScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
-                .firstChild as HTMLElement;
-            let secondScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
-                .children[1] as HTMLElement;
-            let lastScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
-                .lastChild as HTMLElement;
-            let resultValues = [firstScaleDivision.innerText,
-                secondScaleDivision.innerText, lastScaleDivision.innerText];
-            let expectedValues = ['0', '50', '100'];
-
-            expect(resultValues).toEqual(expectedValues);
-        });
-    });
-
-    describe('Recreate scale', function() {
-        test('Should recreate scale with current values', function() {
-            let view = new View(parentElement, options);
-            view.setScale(new Map<number, number>([[10,0],[50,50],[110,100]]));
-            view.reCreateScale();
-            let divisionsAmount = parentElement
-                .getElementsByClassName(CONSTANTS.scaleSubElementClassName).length;
-
-            let firstScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
-                .firstChild as HTMLElement;
-
-            let lastScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
-                .lastChild as HTMLElement;
-            let minValue = parseFloat(firstScaleDivision.innerText);
-            let maxValue = parseFloat(lastScaleDivision.innerText);
-
-            expect(minValue).toBe(10);
-            expect(divisionsAmount).toBe(3);
-            expect(maxValue).toBe(110);
-        });
-    });
-
-    describe('Publishers methods', function() {
-
-        test('Attach and detach methods. Should add to observer list input observer ' +
-            'and after that remove it from list', function() {
-
-            let view = new View(parentElement, options);
-            let observer = new Observer();
-            view.attach(observer);
-            let expectedSetOfObservers = new Set();
-            expectedSetOfObservers.add(observer);
-            let expectedObject = { observers: expectedSetOfObservers };
-
-            expect(view).toMatchObject(expectedObject);
-
-            view.detach(observer);
-            expectedObject = { observers: new Set() };
-
-            expect(view).toMatchObject(expectedObject);
-        });
-
-
-        test('Should call update method of all in observers list. And after detach, should delete observer' +
-            'from list', function() {
-            let observer = new Observer();
-            let view = new View(parentElement, options);
-            view.attach(observer);
-            view.notify('smth');
-
-            expect(mockUpdate.mock.calls.length).toBe(1);
-
-            view.notify('smth', { data: 'smth' });
-
-            expect(mockUpdate.mock.calls.length).toBe(2);
-
-            mockUpdate.mock.calls.length = 0;
-        });
-    });
-
-
-    describe('Event handlers', function() {
-        test('When slider-drag happens should notify all observers and get data of event',
-            function() {
-                let observer = new Observer();
-                let view = new View(parentElement, options);
-                view.attach(observer);
-                let runnerDOMElement = parentElement.getElementsByClassName(CONSTANTS.runnerClassName)[0];
-                let runnerChangeEvent = new CustomEvent('slider-drag',
-                    { bubbles: true, cancelable: true, detail: { position: 40, target: runnerDOMElement } });
-                runnerDOMElement.dispatchEvent(runnerChangeEvent);
-
-                expect(mockUpdate.mock.calls[0][1]).toEqual({ runnerIndex: 0, position: 40 });
-                expect(mockUpdate.mock.calls.length).toBe(1);
-
-                mockUpdate.mock.calls.length = 0;
-            });
-
-
-        test('When slider-click happens, should notify all observers', function() {
-
-            let observer = new Observer();
-            let view = new View(parentElement, options);
-            view.attach(observer);
-            let runnerDOMElement = parentElement.getElementsByClassName(CONSTANTS.runnerClassName)[0];
-            let runnerChangeEvent = new CustomEvent('slider-click',
-                { bubbles: true, cancelable: true, detail: { position: 40 } });
-            runnerDOMElement.dispatchEvent(runnerChangeEvent);
-
-            expect(mockUpdate.mock.calls[0][1]).toEqual({ position: 40 });
-            expect(mockUpdate.mock.calls.length).toBe(1);
-
-            mockUpdate.mock.calls.length = 0;
-        });
-        
-        test('When resize happens, should notify all observers', function() {
-            let observer = new Observer();
-            let mockUpdate = jest.fn();
-            observer.update = mockUpdate;
-            let view = new View(parentElement, options);
-            view.attach(observer);
-            window.dispatchEvent(new Event('resize'));
-
-            expect(mockUpdate.mock.calls.length).toBe(1);
-        });
-    });
+  });
 });
