@@ -15,7 +15,6 @@ describe('View class', function() {
     let parentElement: HTMLElement;
     let view: View;
     let options: {
-        divisionsAmount: number,
         isRange: boolean,
         isTipsHidden: boolean,
         maxValue: number,
@@ -25,7 +24,6 @@ describe('View class', function() {
 
     beforeEach(function() {
         options = {
-            divisionsAmount: 2,
             isRange: true,
             isTipsHidden: true,
             maxValue: 100,
@@ -272,10 +270,65 @@ describe('View class', function() {
     });
 
     describe('Get divisions amount', function() {
-        test('Should return correct divisions amount', function() {
-            options.divisionsAmount = 4;
+        test('Should return correct divisions amount. Orientation is horizontal', function() {
             let view = new View(parentElement, options);
             let output = view.getDivisionsAmount();
+
+            expect(output).toBe(2);
+
+            view = new View(parentElement, options);
+            Object.defineProperty(view.getDOMNode(), 'clientWidth', {value: 1100});
+            output = view.getDivisionsAmount();
+
+            expect(output).toBe(10);
+
+            view = new View(parentElement, options);
+            Object.defineProperty(view.getDOMNode(), 'clientWidth', {value: 900});
+            output = view.getDivisionsAmount();
+
+            expect(output).toBe(8);
+
+            view = new View(parentElement, options);
+            Object.defineProperty(view.getDOMNode(), 'clientWidth', {value: 700});
+            output = view.getDivisionsAmount();
+
+            expect(output).toBe(6);
+
+            view = new View(parentElement, options);
+            Object.defineProperty(view.getDOMNode(), 'clientWidth', {value: 500});
+            output = view.getDivisionsAmount();
+
+            expect(output).toBe(4);
+        });
+
+        test('Should return correct divisions amount. Orientation is vertical', function() {
+            options.orientation = Orientation.VERTICAL;
+            let view = new View(parentElement, options);
+            let output = view.getDivisionsAmount();
+
+            expect(output).toBe(2);
+
+            view = new View(parentElement, options);
+            Object.defineProperty(view.getDOMNode(), 'clientHeight', {value: 1100});
+            output = view.getDivisionsAmount();
+
+            expect(output).toBe(10);
+
+            view = new View(parentElement, options);
+            Object.defineProperty(view.getDOMNode(), 'clientHeight', {value: 900});
+            output = view.getDivisionsAmount();
+
+            expect(output).toBe(8);
+
+            view = new View(parentElement, options);
+            Object.defineProperty(view.getDOMNode(), 'clientHeight', {value: 700});
+            output = view.getDivisionsAmount();
+
+            expect(output).toBe(6);
+
+            view = new View(parentElement, options);
+            Object.defineProperty(view.getDOMNode(), 'clientHeight', {value: 500});
+            output = view.getDivisionsAmount();
 
             expect(output).toBe(4);
         });
@@ -283,7 +336,8 @@ describe('View class', function() {
     });
 
     describe('Set orientation', function() {
-        test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes',
+        test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes' +
+            'When scale is not defined case.',
             function() {
                 options.orientation = Orientation.HORIZONTAL;
                 let view = new View(parentElement, options);
@@ -293,42 +347,72 @@ describe('View class', function() {
                 expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
                 expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
             });
-    });
 
-    describe('Set scale divisions amount', function() {
-        test('Should set scale divisions amount to input value and recreate scale with input amount of divisions',
+        test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes.' +
+            'When scale is defined case',
             function() {
+                options.orientation = Orientation.HORIZONTAL;
                 let view = new View(parentElement, options);
-                view.setScaleDivisionsAmount(5);
-                let divisionsAmount = parentElement
-                    .getElementsByClassName(CONSTANTS.scaleSubElementClassName).length;
+                view.setOrientation(Orientation.VERTICAL);
+                let valuesAndPositions = new Map<number, number>();
+                valuesAndPositions.set(0, 0).set(50, 50).set(100, 100);
+                view.setScale(valuesAndPositions);
+                let orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
 
-                expect(divisionsAmount).toBe(5);
+                expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
+                expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
             });
     });
 
     describe('Set scale', function() {
-        test('Recreate scale with input min and max values', function() {
+        test('Recreate scale with new input values', function() {
             let view = new View(parentElement, options);
-            view.setScaleEdges(60, 400);
+            let startValuesAndPositions = new Map<number, number>();
+            startValuesAndPositions.set(40,0).set(60,50).set(70, 100);
+            view.setScale(startValuesAndPositions);
+            let valuesAndPositions = new Map<number, number>();
+            valuesAndPositions.set(0, 0).set(50,50).set(100,100);
+
+            view.setScale(valuesAndPositions);
+
             let firstScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
                 .firstChild as HTMLElement;
+            let secondScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+                .children[1] as HTMLElement;
             let lastScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
                 .lastChild as HTMLElement;
-            let minValue = parseFloat(firstScaleDivision.innerText);
-            let maxValue = parseFloat(lastScaleDivision.innerText);
+            let resultValues = [firstScaleDivision.innerText,
+                secondScaleDivision.innerText, lastScaleDivision.innerText];
+            let expectedValues = ['0', '50', '100'];
 
-            expect(minValue).toBe(60);
-            expect(maxValue).toBe(400);
+            expect(resultValues).toEqual(expectedValues);
+        });
+
+        test('If scale is not exists, should create scale with input values', function () {
+            let view = new View(parentElement, options);
+            let valuesAndPositions = new Map<number, number>();
+            valuesAndPositions.set(0, 0).set(50,50).set(100,100);
+
+            view.setScale(valuesAndPositions);
+
+            let firstScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+                .firstChild as HTMLElement;
+            let secondScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+                .children[1] as HTMLElement;
+            let lastScaleDivision = parentElement.getElementsByClassName(CONSTANTS.scaleClassName)[0]
+                .lastChild as HTMLElement;
+            let resultValues = [firstScaleDivision.innerText,
+                secondScaleDivision.innerText, lastScaleDivision.innerText];
+            let expectedValues = ['0', '50', '100'];
+
+            expect(resultValues).toEqual(expectedValues);
         });
     });
 
     describe('Recreate scale', function() {
         test('Should recreate scale with current values', function() {
-            options.divisionsAmount = 3;
-            options.minValue = 30;
-            options.maxValue = 900;
             let view = new View(parentElement, options);
+            view.setScale(new Map<number, number>([[10,0],[50,50],[110,100]]));
             view.reCreateScale();
             let divisionsAmount = parentElement
                 .getElementsByClassName(CONSTANTS.scaleSubElementClassName).length;
@@ -341,9 +425,9 @@ describe('View class', function() {
             let minValue = parseFloat(firstScaleDivision.innerText);
             let maxValue = parseFloat(lastScaleDivision.innerText);
 
-            expect(minValue).toBe(30);
+            expect(minValue).toBe(10);
             expect(divisionsAmount).toBe(3);
-            expect(maxValue).toBe(900);
+            expect(maxValue).toBe(110);
         });
     });
 
@@ -418,6 +502,17 @@ describe('View class', function() {
             expect(mockUpdate.mock.calls.length).toBe(1);
 
             mockUpdate.mock.calls.length = 0;
+        });
+        
+        test('When resize happens, should notify all observers', function() {
+            let observer = new Observer();
+            let mockUpdate = jest.fn();
+            observer.update = mockUpdate;
+            let view = new View(parentElement, options);
+            view.attach(observer);
+            window.dispatchEvent(new Event('resize'));
+
+            expect(mockUpdate.mock.calls.length).toBe(1);
         });
     });
 });

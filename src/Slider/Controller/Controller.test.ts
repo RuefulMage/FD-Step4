@@ -15,14 +15,13 @@ describe('Controller class', () => {
   const mockPositionChangeByRunner = jest.fn();
   const mockValueChange = jest.fn();
   const mockEdgeValueChange = jest.fn();
+  const mockResize = jest.fn();
+  const mockStepChange = jest.fn();
 
   beforeEach(() => {
     viewOptions = {
-      divisionsAmount: 0,
       isRange: true,
       isTipsHidden: true,
-      maxValue: 100,
-      minValue: 0,
       orientation: Orientation.HORIZONTAL,
     };
 
@@ -42,6 +41,8 @@ describe('Controller class', () => {
     RangeControllerHandler.prototype.handlePositionChangeByDrag = mockPositionChangeByRunner;
     RangeControllerHandler.prototype.handleValueChange = mockValueChange;
     RangeControllerHandler.prototype.handleEdgeValueChange = mockEdgeValueChange;
+    RangeControllerHandler.prototype.handleResize = mockResize;
+    RangeControllerHandler.prototype.handleStepChange = mockStepChange;
 
     controller = new Controller(view, model, true);
   });
@@ -110,6 +111,20 @@ describe('Controller class', () => {
       controller.update('range-mode-change', { isRange: false });
 
       expect(controller.getControllerHandler()).toBeInstanceOf(SingleValueControllerHandler);
+    });
+
+    test('When resize happens, should call handleResize of controller handler', () => {
+      mockResize.mock.calls.length = 0;
+      controller.update('resize');
+
+      expect(mockResize.mock.calls.length).toBe(1);
+    });
+
+    test('When step change happens, should call handleStepChange of controller handler', () => {
+      mockStepChange.mock.calls.length = 0;
+      controller.update('step-change');
+
+      expect(mockStepChange.mock.calls.length).toBe(1);
     });
 
     test('When happens unknown event, throw error', () => {

@@ -1,5 +1,6 @@
 import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import Scale from './Scale';
+import set = Reflect.set;
 
 describe('Scale class', function() {
     let scale: Scale;
@@ -24,13 +25,19 @@ describe('Scale class', function() {
 
     beforeEach(function() {
         let orientationBehavior = new OrientationBehavior();
-        scale = new Scale(parentElement, { orientationBehavior: orientationBehavior });
+        let valuesAndPositions = new Map<number, number>();
+        valuesAndPositions.set(0, 0).set(50, 50).set(100, 100);
+        scale = new Scale(parentElement,
+            { orientationBehavior: orientationBehavior, valuesAndPositions: valuesAndPositions });
     });
 
     describe('Set scale', function() {
-        test('Should recreate scale with new min and max values with current divisions amount',
+        test('Should recreate scale with new values and positions',
             function() {
-                scale.setScaleEdges(10, 900);
+                let valuesAndPositions = new Map<number, number>();
+                valuesAndPositions.set(10, 0).set(300, 30)
+                    .set(700, 70).set(1000, 100);
+                scale.setScale(valuesAndPositions);
                 let firstScaleSubElement = scale.getDOMNode().firstChild as HTMLElement;
                 let firstScaleSubElementValue = firstScaleSubElement.innerText;
                 let lastScaleSubElement = scale.getDOMNode().lastChild as HTMLElement;
@@ -38,27 +45,39 @@ describe('Scale class', function() {
                 let childAmount = scale.getDOMNode().childNodes.length;
 
                 expect(firstScaleSubElementValue).toBe('10');
-                expect(lastScaleSubElementValue).toBe('900');
-                expect(childAmount).toBe(2);
+                expect(lastScaleSubElementValue).toBe('1000');
+                expect(childAmount).toBe(4);
             });
+        test('If subElements too close to edge subElement,' +
+            'should ignore them', function() {
+            let valuesAndPositions = new Map<number, number>();
+            valuesAndPositions.set(10, 0).set(300, 30)
+                .set(700, 70).set(990, 99).set(1000, 100);
 
-        test('When min value >= max value, should throw error', function() {
-            expect(() => {
-                scale.setScaleEdges(5, 4);
-            }).toThrowError();
-            ;
+            scale.setScale(valuesAndPositions);
+
+            let firstScaleSubElement = scale.getDOMNode().firstChild as HTMLElement;
+            let firstScaleSubElementValue = firstScaleSubElement.innerText;
+            let lastScaleSubElement = scale.getDOMNode().lastChild as HTMLElement;
+            let lastScaleSubElementValue = lastScaleSubElement.innerText;
+            let childAmount = scale.getDOMNode().childNodes.length;
+
+            expect(firstScaleSubElementValue).toBe('10');
+            expect(lastScaleSubElementValue).toBe('1000');
+            expect(childAmount).toBe(4);
         });
     });
 
 
     describe('Recreate scale', function() {
-        test('Should get a min and max value from current scale and recreate scale with obtained min and max',
+        test('Should recreate scale with old values',
             function() {
                 let firstScaleSubElement = scale.getDOMNode().firstChild as HTMLElement;
                 let firstScaleSubElementValue = firstScaleSubElement.innerText;
                 let lastScaleSubElement = scale.getDOMNode().lastChild as HTMLElement;
                 let lastScaleSubElementValue = lastScaleSubElement.innerText;
                 let childAmount = scale.getDOMNode().childNodes.length;
+
                 scale.reCreateScale();
 
                 expect(firstScaleSubElementValue).toBe((scale.getDOMNode().firstChild as HTMLElement).innerText);
@@ -84,29 +103,6 @@ describe('Scale class', function() {
         });
     });
 
-
-    describe('Get divisions amount', function() {
-        test('Should return current divisions amount', function() {
-            expect(scale.getDivisionsAmount()).toBe(2);
-        });
-
-    });
-
-    describe('Set divisions amount', function() {
-        test('Should set divisions amount to input', function() {
-            scale.setDivisionsAmount(4);
-
-            expect(scale.getDivisionsAmount()).toBe(4);
-        });
-
-        test('When input divisions < 2, should throw error', function() {
-            expect(() => {
-                scale.setDivisionsAmount(1);
-            }).toThrowError();
-        });
-    });
-
-
     describe('Add handler', function() {
         test('When click on child element happens, should generate custom event', function() {
             let click = new MouseEvent('click', {
@@ -125,6 +121,4 @@ describe('Scale class', function() {
 
         });
     });
-
-
 });
