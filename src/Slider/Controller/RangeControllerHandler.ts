@@ -75,8 +75,7 @@ class RangeControllerHandler implements IControllerHandler {
       const divisionsAmount = this.view.getDivisionsAmount();
       this.updateScale(divisionsAmount);
       this.updateTipsPositionAndText();
-      const runnerPosition = this.model.getLowValueInPercent();
-      this.view.setRunnerPosition(0, runnerPosition);
+      this.updateRunnersPosition();
     }
 
     public updateRunnersPosition(): void {
@@ -138,7 +137,7 @@ class RangeControllerHandler implements IControllerHandler {
 
     protected validateDivisionsAmount(divisionsAmount: number): number {
       const maxAndMinDifference = Big(this.model.getMaxValue()).minus(this.model.getMinValue());
-      const stepsInRange = Number(maxAndMinDifference.div(this.model.getStep()));
+      const stepsInRange = Number(maxAndMinDifference.div(this.model.getStep())) + 1;
       if (stepsInRange >= divisionsAmount) {
         return divisionsAmount;
       }

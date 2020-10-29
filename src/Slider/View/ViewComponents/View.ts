@@ -195,8 +195,10 @@ class View extends ViewComponent implements IPublisher {
         });
 
         this.range.setOrientationBehavior(orientationBehavior);
-        this.scale.setOrientationBehavior(orientationBehavior);
         this.strip.setOrientationBehavior(orientationBehavior);
+        if( this.scale !== undefined ){
+            this.scale.setOrientationBehavior(orientationBehavior);
+        }
     }
 
 
@@ -213,7 +215,9 @@ class View extends ViewComponent implements IPublisher {
     }
     // Пересоздает шкалу со старыми делениями
     public reCreateScale(): void {
-        this.scale.reCreateScale();
+        if(this.scale !== undefined){
+            this.scale.reCreateScale();
+        }
     }
 
     // По размерам слайдера, вычисляет кол-во делений шкалы
