@@ -230,8 +230,18 @@ class Model implements IPublisher {
       } else {
         const differenceBetweenMaxAndMin = Number(Big(this.maxValue).minus(this.minValue));
         const percentsInStep = Big(100 / differenceBetweenMaxAndMin).times(this.step);
-        const amountOfStepSegments = Math.round(Number(Big(value).div(percentsInStep)));
-        validatedValue = Number(Big(amountOfStepSegments).times(percentsInStep));
+        const amountOfStepBetweenMaxAndMin = Math.ceil(differenceBetweenMaxAndMin / this.step);
+        const stepsInRange = Big(value).div(percentsInStep);
+        const rangeLengthExceptLastStep = percentsInStep.times(amountOfStepBetweenMaxAndMin - 1);
+        const lastStepLength = Big(100).minus(rangeLengthExceptLastStep);
+        const isValueBiggerThanLastStepHalf = rangeLengthExceptLastStep
+          .plus(lastStepLength.div(2)).lt(value);
+        if (isValueBiggerThanLastStepHalf) {
+          validatedValue = 100;
+        } else {
+          const amountOfStepSegments = Math.round(Number(stepsInRange));
+          validatedValue = Number(Big(amountOfStepSegments).times(percentsInStep));
+        }
       }
       return validatedValue;
     }
@@ -245,8 +255,8 @@ class Model implements IPublisher {
 
     public convertValueToPercent(value: number): number {
       const differenceBetweenMaxAndMin = Big(this.maxValue).minus(this.minValue);
-      const differenceBetweenvalueAndMin = Big(value).minus(this.minValue);
-      const valueInPercent = (differenceBetweenvalueAndMin.div(differenceBetweenMaxAndMin))
+      const differenceBetweenValueAndMin = Big(value).minus(this.minValue);
+      const valueInPercent = (differenceBetweenValueAndMin.div(differenceBetweenMaxAndMin))
         .times(100);
       return Number(valueInPercent);
     }
