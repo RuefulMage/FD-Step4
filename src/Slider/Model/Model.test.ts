@@ -257,10 +257,18 @@ describe('Class Model', () => {
     test('Should correctly convert percent to value, validate it and set low value to converted given value', () => {
       options.minValue = -50;
       options.maxValue = 100;
-      const model = new Model(options);
+      let model = new Model(options);
       model.setLowValueByPercent(15);
 
       expect(model.getLowValue()).toBe(-27);
+
+      options.minValue = 0;
+      options.maxValue = 100;
+      options.step = 80;
+      model = new Model(options);
+      model.setLowValueByPercent(95);
+
+      expect(model.getLowValue()).toBe(100);
     });
 
     test('When given value bigger than 100, should be set low value to maximally possibly value', () => {
