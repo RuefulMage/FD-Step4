@@ -7,6 +7,8 @@ describe('Scale class', () => {
   const parentElement: HTMLElement = document.createElement('div');
   document.body.append(parentElement);
 
+  /* eslint class-methods-use-this: ["error", { "exceptMethods": ["setPosition",
+"getPositionFromCoordinates", "resetStyles", "setRangePositions"] }] */
   class OrientationBehavior implements IOrientationBehavior {
     getPositionFromCoordinates(clientX: number, clientY: number, domElement: HTMLElement): number {
       return 0;
@@ -49,7 +51,7 @@ describe('Scale class', () => {
         expect(childAmount).toBe(4);
       });
     test('If subElements too close to edge subElement,'
-            + 'should ignore them', () => {
+      + 'should ignore them', () => {
       const valuesAndPositions = new Map<number, number>();
       valuesAndPositions.set(10, 0).set(300, 30)
         .set(700, 70).set(990, 99)

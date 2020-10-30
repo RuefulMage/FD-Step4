@@ -10,6 +10,8 @@ describe('Runner class', () => {
   const mockFunctionForResetStyles = jest.fn();
   let orientationBehavior;
 
+  /* eslint class-methods-use-this: ["error", { "exceptMethods": ["setPosition",
+"getPositionFromCoordinates", "resetStyles", "setRangePositions"] }] */
   class OrientationBehavior implements IOrientationBehavior {
     getPositionFromCoordinates(clientX: number, clientY: number, domElement: HTMLElement): number {
       mockGetPositionFromCoordinates();

@@ -8,6 +8,8 @@ describe('Range class', () => {
   const mockFunctionForSetRangePosition = jest.fn();
   const mockFunctionForResetStyles = jest.fn();
 
+  /* eslint class-methods-use-this: ["error", { "exceptMethods": ["setPosition",
+"getPositionFromCoordinates", "resetStyles", "setRangePositions"] }] */
   class OrientationBehavior implements IOrientationBehavior {
     getPositionFromCoordinates(clientX: number, clientY: number, domElement: HTMLElement): number {
       return 0;
