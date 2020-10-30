@@ -43,9 +43,9 @@ declare class Model implements IPublisher {
     attach(observer: IObserver): void;
     detach(observer: IObserver): void;
     notify(eventType: string, data?: any): void;
-    protected validateValue(value: number): number;
-    protected validateValueInPercent(value: number): number;
-    protected convertPercentToValue(valueInPercent: number): number;
-    protected convertValueToPercent(value: number): number;
+    validateValue(value: number): number;
+    validateValueInPercent(value: number): number;
+    convertPercentToValue(valueInPercent: number): number;
+    convertValueToPercent(value: number): number;
 }
 export default Model;

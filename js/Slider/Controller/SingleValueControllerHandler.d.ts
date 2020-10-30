@@ -9,6 +9,11 @@ declare class SingleValueControllerHandler implements IControllerHandler {
     handlePositionChangeByClick(data: any): void;
     handlePositionChangeByDrag(data: any): void;
     handleEdgeValueChange(): void;
+    handleResize(data: any): void;
+    handleStepChange(): void;
     updateTipsPositionAndText(): void;
+    updateScale(divisionsAmount: number): void;
+    getScalePositions(scaleDivisionsAmount: number): Map<number, number>;
+    protected validateDivisionsAmount(divisionsAmount: number): number;
 }
 export default SingleValueControllerHandler;

@@ -4,18 +4,14 @@ import ScaleSubElement from './ScaleSubElement';
 declare class Scale extends ViewComponent {
     protected subElements: ScaleSubElement[];
     protected orientationBehavior: IOrientationBehavior;
-    protected divisionsAmount: number;
     constructor(parentNode: HTMLElement, options: {
         orientationBehavior: IOrientationBehavior;
-        divisionsAmount?: number;
-        minValue?: number;
-        maxValue?: number;
+        valuesAndPositions: Map<number, number>;
     });
-    setScaleEdges(minValue: number, maxValue: number): void;
+    init(orientationBehavior: IOrientationBehavior, valuesAndPositions: Map<number, number>): void;
+    setScale(valuesAndPositions: Map<number, number>): void;
     getOrientationBehavior(): IOrientationBehavior;
     setOrientationBehavior(value: IOrientationBehavior): void;
-    getDivisionsAmount(): number;
-    setDivisionsAmount(value: number): void;
     reCreateScale(): void;
     protected addHandler(): void;
 }

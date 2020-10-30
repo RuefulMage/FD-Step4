@@ -22,17 +22,11 @@ declare class View extends ViewComponent implements IPublisher {
         orientation?: Orientation;
         isRange?: boolean;
         isTipsHidden?: boolean;
-        divisionsAmount?: number;
-        minValue?: number;
-        maxValue?: number;
     });
     protected init(options: {
         orientation?: Orientation;
         isRange?: boolean;
         isTipsHidden?: boolean;
-        divisionsAmount?: number;
-        minValue?: number;
-        maxValue?: number;
     }): void;
     getRunnersAmount(): number;
     setRunnerPosition(runnerIndex: number, position: number): void;
@@ -49,10 +43,9 @@ declare class View extends ViewComponent implements IPublisher {
     changeModeToSingle(): void;
     getOrientation(): Orientation;
     setOrientation(orientation: Orientation): void;
-    setScaleDivisionsAmount(divisionsAmount: number): void;
-    getDivisionsAmount(): number;
-    setScaleEdges(minValue: number, maxValue: number): void;
+    setScale(valuesAndPositions: Map<number, number>): void;
     reCreateScale(): void;
+    getDivisionsAmount(): number;
     attach(observer: IObserver): void;
     detach(observer: IObserver): void;
     notify(eventType: string, data?: any): void;

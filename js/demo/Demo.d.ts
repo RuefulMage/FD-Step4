@@ -9,7 +9,6 @@ declare class Demo {
     protected lowValueInput: HTMLInputElement;
     protected highValueInput: HTMLInputElement;
     protected stepInput: HTMLInputElement;
-    protected divisionAmountInput: HTMLInputElement;
     protected isRangeInput: HTMLInputElement;
     protected isTipsHiddenInput: HTMLInputElement;
     protected isVerticalInput: HTMLInputElement;
@@ -20,7 +19,6 @@ declare class Demo {
     private initLowValueInput;
     private initHighValueInput;
     private initStepInput;
-    private initDivisionAmountInput;
     private initRangeInput;
     private initTipsHiddenInput;
     private initIsVerticalInput;

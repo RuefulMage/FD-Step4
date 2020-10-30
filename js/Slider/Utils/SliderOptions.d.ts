@@ -1,6 +1,5 @@
 import Orientation from './Orientation';
 declare type SliderOptions = {
-    divisionsAmount: number;
     isRange: boolean;
     isTipsHidden: boolean;
     maxValue: number;
