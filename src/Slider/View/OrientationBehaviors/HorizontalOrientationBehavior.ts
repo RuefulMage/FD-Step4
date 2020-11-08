@@ -7,6 +7,7 @@ class HorizontalOrientationBehavior implements IOrientationBehavior {
   // присваивает свойству left этого элемента новую позицию - половину ширины этого элемента
   public setPosition(newPosition: number, domElement: HTMLElement): void {
     const parentWidth = domElement.parentElement.offsetWidth;
+    console.log(parentWidth);
     const domElementWidthInPercent = (domElement.offsetWidth / parentWidth) * 100;
     domElement.style.left = `${newPosition - domElementWidthInPercent / 2}%`;
   }
@@ -16,6 +17,9 @@ class HorizontalOrientationBehavior implements IOrientationBehavior {
   // родителя дом-элемента
   public getPositionFromCoordinates(clientX: number, clientY: number,
     domElement: HTMLElement): number {
+    if( clientX > window.innerWidth){
+      throw new Error("clientX is too big");
+    }
     const positionInPixels = clientX - domElement.parentElement.getBoundingClientRect().left;
     const parentWidth = domElement.parentElement.offsetWidth;
     const position = (positionInPixels / parentWidth) * 100;

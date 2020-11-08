@@ -46,15 +46,19 @@ class Runner extends ViewComponent {
     // пользовательское событие 'slider-drag', которое содержит объект бегунка
     // и вычисленную позицию
     function handleMouseMove(event: MouseEvent): void {
-      const newPosition = that.getOrientationBehavior()
-        .getPositionFromCoordinates(event.clientX, event.clientY, that.DOMNode);
-      const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
-        { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });
-      that.DOMNode.dispatchEvent(changePositionEvent);
+      try {
+        const newPosition = that.getOrientationBehavior()
+          .getPositionFromCoordinates(event.clientX, event.clientY, that.DOMNode);
+        const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
+          { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });
+        that.DOMNode.dispatchEvent(changePositionEvent);
+      } catch (eventIsOutOfWindowError) {
+        handleMouseUp();
+      }
     }
 
     // удаляет обработчики событий движения и отклика мыши
-    function handleMouseUp(event: MouseEvent): void {
+    function handleMouseUp(): void {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     }
