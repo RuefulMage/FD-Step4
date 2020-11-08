@@ -25,7 +25,7 @@ class Strip extends ViewComponent {
 
       // Если клик был не по бегунку, то вычисляется позиция клика относительно род. элемента
       // и создается пользовательское событие 'slider-click', содержащее вычисленную позицию
-      function clickHandler(event: MouseEvent): void {
+      function handleMouseDown(event: MouseEvent): void {
         const runners = that.DOMNode.getElementsByClassName(CONSTANTS.runnerClassName);
         let isTargetRunner = false;
 
@@ -54,7 +54,7 @@ class Strip extends ViewComponent {
         }
       }
 
-      this.DOMNode.addEventListener('click', clickHandler);
+      this.DOMNode.addEventListener('mousedown', handleMouseDown);
     }
 }
 
