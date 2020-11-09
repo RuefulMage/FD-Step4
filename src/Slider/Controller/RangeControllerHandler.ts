@@ -128,7 +128,7 @@ class RangeControllerHandler implements IControllerHandler {
     // Объединяет две подсказки в одну
     protected joinTips(): void {
       this.view.hideTip(1);
-      const tipText = `${this.model.getLowValue().toString()} – ${this.model.getHighValue().toString()}`;
+      const tipText = `${this.model.getLowValue().toString()}&nbsp;&mdash;&nbsp;${this.model.getHighValue().toString()}`;
       this.view.setTipText(0, tipText);
       const tipPosition: number = this.model.getLowValueInPercent()
             + (this.model.getHighValueInPercent() - this.model.getLowValueInPercent()) / 2;

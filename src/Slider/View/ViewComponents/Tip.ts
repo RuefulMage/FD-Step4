@@ -26,7 +26,7 @@ class Tip extends ViewComponent {
     }
 
     public setInnerText(text: string): void {
-      this.DOMNode.innerText = text;
+      this.DOMNode.innerHTML = text;
     }
 
     public getHideStatus(): boolean {
