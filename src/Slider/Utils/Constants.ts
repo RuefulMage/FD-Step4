@@ -8,6 +8,7 @@ const CONSTANTS = {
   rangeClassName: 'slider__range',
   scaleClassName: 'slider__scale',
   runnerClassName: 'slider__runner',
+  runnerCurrentModifier: 'slider__runner_current',
   stripClassName: 'slider__strip',
   scaleSubElementClassName: 'slider__scale-subelement',
   scaleSubElementMaxAmount: 10,

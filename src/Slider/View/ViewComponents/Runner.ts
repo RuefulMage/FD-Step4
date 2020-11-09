@@ -34,6 +34,14 @@ class Runner extends ViewComponent {
     this.orientationBehavior = value;
   }
 
+  public setCurrentStatus(newStatus: boolean){
+    if( newStatus ){
+      this.getDOMNode().classList.add(CONSTANTS.runnerCurrentModifier);
+    } else {
+      this.getDOMNode().classList.remove(CONSTANTS.runnerCurrentModifier);
+    }
+  }
+
   // Навешивает обработчики событий мыши на дом-элемент бегунка для Drag'n'Drop
   protected addMouseEventsHandlers(): void {
     const that: Runner = this;

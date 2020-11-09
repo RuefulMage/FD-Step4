@@ -279,6 +279,9 @@ class View extends ViewComponent implements IPublisher {
         that.runnersAndTips.forEach((item, index) => {
           if (item.runner === event.detail.target) {
             runnerIndex = index;
+            item.runner.setCurrentStatus(true);
+          } else {
+            item.runner.setCurrentStatus(false);
           }
         });
         that.notify('position-change-by-drag',

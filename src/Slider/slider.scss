@@ -60,6 +60,10 @@ body {
     background: black;
     border-radius: 100%;
     border: 5px solid red;
+
+    &_current{
+      z-index: 2;
+    }
   }
 
   &_vertical &__runner {
