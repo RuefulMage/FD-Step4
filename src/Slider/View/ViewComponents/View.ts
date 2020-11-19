@@ -315,6 +315,16 @@ class View extends ViewComponent implements IPublisher {
       return (event as CustomEvent).detail !== undefined;
     }
 
+    function setRunnerToCurrent(runner: Runner): void {
+      that.runnersAndTips.forEach((item, index) => {
+        if (item.runner === runner){
+          item.runner.setCurrentStatus(true);
+        } else {
+          item.runner.setCurrentStatus(false);
+        }
+      });
+    }
+
     // Оповещает подписчиков и передает им индекс бегунка, на котором произошло событие
     // и полученную позицию
     function handleRunnerDrag(event: Event) {
@@ -325,11 +335,9 @@ class View extends ViewComponent implements IPublisher {
         that.runnersAndTips.forEach((item, index) => {
           if (item.runner === event.detail.target) {
             runnerIndex = index;
-            item.runner.setCurrentStatus(true);
-          } else {
-            item.runner.setCurrentStatus(false);
           }
         });
+        setRunnerToCurrent(event.detail.target);
         that.notify('position-change-by-drag',
           { runnerIndex, position: event.detail.position });
       }
@@ -350,6 +358,7 @@ class View extends ViewComponent implements IPublisher {
             minPosDifference = difference;
           }
         });
+        setRunnerToCurrent(that.runnersAndTips.get(runnerIndex).runner);
         that.notify('position-change-by-click',
           { position: event.detail.position, runnerIndex: runnerIndex });
       }
