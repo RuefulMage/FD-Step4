@@ -1,16 +1,11 @@
 import View from '../View/ViewComponents/View';
 import Model from '../Model/Model';
 import IObserver from '../Observer/IObserver';
-import IControllerHandler from './IControllerHandler';
-import RangeControllerHandler from './RangeControllerHandler';
-import SingleValueControllerHandler from './SingleValueControllerHandler';
 
 class Controller implements IObserver {
     protected model: Model;
 
     protected view: View;
-
-    protected controllerHandler: IControllerHandler;
 
     constructor(view: View, model: Model, isRange: boolean) {
       this.init(view, model, isRange);
@@ -21,46 +16,47 @@ class Controller implements IObserver {
       this.model = model;
       this.view.attach(this);
       this.model.attach(this);
-      this.setControllerHandler(isRange);
-      this.controllerHandler.handleValueChange();
-      const divisionsAmount = this.view.getDivisionsAmount();
-      const valuesAndPositions = this.controllerHandler.getScalePositions(divisionsAmount);
-      this.view.setScale(valuesAndPositions);
+      this.updateView();
     }
 
     // Вызывает соответствующий метод в зависимости от события
     public update(eventName: string, data?: any): void {
       if (eventName === 'position-change-by-drag') {
-        this.controllerHandler.handlePositionChangeByDrag(data);
+        this.setValues(data.runnerIndex, data.position);
       } else if (eventName === 'position-change-by-click') {
-        this.controllerHandler.handlePositionChangeByClick(data);
+        this.setValues(data.runnerIndex, data.position);
       } else if (eventName === 'edge-value-change') {
-        this.controllerHandler.handleEdgeValueChange();
+        this.updateView();
       } else if (eventName === 'value-change') {
-        this.controllerHandler.handleValueChange();
+        this.updateView();
       } else if (eventName === 'range-mode-change') {
-        const { isRange } = data;
-        this.setControllerHandler(isRange);
+        this.updateView();
       } else if (eventName === 'resize') {
-        this.controllerHandler.handleResize(data);
+        this.updateView();
       } else if (eventName === 'step-change') {
-        this.controllerHandler.handleStepChange();
+        this.updateView();
       } else {
         throw new Error('unknown event');
       }
     }
 
-    public setControllerHandler(isRange: boolean): void {
-      if (isRange) {
-        this.controllerHandler = new RangeControllerHandler(this.view, this.model);
-      } else {
-        this.controllerHandler = new SingleValueControllerHandler(this.view, this.model);
+    public setValues(runnerIndex: number, position: number) {
+      if (runnerIndex === 0) {
+        this.model.setLowValueByPercent(position);
+      } else if (runnerIndex === 1) {
+        this.model.setHighValueByPercent(position);
       }
     }
 
-    public getControllerHandler(): IControllerHandler {
-      return this.controllerHandler;
+    public updateView(): void{
+      let runnerPositions = [this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
+      let tipsValues = [this.model.getLowValue(), this.model.getHighValue()];
+      let scalePositions = this.model.splitIntervalByStep(this.view.getDivisionsAmount());
+      let isRange = this.model.getRangeStatus();
+      this.view.updateView(runnerPositions, tipsValues, scalePositions, isRange);
     }
+
 }
+
 
 export default Controller;
