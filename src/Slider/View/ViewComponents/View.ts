@@ -4,16 +4,12 @@ import Orientation from '../../Utils/Orientation';
 import CONSTANTS from '../../Utils/Constants';
 import OrientationBehaviorBuilder from '../OrientationBehaviors/OrientationBehaviorBuilder';
 
-import IRangeModeBehavior from '../RangeModeBehaviors/IRangeModeBehavior';
-
 import ViewComponent from './ViewComponent';
 import Strip from './Strip';
 import Runner from './Runner';
 import Scale from './Scale';
 import Range from './Range';
 import Tip from './Tip';
-import IntervalModeBehavior from '../RangeModeBehaviors/IntervalModeBehavior';
-import SingleModeBehavior from '../RangeModeBehaviors/SingleModeBehavior';
 
 class View extends ViewComponent implements IPublisher {
   protected strip: Strip;
@@ -23,8 +19,6 @@ class View extends ViewComponent implements IPublisher {
   protected scale: Scale;
 
   protected orientation: Orientation;
-
-  protected rangeModeBehavior: IRangeModeBehavior;
 
   protected runnersAndTips: Map<number, { runner: Runner, tip: Tip }>;
 
@@ -55,7 +49,6 @@ class View extends ViewComponent implements IPublisher {
     this.isTipsHidden = isTipsHidden;
 
     if (isRange) {
-      this.rangeModeBehavior = new IntervalModeBehavior(this);
       const lowValueRunner = new Runner(this.strip.getDOMNode(), orientationBehavior);
       const lowValueTip = new Tip(this.strip.getDOMNode(), orientationBehavior, isTipsHidden);
 
@@ -66,7 +59,6 @@ class View extends ViewComponent implements IPublisher {
         [0, { runner: lowValueRunner, tip: lowValueTip }],
         [1, { runner: highValueRunner, tip: highValueTip }]]);
     } else {
-      this.rangeModeBehavior = new SingleModeBehavior(this);
       const lowValueRunner = new Runner(this.strip.getDOMNode(), orientationBehavior);
       const lowValueTip = new Tip(this.strip.getDOMNode(), orientationBehavior, isTipsHidden);
 
@@ -128,16 +120,16 @@ class View extends ViewComponent implements IPublisher {
 
   public showTips(): void {
     this.isTipsHidden = false;
-    this.runnersAndTips.forEach((item,index) => this.showTip(index));
+    this.runnersAndTips.forEach((item, index) => this.showTip(index));
 
-    if(this.runnersAndTips.size > 1){
+    if (this.runnersAndTips.size > 1) {
       const isRunnersTooClose = Math.abs(this.getRunnerPosition(0)
         - this.getRunnerPosition(1)) <= CONSTANTS.tipsJoinDistance;
 
       if (isRunnersTooClose) {
         this.hideTip(1);
-        let tipPosition = this.getRunnerPosition(0) +
-          ((this.getRunnerPosition(1) - this.getRunnerPosition(0)) / 2);
+        const tipPosition = this.getRunnerPosition(0)
+          + ((this.getRunnerPosition(1) - this.getRunnerPosition(0)) / 2);
         this.runnersAndTips.get(0).tip.setPosition(tipPosition);
       }
     }
@@ -145,7 +137,7 @@ class View extends ViewComponent implements IPublisher {
 
   public showTip(tipIndex: number): void {
     this.isTipsHidden = false;
-    let tip = this.runnersAndTips.get(tipIndex).tip;
+    const { tip } = this.runnersAndTips.get(tipIndex);
     tip.show();
     tip.setPosition(this.getRunnerPosition(tipIndex));
   }
@@ -155,10 +147,10 @@ class View extends ViewComponent implements IPublisher {
   }
 
   public getTipsPositions(): number[] {
-    if(this.isTipsHidden){
-      throw new Error("Tips is hidden!");
+    if (this.isTipsHidden) {
+      throw new Error('Tips is hidden!');
     }
-    let positions: number[] = [];
+    const positions: number[] = [];
     this.runnersAndTips.forEach((item) => {
       positions.push(item.runner.getPosition());
     });
@@ -166,10 +158,10 @@ class View extends ViewComponent implements IPublisher {
   }
 
   public getTipsValues(): number[] {
-    if(this.isTipsHidden){
-      throw new Error("Tips is hidden!");
+    if (this.isTipsHidden) {
+      throw new Error('Tips is hidden!');
     }
-    let values: number[] = [];
+    const values: number[] = [];
     this.runnersAndTips.forEach((item, index) => {
       values.push(Number(item.tip.getDOMNode().innerText));
     });
@@ -279,14 +271,13 @@ class View extends ViewComponent implements IPublisher {
 
   public updateView(runnersPositions: number[], tipsValues: number[],
                     scalePositions: Map<number, number>, isRange: boolean): void {
-    this.rangeModeBehavior.updateView(runnersPositions, tipsValues, scalePositions, isRange);
-  }
 
-  public setRangeMode(isRange: boolean) {
-    if(isRange) {
-      this.rangeModeBehavior = new IntervalModeBehavior(this);
+    if (isRange) {
+      this.updateViewForInterval(runnersPositions, tipsValues,
+        scalePositions);
     } else {
-      this.rangeModeBehavior = new SingleModeBehavior(this);
+      this.updateViewForSingleRunner(runnersPositions, tipsValues,
+        scalePositions);
     }
   }
 
@@ -317,7 +308,7 @@ class View extends ViewComponent implements IPublisher {
 
     function setRunnerToCurrent(runner: Runner): void {
       that.runnersAndTips.forEach((item, index) => {
-        if (item.runner === runner){
+        if (item.runner === runner) {
           item.runner.setCurrentStatus(true);
         } else {
           item.runner.setCurrentStatus(false);
@@ -348,11 +339,10 @@ class View extends ViewComponent implements IPublisher {
       if (!isCustomEvent(event)) {
         throw new Error('not a custom event');
       } else {
-
         let runnerIndex: number = 0;
         let minPosDifference = Number.MAX_VALUE;
         that.runnersAndTips.forEach((item, index) => {
-          let difference = Math.abs(item.runner.getPosition() - event.detail.position);
+          const difference = Math.abs(item.runner.getPosition() - event.detail.position);
           if (difference < minPosDifference) {
             runnerIndex = index;
             minPosDifference = difference;
@@ -360,7 +350,7 @@ class View extends ViewComponent implements IPublisher {
         });
         setRunnerToCurrent(that.runnersAndTips.get(runnerIndex).runner);
         that.notify('position-change-by-click',
-          { position: event.detail.position, runnerIndex: runnerIndex });
+          { position: event.detail.position, runnerIndex });
       }
     }
 
@@ -374,6 +364,62 @@ class View extends ViewComponent implements IPublisher {
     this.DOMNode.addEventListener('slider-drag', handleRunnerDrag);
     this.DOMNode.addEventListener('slider-click', handleSliderClick);
     window.addEventListener('resize', handleResize);
+  }
+
+  protected updateViewForInterval(runnersPositions: number[], tipsValues: number[],
+                                  scalePositions: Map<number, number>): void {
+    if (this.getRunnersAmount() < 2) {
+      this.changeModeToRange(runnersPositions[1], tipsValues[1]);
+    }
+    this.setScale(scalePositions);
+    this.setRunnerPosition(0, runnersPositions[0]);
+    this.setRunnerPosition(1, runnersPositions[1]);
+    this.updateAllTipsPositionAndText(runnersPositions, tipsValues);
+    this.setRange(runnersPositions[0], runnersPositions[1]);
+  }
+
+  protected updateAllTipsPositionAndText(runnersPositions: number[], tipsValues: number[]) {
+    if (this.getRunnersAmount() < 2) {
+      throw new Error('Runners amount is too small');
+    }
+    const isRunnersTooClose = Math.abs(runnersPositions[0]
+      - runnersPositions[1]) <= CONSTANTS.tipsJoinDistance;
+
+    if (isRunnersTooClose) {
+      this.joinTips(tipsValues, runnersPositions);
+    } else {
+      if (!this.getHideStatus()) {
+        this.showTips();
+      }
+
+      this.setTipText(0, tipsValues[0].toString());
+      this.setTipPosition(0, runnersPositions[0]);
+
+      this.setTipText(1, tipsValues[1].toString());
+      this.setTipPosition(1, runnersPositions[1]);
+    }
+  }
+
+  public updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
+                                   scalePositions: Map<number, number>): void {
+    if (this.getRunnersAmount() > 1) {
+      this.changeModeToSingle();
+    }
+    this.setScale(scalePositions);
+    this.setRunnerPosition(0, runnersPositions[0]);
+    this.setTipText(0, tipsValues[0].toString());
+    this.setTipPosition(0, runnersPositions[0]);
+    this.setRange(0, runnersPositions[0]);
+  }
+
+  // Объединяет две подсказки в одну
+  protected joinTips(tipsValues: number[], tipsPositions: number[]): void {
+    this.hideTip(1);
+    const tipText = `${tipsValues[0]}&nbsp;&mdash;&nbsp;${tipsValues[1]}`;
+    this.setTipText(0, tipText);
+    const tipPosition: number = tipsPositions[0]
+      + (tipsPositions[1] - tipsPositions[0]) / 2;
+    this.setTipPosition(0, tipPosition);
   }
 }
 
