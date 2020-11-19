@@ -4,12 +4,16 @@ import Orientation from '../../Utils/Orientation';
 import CONSTANTS from '../../Utils/Constants';
 import OrientationBehaviorBuilder from '../OrientationBehaviors/OrientationBehaviorBuilder';
 
+import IRangeModeBehavior from '../RangeModeBehaviors/IRangeModeBehavior';
+
 import ViewComponent from './ViewComponent';
 import Strip from './Strip';
 import Runner from './Runner';
 import Scale from './Scale';
 import Range from './Range';
 import Tip from './Tip';
+import IntervalModeBehavior from '../RangeModeBehaviors/IntervalModeBehavior';
+import SingleModeBehavior from '../RangeModeBehaviors/SingleModeBehavior';
 
 class View extends ViewComponent implements IPublisher {
   protected strip: Strip;
@@ -19,6 +23,8 @@ class View extends ViewComponent implements IPublisher {
   protected scale: Scale;
 
   protected orientation: Orientation;
+
+  protected rangeModeBehavior: IRangeModeBehavior;
 
   protected runnersAndTips: Map<number, { runner: Runner, tip: Tip }>;
 
@@ -49,6 +55,7 @@ class View extends ViewComponent implements IPublisher {
     this.isTipsHidden = isTipsHidden;
 
     if (isRange) {
+      this.rangeModeBehavior = new IntervalModeBehavior(this);
       const lowValueRunner = new Runner(this.strip.getDOMNode(), orientationBehavior);
       const lowValueTip = new Tip(this.strip.getDOMNode(), orientationBehavior, isTipsHidden);
 
@@ -59,6 +66,7 @@ class View extends ViewComponent implements IPublisher {
         [0, { runner: lowValueRunner, tip: lowValueTip }],
         [1, { runner: highValueRunner, tip: highValueTip }]]);
     } else {
+      this.rangeModeBehavior = new SingleModeBehavior(this);
       const lowValueRunner = new Runner(this.strip.getDOMNode(), orientationBehavior);
       const lowValueTip = new Tip(this.strip.getDOMNode(), orientationBehavior, isTipsHidden);
 
@@ -120,16 +128,52 @@ class View extends ViewComponent implements IPublisher {
 
   public showTips(): void {
     this.isTipsHidden = false;
-    this.runnersAndTips.forEach((item) => item.tip.show());
+    this.runnersAndTips.forEach((item,index) => this.showTip(index));
+
+    if(this.runnersAndTips.size > 1){
+      const isRunnersTooClose = Math.abs(this.getRunnerPosition(0)
+        - this.getRunnerPosition(1)) <= CONSTANTS.tipsJoinDistance;
+
+      if (isRunnersTooClose) {
+        this.hideTip(1);
+        let tipPosition = this.getRunnerPosition(0) +
+          ((this.getRunnerPosition(1) - this.getRunnerPosition(0)) / 2);
+        this.runnersAndTips.get(0).tip.setPosition(tipPosition);
+      }
+    }
   }
 
   public showTip(tipIndex: number): void {
     this.isTipsHidden = false;
-    this.runnersAndTips.get(tipIndex).tip.show();
+    let tip = this.runnersAndTips.get(tipIndex).tip;
+    tip.show();
+    tip.setPosition(this.getRunnerPosition(tipIndex));
   }
 
   public getHideStatus(): boolean {
     return this.isTipsHidden;
+  }
+
+  public getTipsPositions(): number[] {
+    if(this.isTipsHidden){
+      throw new Error("Tips is hidden!");
+    }
+    let positions: number[] = [];
+    this.runnersAndTips.forEach((item) => {
+      positions.push(item.runner.getPosition());
+    });
+    return positions;
+  }
+
+  public getTipsValues(): number[] {
+    if(this.isTipsHidden){
+      throw new Error("Tips is hidden!");
+    }
+    let values: number[] = [];
+    this.runnersAndTips.forEach((item, index) => {
+      values.push(Number(item.tip.getDOMNode().innerText));
+    });
+    return values;
   }
 
   // Ф-ии работы с режимом слайдера(промежуток или один бегунок)
@@ -244,6 +288,19 @@ class View extends ViewComponent implements IPublisher {
     return scaleDivisionsAmount;
   }
 
+  public updateView(runnersPositions: number[], tipsValues: number[],
+                    scalePositions: Map<number, number>, isRange: boolean): void {
+    this.rangeModeBehavior.updateView(runnersPositions, tipsValues, scalePositions, isRange);
+  }
+
+  public setRangeMode(isRange: boolean) {
+    if(isRange) {
+      this.rangeModeBehavior = new IntervalModeBehavior(this);
+    } else {
+      this.rangeModeBehavior = new SingleModeBehavior(this);
+    }
+  }
+
   // Ф-ии оповещателя
   public attach(observer: IObserver): void {
     this.observers.add(observer);
@@ -294,8 +351,18 @@ class View extends ViewComponent implements IPublisher {
       if (!isCustomEvent(event)) {
         throw new Error('not a custom event');
       } else {
+
+        let runnerIndex: number = 0;
+        let minPosDifference = Number.MAX_VALUE;
+        that.runnersAndTips.forEach((item, index) => {
+          let difference = Math.abs(item.runner.getPosition() - event.detail.position);
+          if (difference < minPosDifference) {
+            runnerIndex = index;
+            minPosDifference = difference;
+          }
+        });
         that.notify('position-change-by-click',
-          { position: event.detail.position });
+          { position: event.detail.position, runnerIndex: runnerIndex });
       }
     }
 
