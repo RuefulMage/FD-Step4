@@ -260,6 +260,33 @@ class Model implements IPublisher {
         .times(100);
       return Number(valueInPercent);
     }
+
+    public validateRangeDivisionsAmount(divisionsAmount: number): number{
+      const maxAndMinDifference = Big(this.getMaxValue()).minus(this.getMinValue());
+      const stepsInRange = Number(maxAndMinDifference.div(this.getStep())) + 1;
+      if (stepsInRange >= divisionsAmount) {
+        return divisionsAmount;
+      }
+      return stepsInRange;
+    }
+
+    public splitIntervalByStep(divisionsAmount: number): Map<number, number>{
+      const maxAndMinDifference = this.getMaxValue() - this.getMinValue();
+      const valuesAndPercents = new Map<number, number>();
+      let currentValue = this.getMinValue();
+      let currentValueInPercents = 0;
+      let grow = 0;
+      while (grow < (maxAndMinDifference / divisionsAmount)) {
+        grow += this.getStep();
+      }
+      do {
+        currentValue = this.validateValue(currentValue);
+        currentValueInPercents = this.convertValueToPercent(currentValue);
+        valuesAndPercents.set(currentValue, currentValueInPercents);
+        currentValue += grow;
+      } while (currentValueInPercents < 100);
+      return valuesAndPercents;
+    }
 }
 
 export default Model;
