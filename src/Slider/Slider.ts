@@ -100,12 +100,10 @@ class Slider implements IObserver {
 
     public hideTips(): void {
       this.view.hideTips();
-      this.controller.getControllerHandler().updateTipsPositionAndText();
     }
 
     public showTips(): void {
       this.view.showTips();
-      this.controller.getControllerHandler().updateTipsPositionAndText();
     }
 
     public getHideStatus(): boolean {
