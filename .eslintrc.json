@@ -6,7 +6,7 @@
   },
   "extends": [
     "plugin:fsd/all",
-    "airbnb-base",
+    "airbnb-typescript",
     "plugin:jest/recommended"
   ],
   "parser": "@typescript-eslint/parser",
@@ -16,13 +16,9 @@
   },
   "plugins": ["@typescript-eslint", "fsd", "jest"],
   "rules": {
-    "no-unused-vars": "off",
-    "import/extensions": 0,
-    "import/no-unresolved": 0,
-    "semi": "off",
-    "class-methods-use-this": ["error", { "exceptMethods": ["update"] }],
-    "no-undef": "off",
-    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsForRegex": ["^domElement"] }],
-    "fsd/hof-name-prefix": "off"
+    "@typescript-eslint/no-unused-vars": "off",
+//    "class-methods-use-this": ["error", { "exceptMethods": ["update"] }],
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsForRegex": ["^domElement"] }]
+//    "fsd/hof-name-prefix": "off"
   }
 }
