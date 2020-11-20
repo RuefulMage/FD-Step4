@@ -16,8 +16,8 @@ class VerticalOrientationBehavior implements IOrientationBehavior {
   // родителя дом-элемента
   public getPositionFromCoordinates(clientX: number, clientY: number,
     domElement: HTMLElement): number {
-    if( clientY > window.innerHeight){
-      throw new Error("clientY is too big");
+    if (clientY > window.innerHeight) {
+      throw new Error('clientY is too big');
     }
     const positionInPixels = clientY - domElement.parentElement.getBoundingClientRect().top;
     const parentHeight = domElement.parentElement.offsetHeight;

@@ -3,58 +3,58 @@ import CONSTANTS from '../../Utils/Constants';
 import ViewComponent from './ViewComponent';
 
 class Tip extends ViewComponent {
-    protected isHidden: boolean;
+  protected isHidden: boolean;
 
-    protected orientationBehavior: IOrientationBehavior;
+  protected orientationBehavior: IOrientationBehavior;
 
-    constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior,
-      isHidden: boolean = true) {
-      super(parentNode, CONSTANTS.tipClassName);
-      this.init(orientationBehavior, isHidden);
+  constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior,
+    isHidden: boolean = true) {
+    super(parentNode, CONSTANTS.tipClassName);
+    this.init(orientationBehavior, isHidden);
+  }
+
+  protected init(orientationBehavior: IOrientationBehavior, isHidden: boolean) {
+    if (isHidden) {
+      this.DOMNode.classList.add(CONSTANTS.tipHiddenClassName);
     }
+    this.isHidden = isHidden;
+    this.orientationBehavior = orientationBehavior;
+  }
 
-    protected init(orientationBehavior: IOrientationBehavior, isHidden: boolean) {
-      if (isHidden) {
-        this.DOMNode.classList.add(CONSTANTS.tipHiddenClassName);
-      }
-      this.isHidden = isHidden;
-      this.orientationBehavior = orientationBehavior;
-    }
+  public setPosition(newPosition: number): void {
+    this.getOrientationBehavior().setPosition(newPosition, this.DOMNode);
+  }
 
-    public setPosition(newPosition: number): void {
-      this.getOrientationBehavior().setPosition(newPosition, this.DOMNode);
-    }
+  public setInnerText(text: string): void {
+    this.DOMNode.innerHTML = text;
+  }
 
-    public setInnerText(text: string): void {
-      this.DOMNode.innerHTML = text;
-    }
+  public getHideStatus(): boolean {
+    return this.isHidden;
+  }
 
-    public getHideStatus(): boolean {
-      return this.isHidden;
-    }
+  public getOrientationBehavior(): IOrientationBehavior {
+    return this.orientationBehavior;
+  }
 
-    public getOrientationBehavior(): IOrientationBehavior {
-      return this.orientationBehavior;
-    }
+  public setOrientationBehavior(value: IOrientationBehavior): void {
+    this.orientationBehavior.resetStyles(this.DOMNode);
+    this.orientationBehavior = value;
+  }
 
-    public setOrientationBehavior(value: IOrientationBehavior): void {
-      this.orientationBehavior.resetStyles(this.DOMNode);
-      this.orientationBehavior = value;
+  public hide(): void {
+    if (!this.isHidden) {
+      this.DOMNode.classList.add(CONSTANTS.tipHiddenClassName);
     }
+    this.isHidden = true;
+  }
 
-    public hide(): void {
-      if (!this.isHidden) {
-        this.DOMNode.classList.add(CONSTANTS.tipHiddenClassName);
-      }
-      this.isHidden = true;
+  public show(): void {
+    if (this.isHidden) {
+      this.DOMNode.classList.remove(CONSTANTS.tipHiddenClassName);
     }
-
-    public show(): void {
-      if (this.isHidden) {
-        this.DOMNode.classList.remove(CONSTANTS.tipHiddenClassName);
-      }
-      this.isHidden = false;
-    }
+    this.isHidden = false;
+  }
 }
 
 export default Tip;

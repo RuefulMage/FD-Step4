@@ -16,8 +16,8 @@ class HorizontalOrientationBehavior implements IOrientationBehavior {
   // родителя дом-элемента
   public getPositionFromCoordinates(clientX: number, clientY: number,
     domElement: HTMLElement): number {
-    if( clientX > window.innerWidth){
-      throw new Error("clientX is too big");
+    if (clientX > window.innerWidth) {
+      throw new Error('clientX is too big');
     }
     const positionInPixels = clientX - domElement.parentElement.getBoundingClientRect().left;
     const parentWidth = domElement.parentElement.offsetWidth;

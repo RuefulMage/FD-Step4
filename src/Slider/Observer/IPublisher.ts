@@ -1,11 +1,11 @@
 import IObserver from './IObserver';
 
 interface IPublisher {
-    attach(observer: IObserver): void;
+  attach(observer: IObserver): void;
 
-    detach(observer: IObserver): void;
+  detach(observer: IObserver): void;
 
-    notify(data: {}): void;
+  notify(data: {}): void;
 }
 
 export default IPublisher;

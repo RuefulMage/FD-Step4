@@ -1,4 +1,3 @@
-import Orientation from '../Slider/Utils/Orientation';
 import Demo from './Demo';
 
 function initDemo(element: Element): Demo {
@@ -7,7 +6,7 @@ function initDemo(element: Element): Demo {
     isTipsHidden: (element.getAttribute('data-tips-hidden') === 'true'),
     maxValue: Number(element.getAttribute('data-max-value')),
     minValue: Number(element.getAttribute('data-min-value')),
-    orientation: element.getAttribute('data-orientation') as Orientation,
+    orientation: element.getAttribute('data-orientation'),
     startValueHigh: Number(element.getAttribute('data-start-high')),
     startValueLow: Number(element.getAttribute('data-start-low')),
     step: Number(element.getAttribute('data-step')),

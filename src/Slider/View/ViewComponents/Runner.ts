@@ -34,8 +34,8 @@ class Runner extends ViewComponent {
     this.orientationBehavior = value;
   }
 
-  public setCurrentStatus(newStatus: boolean){
-    if( newStatus ){
+  public setCurrentStatus(newStatus: boolean) {
+    if (newStatus) {
       this.getDOMNode().classList.add(CONSTANTS.runnerCurrentModifier);
     } else {
       this.getDOMNode().classList.remove(CONSTANTS.runnerCurrentModifier);
@@ -61,6 +61,7 @@ class Runner extends ViewComponent {
           { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });
         that.DOMNode.dispatchEvent(changePositionEvent);
       } catch (eventIsOutOfWindowError) {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         handleMouseUp();
       }
     }

@@ -257,7 +257,6 @@ class View extends ViewComponent implements IPublisher {
 
   // По размерам слайдера, вычисляет кол-во отрезков шкалы
   public computeScaleSegmentsAmountBySize(): number {
-    let scaleSegmentsAmount;
     let sliderSize;
     if (this.orientation === Orientation.HORIZONTAL) {
       sliderSize = this.getDOMNode().clientWidth;
@@ -265,13 +264,12 @@ class View extends ViewComponent implements IPublisher {
       sliderSize = this.getDOMNode().clientHeight;
     }
 
-    scaleSegmentsAmount = Math.ceil(sliderSize / 300) * 2;
+    const scaleSegmentsAmount = Math.ceil(sliderSize / 300) * 2;
     return scaleSegmentsAmount;
   }
 
   public updateView(runnersPositions: number[], tipsValues: number[],
-                    scalePositions: Map<number, number>, isRange: boolean): void {
-
+    scalePositions: Map<number, number>, isRange: boolean): void {
     if (isRange) {
       this.updateViewForInterval(runnersPositions, tipsValues,
         scalePositions);
@@ -367,7 +365,7 @@ class View extends ViewComponent implements IPublisher {
   }
 
   protected updateViewForInterval(runnersPositions: number[], tipsValues: number[],
-                                  scalePositions: Map<number, number>): void {
+    scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() < 2) {
       this.changeModeToRange(runnersPositions[1], tipsValues[1]);
     }
@@ -401,7 +399,7 @@ class View extends ViewComponent implements IPublisher {
   }
 
   public updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
-                                   scalePositions: Map<number, number>): void {
+    scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() > 1) {
       this.changeModeToSingle();
     }
