@@ -7,11 +7,11 @@ class Controller implements IObserver {
 
   protected view: View;
 
-  constructor(view: View, model: Model, isRange: boolean) {
-    this.init(view, model, isRange);
+  constructor(view: View, model: Model) {
+    this.init(view, model);
   }
 
-  protected init(view: View, model: Model, isRange: boolean): void {
+  protected init(view: View, model: Model): void {
     this.view = view;
     this.model = model;
     this.view.attach(this);
@@ -40,7 +40,7 @@ class Controller implements IObserver {
     }
   }
 
-  public setValues(runnerIndex: number, position: number) {
+  protected setValues(runnerIndex: number, position: number) {
     if (runnerIndex === 0) {
       this.model.setLowValueByPercent(position);
     } else if (runnerIndex === 1) {
@@ -48,7 +48,7 @@ class Controller implements IObserver {
     }
   }
 
-  public updateView(): void{
+  protected updateView(): void{
     const runnerPositions = [this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
     const tipsValues = [this.model.getLowValue(), this.model.getHighValue()];
     const scalePositions = this.model
