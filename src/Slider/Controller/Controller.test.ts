@@ -2,8 +2,6 @@ import View from '../View/ViewComponents/View';
 import Model from '../Model/Model';
 import Orientation from '../Utils/Orientation';
 import Controller from './Controller';
-import RangeControllerHandler from './RangeControllerHandler';
-import SingleValueControllerHandler from './SingleValueControllerHandler';
 
 describe('Controller class', () => {
   let parentElement: HTMLElement;
@@ -11,12 +9,9 @@ describe('Controller class', () => {
   let modelOptions;
   let controller: Controller;
 
-  const mockPositionChangeByClick = jest.fn();
-  const mockPositionChangeByRunner = jest.fn();
-  const mockValueChange = jest.fn();
-  const mockEdgeValueChange = jest.fn();
-  const mockResize = jest.fn();
-  const mockStepChange = jest.fn();
+  const mockUpdateView = jest.fn();
+  const mockSetLowValueByPercent = jest.fn();
+  const mockSetHighValueByPercent = jest.fn();
 
   beforeEach(() => {
     viewOptions = {
@@ -35,96 +30,84 @@ describe('Controller class', () => {
     };
     parentElement = document.createElement('div');
     document.body.append(parentElement);
+
     const view = new View(parentElement, viewOptions);
+    view.computeScaleSegmentsAmountBySize = () => {return 10};
+    View.prototype.updateView = mockUpdateView;
     const model = new Model(modelOptions);
-    RangeControllerHandler.prototype.handlePositionChangeByClick = mockPositionChangeByClick;
-    RangeControllerHandler.prototype.handlePositionChangeByDrag = mockPositionChangeByRunner;
-    RangeControllerHandler.prototype.handleValueChange = mockValueChange;
-    RangeControllerHandler.prototype.handleEdgeValueChange = mockEdgeValueChange;
-    RangeControllerHandler.prototype.handleResize = mockResize;
-    RangeControllerHandler.prototype.handleStepChange = mockStepChange;
 
-    controller = new Controller(view, model, true);
+    Model.prototype.setLowValueByPercent = mockSetLowValueByPercent;
+    Model.prototype.setHighValueByPercent = mockSetHighValueByPercent;
+    controller = new Controller(view, model);
+
+    mockSetLowValueByPercent.mock.calls.length = 0;
+    mockSetHighValueByPercent.mock.calls.length = 0;
+    mockUpdateView.mock.calls.length = 0;
   });
 
-  describe('Get controller handler', () => {
-    test('Should return current controller handler', () => {
-      expect(controller.getControllerHandler()).toBeInstanceOf(RangeControllerHandler);
-    });
-  });
 
-  describe('Set controller handler', () => {
-    test('When input value is true, should set controller handler to RangeControllerHandler',
-      () => {
-        controller.setControllerHandler(true);
-
-        expect(controller.getControllerHandler()).toBeInstanceOf(RangeControllerHandler);
-      });
-
-    test('When input value is false, should set controller handler to SingleValueControllerHandler',
-      () => {
-        controller.setControllerHandler(false);
-
-        expect(controller.getControllerHandler()).toBeInstanceOf(SingleValueControllerHandler);
-      });
-  });
 
   describe('Update method', () => {
-    test('When position-change-by-drag happens, should call positionChangeByRunnerHandler  of controller handler with data',
+    test('When position-change-by-drag happens, should set values in model',
       () => {
-        mockPositionChangeByRunner.mock.calls.length = 0;
         controller.update('position-change-by-drag', { runnerIndex: 0, position: 80 });
 
-        expect(mockPositionChangeByRunner.mock.calls.length).toBe(1);
-        expect(mockPositionChangeByRunner.mock.calls[0][0])
-          .toEqual({ runnerIndex: 0, position: 80 });
+        expect(mockSetLowValueByPercent.mock.calls.length).toBe(1);
+        expect(mockSetLowValueByPercent.mock.calls[0][0])
+          .toEqual(80);
+
+
+        controller.update('position-change-by-drag', { runnerIndex: 1, position: 85 });
+
+        expect(mockSetHighValueByPercent.mock.calls.length).toBe(1);
+        expect(mockSetHighValueByPercent.mock.calls[0][0])
+          .toEqual(85);
       });
 
-    test('When position-change-by-click happens, should call positionChangeByClickHandler  of controller handler with data',
+    test('When position-change-by-click happens, should set value in model',
       () => {
-        mockPositionChangeByClick.mock.calls.length = 0;
-        controller.update('position-change-by-click', { position: 80 });
+        controller.update('position-change-by-click', { runnerIndex: 0, position: 60 });
 
-        expect(mockPositionChangeByClick.mock.calls.length).toBe(1);
-        expect(mockPositionChangeByClick.mock.calls[0][0]).toEqual({ position: 80 });
+        expect(mockSetLowValueByPercent.mock.calls.length).toBe(1);
+        expect(mockSetLowValueByPercent.mock.calls[0][0])
+          .toEqual(60);
+
+
+        controller.update('position-change-by-click', { runnerIndex: 1, position: 75 });
+
+        expect(mockSetHighValueByPercent.mock.calls.length).toBe(1);
+        expect(mockSetHighValueByPercent.mock.calls[0][0])
+          .toEqual(75);
       });
 
-    test('When edge-value-change happens, should call edgeValueChangeHandler of controller handler', () => {
-      mockEdgeValueChange.mock.calls.length = 0;
+    test('When edge-value-change happens, should call updateView method of view', () => {
       controller.update('edge-value-change');
 
-      expect(mockEdgeValueChange.mock.calls.length).toBe(1);
+      expect(mockUpdateView.mock.calls.length).toBe(1);
     });
 
-    test('When value-change happens, should call valueChangeHandler of controller handler', () => {
-      mockValueChange.mock.calls.length = 0;
+    test('When value-change happens, should call updateView method of view', () => {
       controller.update('value-change');
 
-      expect(mockValueChange.mock.calls.length).toBe(1);
+      expect(mockUpdateView.mock.calls.length).toBe(1);
     });
 
-    test('When range-mode-change happens, should call setControllerHandler with input data', () => {
-      controller.update('range-mode-change', { isRange: true });
+    test('When range-mode-change happens, should call updateView method of view', () => {
+      controller.update('range-mode-change');
 
-      expect(controller.getControllerHandler()).toBeInstanceOf(RangeControllerHandler);
-
-      controller.update('range-mode-change', { isRange: false });
-
-      expect(controller.getControllerHandler()).toBeInstanceOf(SingleValueControllerHandler);
+      expect(mockUpdateView.mock.calls.length).toBe(1);
     });
 
-    test('When resize happens, should call handleResize of controller handler', () => {
-      mockResize.mock.calls.length = 0;
+    test('When resize happens, should call updateView method of view', () => {
       controller.update('resize');
 
-      expect(mockResize.mock.calls.length).toBe(1);
+      expect(mockUpdateView.mock.calls.length).toBe(1);
     });
 
-    test('When step change happens, should call handleStepChange of controller handler', () => {
-      mockStepChange.mock.calls.length = 0;
+    test('When step change happens, should call updateView method of view', () => {
       controller.update('step-change');
 
-      expect(mockStepChange.mock.calls.length).toBe(1);
+      expect(mockUpdateView.mock.calls.length).toBe(1);
     });
 
     test('When happens unknown event, throw error', () => {
