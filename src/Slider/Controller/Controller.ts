@@ -52,7 +52,7 @@ class Controller implements IObserver {
     const runnerPositions = [this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
     const tipsValues = [this.model.getLowValue(), this.model.getHighValue()];
     const scalePositions = this.model
-      .splitIntervalByStep(this.view.computeScaleSegmentsAmountBySize());
+      .splitIntervalByStep(this.view.computeDivisionsAmountAmountBySize());
     const isRange = this.model.getRangeStatus();
     this.view.updateView(runnerPositions, tipsValues, scalePositions, isRange);
   }

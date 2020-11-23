@@ -256,7 +256,7 @@ class View extends ViewComponent implements IPublisher {
   }
 
   // По размерам слайдера, вычисляет кол-во отрезков шкалы
-  public computeScaleSegmentsAmountBySize(): number {
+  public computeDivisionsAmountAmountBySize(): number {
     let sliderSize;
     if (this.orientation === Orientation.HORIZONTAL) {
       sliderSize = this.getDOMNode().clientWidth;
@@ -264,8 +264,13 @@ class View extends ViewComponent implements IPublisher {
       sliderSize = this.getDOMNode().clientHeight;
     }
 
-    const scaleSegmentsAmount = Math.ceil(sliderSize / 300) * 2;
-    return scaleSegmentsAmount;
+    const scaleDivisionsAmount = Math.ceil(sliderSize / 300) * 2;
+    if(scaleDivisionsAmount > 2){
+      return scaleDivisionsAmount;
+    } else {
+      return 3;
+    }
+    return scaleDivisionsAmount;
   }
 
   public updateView(runnersPositions: number[], tipsValues: number[],
@@ -355,7 +360,7 @@ class View extends ViewComponent implements IPublisher {
     // Оповещает подписщиков об изменении размеров окна
     // и передает им высчитанное кол-во делений шкалы
     function handleResize(): void {
-      const scaleDivisionsAmount = that.computeScaleSegmentsAmountBySize();
+      const scaleDivisionsAmount = that.computeDivisionsAmountAmountBySize();
       that.notify('resize', { scaleDivisionsAmount });
     }
 
@@ -398,7 +403,7 @@ class View extends ViewComponent implements IPublisher {
     }
   }
 
-  public updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
+  protected updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
     scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() > 1) {
       this.changeModeToSingle();

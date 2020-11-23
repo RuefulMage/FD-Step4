@@ -29,7 +29,7 @@ class Slider implements IObserver {
     };
     this.view = new View(rootElement, viewOptions);
     this.view.attach(this);
-    this.controller = new Controller(this.view, this.model, options.isRange);
+    this.controller = new Controller(this.view, this.model);
   }
 
   public isRange(): boolean {
