@@ -32,7 +32,7 @@ describe('Controller class', () => {
     document.body.append(parentElement);
 
     const view = new View(parentElement, viewOptions);
-    view.computeScaleSegmentsAmountBySize = () => {return 10};
+    view.computeDivisionsAmountAmountBySize = () => {return 10};
     View.prototype.updateView = mockUpdateView;
     const model = new Model(modelOptions);
 
