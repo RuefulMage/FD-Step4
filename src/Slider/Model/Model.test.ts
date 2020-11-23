@@ -3,13 +3,13 @@ import Model from './Model';
 
 describe('Class Model', () => {
   let options: {
-        isRange: boolean,
-        maxValue: number,
-        minValue: number,
-        startValueHigh: number,
-        startValueLow: number,
-        step: number,
-    };
+    isRange: boolean,
+    maxValue: number,
+    minValue: number,
+    startValueHigh: number,
+    startValueLow: number,
+    step: number,
+  };
 
   beforeEach(() => {
     options = {
@@ -459,6 +459,39 @@ describe('Class Model', () => {
       model.notify('smth');
 
       expect(mockFunction.mock.calls.length).toBe(1);
+    });
+  });
+
+  describe('validateRangeDivisionsAmount method', () => {
+    test('Should validate input divisions amount and return it', () => {
+      const model = new Model(options);
+      let realResult = model.validateRangeDivisionsAmount(50);
+
+      expect(realResult).toBe(50);
+
+      realResult = model.validateRangeDivisionsAmount(150);
+
+      expect(realResult).toBe(101);
+    });
+  });
+
+  describe('splitIntervalByStep method', () => {
+    test('Should return map of values and values in percents', () => {
+      const model = new Model(options);
+
+      let realResult = model.splitIntervalByStep(10);
+      let expectedResult = new Map([[0,0], [12,12], [24,24],[36,36],
+        [48,48],[60,60],[72,72],[84,84],[96,96],[100,100]]);
+
+      expect(realResult).toEqual(expectedResult);
+    });
+
+    test('If divisions amount less than 1, should throw error', () => {
+      const model = new Model(options);
+
+      expect(() => {
+        model.splitIntervalByStep(1)
+      }).toThrowError();
     });
   });
 });
