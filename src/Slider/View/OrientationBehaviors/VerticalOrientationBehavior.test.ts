@@ -57,6 +57,16 @@ describe('Horizontal orientation behavior class', () => {
 
       expect(outputPosition).toBe(70);
     });
+
+    test('Should throw Error, when clientY bigger than window height', () => {
+      const clientX = 30;
+      const clientY = window.innerHeight + 10;
+
+      expect(() => {
+        verticalOrientationBehavior
+          .getPositionFromCoordinates(clientX, clientY, domElement)
+      }).toThrowError();
+    });
   });
 
   describe('Reset styles', () => {
