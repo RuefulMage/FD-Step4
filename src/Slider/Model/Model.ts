@@ -261,6 +261,9 @@ class Model implements IPublisher {
     return Number(valueInPercent);
   }
 
+  // Проверяет, можно ли поделить интервал на входное кол-во отрезков,
+  // если да, то возвращает входное значение, если нет, то возвращает
+  // максимально возможное
   public validateRangeDivisionsAmount(divisionsAmount: number): number {
     const maxAndMinDifference = Big(this.getMaxValue()).minus(this.getMinValue());
     const stepsInRange = Number(maxAndMinDifference.div(this.getStep())) + 1;
@@ -270,6 +273,7 @@ class Model implements IPublisher {
     return stepsInRange;
   }
 
+  // Делит интервал на равные отрезки
   public splitIntervalByStep(divisionsAmount: number): Map<number, number> {
     const segmentsAmount = divisionsAmount - 1;
     if (segmentsAmount <= 1) {

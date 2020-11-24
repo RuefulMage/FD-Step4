@@ -249,6 +249,7 @@ class View extends ViewComponent implements IPublisher {
     return 3;
   }
 
+  // обновляет Вью
   public updateView(runnersPositions: number[], tipsValues: number[],
     scalePositions: Map<number, number>, isRange: boolean): void {
     if (isRange) {
@@ -285,6 +286,7 @@ class View extends ViewComponent implements IPublisher {
       return (event as CustomEvent).detail !== undefined;
     }
 
+    // Ставит входящий бегунок поверх остальных
     function setRunnerToCurrent(runner: Runner): void {
       that.runnersAndTips.forEach((item, index) => {
         if (item.runner === runner) {
@@ -313,7 +315,8 @@ class View extends ViewComponent implements IPublisher {
       }
     }
 
-    // Оповещает подписчиков и передает им полученную позицию
+    // Получает позицию клика, вычисляет ближайший к позиции бегунок,
+    // оповещает подписчиков и передает им полученную позицию и индекс бегунка
     function handleSliderClick(event: Event): void {
       if (!isCustomEvent(event)) {
         throw new Error('not a custom event');
@@ -345,6 +348,7 @@ class View extends ViewComponent implements IPublisher {
     window.addEventListener('resize', handleResize);
   }
 
+  // Обновляет Вью, когда бегунков два
   protected updateViewForInterval(runnersPositions: number[], tipsValues: number[],
     scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() < 2) {
@@ -357,6 +361,7 @@ class View extends ViewComponent implements IPublisher {
     this.setRange(runnersPositions[0], runnersPositions[1]);
   }
 
+  // Обновляет Бегунки и подсказки, когда интервал
   protected updateAllTipsPositionAndText(runnersPositions: number[], tipsValues: number[]) {
     if (this.getRunnersAmount() < 2) {
       throw new Error('Runners amount is too small');
@@ -379,6 +384,7 @@ class View extends ViewComponent implements IPublisher {
     }
   }
 
+  // Обновляет Вью, когда только один бегунок
   protected updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
     scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() > 1) {

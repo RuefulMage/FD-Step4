@@ -1,7 +1,6 @@
 import View from '../View/ViewComponents/View';
 import Model from '../Model/Model';
 import IObserver from '../Observer/IObserver';
-import CONSTANTS from '../Utils/Constants';
 
 class Controller implements IObserver {
   protected model: Model;
@@ -41,6 +40,7 @@ class Controller implements IObserver {
     }
   }
 
+  // Обновляет значения в модели
   protected setValues(runnerIndex: number, position: number) {
     if (runnerIndex === 0) {
       this.model.setLowValueByPercent(position);
@@ -49,6 +49,7 @@ class Controller implements IObserver {
     }
   }
 
+  // Берет из Модели данные и передает их Вью для обновления
   protected updateView(): void{
     const runnerPositions = [this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
     const tipsValues = [this.model.getLowValue(), this.model.getHighValue()];
