@@ -29,16 +29,13 @@ class Strip extends ViewComponent {
       const runners = that.DOMNode.getElementsByClassName(CONSTANTS.runnerClassName);
       let isTargetRunner = false;
 
-      Object.entries(runners).forEach((key) => {
-        if (typeof key === 'number') {
-          if (event.target === runners[key]) {
-            isTargetRunner = true;
-          }
+      Object.entries(runners).forEach((key, index) => {
+        if (event.target === runners[index]) {
+          isTargetRunner = true;
         }
       });
 
       if (!isTargetRunner) {
-        const target = event.target as HTMLElement;
         const position = that.orientationBehavior
           .getPositionFromCoordinates(event.clientX, event.clientY, that.DOMNode);
 

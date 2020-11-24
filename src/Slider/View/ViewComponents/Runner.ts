@@ -60,7 +60,7 @@ class Runner extends ViewComponent {
         const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
           { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });
         that.DOMNode.dispatchEvent(changePositionEvent);
-      } catch (eventIsOutOfWindowError) {
+      } catch (error) {
         // eslint-disable-next-line @typescript-eslint/no-use-before-define
         handleMouseUp();
       }
@@ -93,12 +93,16 @@ class Runner extends ViewComponent {
     // пользовательское событие 'slider-drag', которое содержит объект бегунка
     // и вычисленную позицию
     function handleTouchMove(event: TouchEvent): void {
-      const touch: Touch = event.targetTouches[0];
-      const newPosition = that.getOrientationBehavior().getPositionFromCoordinates(touch.clientX,
-        touch.clientY, that.DOMNode);
-      const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
-        { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });
-      that.DOMNode.dispatchEvent(changePositionEvent);
+      try {
+        const touch: Touch = event.targetTouches[0];
+        const newPosition = that.getOrientationBehavior().getPositionFromCoordinates(touch.clientX,
+          touch.clientY, that.DOMNode);
+        const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
+          { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });
+        that.DOMNode.dispatchEvent(changePositionEvent);
+      } catch (error) {
+        handleTouchEnd(event);
+      }
     }
 
     // Удаляет обработчики событий движения и окончания касания
