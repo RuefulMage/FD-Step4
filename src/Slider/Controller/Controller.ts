@@ -1,6 +1,7 @@
 import View from '../View/ViewComponents/View';
 import Model from '../Model/Model';
 import IObserver from '../Observer/IObserver';
+import CONSTANTS from '../Utils/Constants';
 
 class Controller implements IObserver {
   protected model: Model;
@@ -52,7 +53,7 @@ class Controller implements IObserver {
     const runnerPositions = [this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
     const tipsValues = [this.model.getLowValue(), this.model.getHighValue()];
     const scalePositions = this.model
-      .splitIntervalByStep(this.view.computeDivisionsAmountAmountBySize());
+      .splitIntervalByStep(this.view.computeDivisionsAmountBySize());
     const isRange = this.model.getRangeStatus();
     this.view.updateView(runnerPositions, tipsValues, scalePositions, isRange);
   }

@@ -146,28 +146,6 @@ class View extends ViewComponent implements IPublisher {
     return this.isTipsHidden;
   }
 
-  public getTipsPositions(): number[] {
-    if (this.isTipsHidden) {
-      throw new Error('Tips is hidden!');
-    }
-    const positions: number[] = [];
-    this.runnersAndTips.forEach((item) => {
-      positions.push(item.runner.getPosition());
-    });
-    return positions;
-  }
-
-  public getTipsValues(): number[] {
-    if (this.isTipsHidden) {
-      throw new Error('Tips is hidden!');
-    }
-    const values: number[] = [];
-    this.runnersAndTips.forEach((item, index) => {
-      values.push(Number(item.tip.getDOMNode().innerText));
-    });
-    return values;
-  }
-
   // Ф-ии работы с режимом слайдера(промежуток или один бегунок)
   public setRange(minEdge: number, maxEdge: number): void {
     this.range.setLowEdge(minEdge);
@@ -256,7 +234,7 @@ class View extends ViewComponent implements IPublisher {
   }
 
   // По размерам слайдера, вычисляет кол-во отрезков шкалы
-  public computeDivisionsAmountAmountBySize(): number {
+  public computeDivisionsAmountBySize(): number {
     let sliderSize;
     if (this.orientation === Orientation.HORIZONTAL) {
       sliderSize = this.getDOMNode().clientWidth;
@@ -270,7 +248,6 @@ class View extends ViewComponent implements IPublisher {
     } else {
       return 3;
     }
-    return scaleDivisionsAmount;
   }
 
   public updateView(runnersPositions: number[], tipsValues: number[],
@@ -360,7 +337,7 @@ class View extends ViewComponent implements IPublisher {
     // Оповещает подписщиков об изменении размеров окна
     // и передает им высчитанное кол-во делений шкалы
     function handleResize(): void {
-      const scaleDivisionsAmount = that.computeDivisionsAmountAmountBySize();
+      const scaleDivisionsAmount = that.computeDivisionsAmountBySize();
       that.notify('resize', { scaleDivisionsAmount });
     }
 
