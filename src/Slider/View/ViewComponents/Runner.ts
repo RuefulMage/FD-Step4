@@ -101,6 +101,7 @@ class Runner extends ViewComponent {
           { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });
         that.DOMNode.dispatchEvent(changePositionEvent);
       } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         handleTouchEnd(event);
       }
     }

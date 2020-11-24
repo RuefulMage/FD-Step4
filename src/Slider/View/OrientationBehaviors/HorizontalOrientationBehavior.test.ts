@@ -13,6 +13,7 @@ describe('Horizontal orientation behavior class', () => {
         },
       },
       getBoundingClientRect: {
+        // eslint-disable-next-line fsd/hof-name-prefix
         get() {
           return function () {
             return {
@@ -63,7 +64,7 @@ describe('Horizontal orientation behavior class', () => {
 
       expect(() => {
         horizontalOrientationBehavior
-          .getPositionFromCoordinates(clientX, clientY, domElement)
+          .getPositionFromCoordinates(clientX, clientY, domElement);
       }).toThrowError();
     });
   });

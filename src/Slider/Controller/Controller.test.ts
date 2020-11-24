@@ -32,7 +32,7 @@ describe('Controller class', () => {
     document.body.append(parentElement);
 
     const view = new View(parentElement, viewOptions);
-    view.computeDivisionsAmountBySize = () => {return 10};
+    view.computeDivisionsAmountBySize = () => 10;
     View.prototype.updateView = mockUpdateView;
     const model = new Model(modelOptions);
 
@@ -45,8 +45,6 @@ describe('Controller class', () => {
     mockUpdateView.mock.calls.length = 0;
   });
 
-
-
   describe('Update method', () => {
     test('When position-change-by-drag happens, should set values in model',
       () => {
@@ -55,7 +53,6 @@ describe('Controller class', () => {
         expect(mockSetLowValueByPercent.mock.calls.length).toBe(1);
         expect(mockSetLowValueByPercent.mock.calls[0][0])
           .toEqual(80);
-
 
         controller.update('position-change-by-drag', { runnerIndex: 1, position: 85 });
 
@@ -71,7 +68,6 @@ describe('Controller class', () => {
         expect(mockSetLowValueByPercent.mock.calls.length).toBe(1);
         expect(mockSetLowValueByPercent.mock.calls[0][0])
           .toEqual(60);
-
 
         controller.update('position-change-by-click', { runnerIndex: 1, position: 75 });
 

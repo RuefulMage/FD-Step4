@@ -243,11 +243,10 @@ class View extends ViewComponent implements IPublisher {
     }
 
     const scaleDivisionsAmount = Math.ceil(sliderSize / 300) * 2;
-    if(scaleDivisionsAmount > 2){
+    if (scaleDivisionsAmount > 2) {
       return scaleDivisionsAmount;
-    } else {
-      return 3;
     }
+    return 3;
   }
 
   public updateView(runnersPositions: number[], tipsValues: number[],

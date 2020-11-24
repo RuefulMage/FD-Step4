@@ -271,16 +271,16 @@ class Model implements IPublisher {
   }
 
   public splitIntervalByStep(divisionsAmount: number): Map<number, number> {
-    divisionsAmount = divisionsAmount - 1;
-    if(divisionsAmount <= 1) {
-      throw new Error("divisionsAmount must be greater or equal than 2");
+    const segmentsAmount = divisionsAmount - 1;
+    if (segmentsAmount <= 1) {
+      throw new Error('divisionsAmount must be greater or equal than 2');
     }
     const maxAndMinDifference = this.getMaxValue() - this.getMinValue();
     const valuesAndPercents = new Map<number, number>();
     let currentValue = this.getMinValue();
     let currentValueInPercents = 0;
     let grow = 0;
-    while (grow < (maxAndMinDifference / divisionsAmount)) {
+    while (grow < (maxAndMinDifference / segmentsAmount)) {
       grow += this.getStep();
     }
     do {

@@ -6,6 +6,7 @@ import View from './View';
 const mockUpdate = jest.fn();
 
 class Observer implements IObserver {
+  // eslint-disable-next-line class-methods-use-this
   update(eventName: string, data?: any): void {
     mockUpdate(eventName, data);
   }
@@ -376,30 +377,30 @@ describe('View class', () => {
   describe('Set orientation', () => {
     test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes'
       + 'When scale is not defined case.',
-      () => {
-        options.orientation = Orientation.HORIZONTAL;
-        const view = new View(parentElement, options);
-        view.setOrientation(Orientation.VERTICAL);
-        const orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
+    () => {
+      options.orientation = Orientation.HORIZONTAL;
+      const view = new View(parentElement, options);
+      view.setOrientation(Orientation.VERTICAL);
+      const orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
 
-        expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
-        expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
-      });
+      expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
+      expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
+    });
 
     test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes.'
       + 'When scale is defined case',
-      () => {
-        options.orientation = Orientation.HORIZONTAL;
-        const view = new View(parentElement, options);
-        view.setOrientation(Orientation.VERTICAL);
-        const valuesAndPositions = new Map<number, number>();
-        valuesAndPositions.set(0, 0).set(50, 50).set(100, 100);
-        view.setScale(valuesAndPositions);
-        const orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
+    () => {
+      options.orientation = Orientation.HORIZONTAL;
+      const view = new View(parentElement, options);
+      view.setOrientation(Orientation.VERTICAL);
+      const valuesAndPositions = new Map<number, number>();
+      valuesAndPositions.set(0, 0).set(50, 50).set(100, 100);
+      view.setScale(valuesAndPositions);
+      const orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
 
-        expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
-        expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
-      });
+      expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
+      expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
+    });
 
     test('When scale should set orientation of scale', () => {
       options.orientation = Orientation.HORIZONTAL;
@@ -560,21 +561,21 @@ describe('View class', () => {
   });
 
   describe('Update view', () => {
-    test('Should update runners positions, ' +
-      'tips values and positions and scale. Range mode is interval', () => {
+    test('Should update runners positions, '
+      + 'tips values and positions and scale. Range mode is interval', () => {
       options.isRange = true;
       options.isTipsHidden = false;
       const view = new View(parentElement, options);
-      let runnersPositions = [10, 90];
-      let tipsValues = [20, 80];
-      let scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
+      const runnersPositions = [10, 90];
+      const tipsValues = [20, 80];
+      const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView(runnersPositions, tipsValues, scaleValues, true);
 
-      let realPositions = [view.getRunnerPosition(0), view.getRunnerPosition(1)];
-      let tips = view.getDOMNode().querySelectorAll(`.${CONSTANTS.tipClassName}`);
-      let realTipsValues = [Number(tips[0].innerHTML), Number(tips[1].innerHTML)];
-      let scaleSubItems = view.getDOMNode().querySelectorAll(`.${CONSTANTS.scaleSubElementClassName}`);
-      let realScaleValues: number[] = [];
+      const realPositions = [view.getRunnerPosition(0), view.getRunnerPosition(1)];
+      const tips = view.getDOMNode().querySelectorAll(`.${CONSTANTS.tipClassName}`);
+      const realTipsValues = [Number(tips[0].innerHTML), Number(tips[1].innerHTML)];
+      const scaleSubItems = view.getDOMNode().querySelectorAll(`.${CONSTANTS.scaleSubElementClassName}`);
+      const realScaleValues: number[] = [];
       scaleSubItems.forEach((value, key) => {
         realScaleValues.push(Number((value as HTMLElement).innerText));
       });
@@ -584,47 +585,47 @@ describe('View class', () => {
       expect(realScaleValues).toEqual(Array.from(scaleValues.keys()));
     });
 
-    test('Should update view and split tips in one, ' +
-      'when they are too close to each other', () => {
+    test('Should update view and split tips in one, '
+      + 'when they are too close to each other', () => {
       options.isRange = true;
       const view = new View(parentElement, options);
-      let runnersPositions = [88, 90];
-      let tipsValues = [88, 90];
-      let scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
+      const runnersPositions = [88, 90];
+      const tipsValues = [88, 90];
+      const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView(runnersPositions, tipsValues, scaleValues, true);
 
-      let tips = view.getDOMNode().querySelector(`.${CONSTANTS.tipClassName}`);
-      let realTipValue = tips.innerHTML;
+      const tips = view.getDOMNode().querySelector(`.${CONSTANTS.tipClassName}`);
+      const realTipValue = tips.innerHTML;
 
-      expect(realTipValue).toEqual(`88&nbsp;—&nbsp;90`);
+      expect(realTipValue).toEqual('88&nbsp;—&nbsp;90');
     });
 
-    test('Should update view and change mode to interval,' +
-      ' if runners amount equal one. Range mode is interval', () => {
+    test('Should update view and change mode to interval,'
+      + ' if runners amount equal one. Range mode is interval', () => {
       options.isRange = false;
       const view = new View(parentElement, options);
-      let runnersPositions = [10, 90];
-      let tipsValues = [20, 80];
-      let scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
+      const runnersPositions = [10, 90];
+      const tipsValues = [20, 80];
+      const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView(runnersPositions, tipsValues, scaleValues, true);
 
       expect(view.getRunnersAmount()).toBe(2);
     });
 
-    test('Should update runner position, ' +
-      'tip value and position and scale. Range mode is single value', () => {
+    test('Should update runner position, '
+      + 'tip value and position and scale. Range mode is single value', () => {
       options.isRange = false;
       const view = new View(parentElement, options);
-      let runnerPosition = [10];
-      let tipValue = [20];
-      let scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
+      const runnerPosition = [10];
+      const tipValue = [20];
+      const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView(runnerPosition, tipValue, scaleValues, false);
 
-      let realPosition = [view.getRunnerPosition(0)];
-      let tip = view.getDOMNode().querySelector(`.${CONSTANTS.tipClassName}`);
-      let realTipValue = [Number(tip.innerHTML)];
-      let scaleSubItems = view.getDOMNode().querySelectorAll(`.${CONSTANTS.scaleSubElementClassName}`);
-      let realScaleValues: number[] = [];
+      const realPosition = [view.getRunnerPosition(0)];
+      const tip = view.getDOMNode().querySelector(`.${CONSTANTS.tipClassName}`);
+      const realTipValue = [Number(tip.innerHTML)];
+      const scaleSubItems = view.getDOMNode().querySelectorAll(`.${CONSTANTS.scaleSubElementClassName}`);
+      const realScaleValues: number[] = [];
       scaleSubItems.forEach((value, key) => {
         realScaleValues.push(Number((value as HTMLElement).innerText));
       });
@@ -634,13 +635,13 @@ describe('View class', () => {
       expect(realScaleValues).toEqual(Array.from(scaleValues.keys()));
     });
 
-    test('Should update view and change mode to single value,' +
-      ' if runners amount more than one. Range mode is single value', () => {
+    test('Should update view and change mode to single value,'
+      + ' if runners amount more than one. Range mode is single value', () => {
       options.isRange = true;
       const view = new View(parentElement, options);
-      let runnerPosition = [10, 11];
-      let tipValue = [20, 21];
-      let scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
+      const runnerPosition = [10, 11];
+      const tipValue = [20, 21];
+      const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView(runnerPosition, tipValue, scaleValues, false);
 
       expect(view.getRunnersAmount()).toBe(1);

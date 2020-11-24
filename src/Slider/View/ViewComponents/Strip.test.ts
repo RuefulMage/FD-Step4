@@ -5,18 +5,22 @@ import Strip from './Strip';
 const mockGetPositionFromCoordinates = jest.fn();
 
 class OrientationBehavior implements IOrientationBehavior {
+  // eslint-disable-next-line class-methods-use-this
   getPositionFromCoordinates(clientX: number, clientY: number, domElement: HTMLElement): number {
     mockGetPositionFromCoordinates();
     return 0;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   resetStyles(runner: HTMLElement): void {
   }
 
+  // eslint-disable-next-line class-methods-use-this
   setPosition(newPosition: number, domElement: HTMLElement): number {
     return 0;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   setRangePositions(minEdge: number, maxEdge: number, domElement: HTMLElement): void {
   }
 }

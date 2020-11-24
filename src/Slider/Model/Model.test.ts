@@ -426,6 +426,7 @@ describe('Class Model', () => {
     const mockFunction = jest.fn();
 
     class Observer implements IObserver {
+      // eslint-disable-next-line class-methods-use-this
       update(eventName: string, data?: any): void {
       }
     }
@@ -479,9 +480,9 @@ describe('Class Model', () => {
     test('Should return map of values and values in percents', () => {
       const model = new Model(options);
 
-      let realResult = model.splitIntervalByStep(10);
-      let expectedResult = new Map([[0,0], [12,12], [24,24],[36,36],
-        [48,48],[60,60],[72,72],[84,84],[96,96],[100,100]]);
+      const realResult = model.splitIntervalByStep(10);
+      const expectedResult = new Map([[0, 0], [12, 12], [24, 24], [36, 36],
+        [48, 48], [60, 60], [72, 72], [84, 84], [96, 96], [100, 100]]);
 
       expect(realResult).toEqual(expectedResult);
     });
@@ -490,7 +491,7 @@ describe('Class Model', () => {
       const model = new Model(options);
 
       expect(() => {
-        model.splitIntervalByStep(1)
+        model.splitIntervalByStep(1);
       }).toThrowError();
     });
   });
