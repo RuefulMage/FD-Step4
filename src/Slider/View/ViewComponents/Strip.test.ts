@@ -4,8 +4,6 @@ import Strip from './Strip';
 
 const mockGetPositionFromCoordinates = jest.fn();
 
-/* eslint class-methods-use-this: ["error", { "exceptMethods": ["setPosition",
-"getPositionFromCoordinates", "resetStyles", "setRangePositions"] }] */
 class OrientationBehavior implements IOrientationBehavior {
   getPositionFromCoordinates(clientX: number, clientY: number, domElement: HTMLElement): number {
     mockGetPositionFromCoordinates();
@@ -54,7 +52,7 @@ describe('Strip class', () => {
   describe('Add handler', () => {
     test('When click happens, should create and dispatch slider-click event '
             + 'with position computed by orientationBehavior', () => {
-      const click = new MouseEvent('click', {
+      const click = new MouseEvent('mousedown', {
         bubbles: true,
         cancelable: true,
       });
@@ -75,7 +73,7 @@ describe('Strip class', () => {
       runner.classList.add(CONSTANTS.runnerClassName);
       strip.getDOMNode().appendChild(runner);
 
-      const click = new MouseEvent('click', {
+      const click = new MouseEvent('mousedown', {
         bubbles: true,
         cancelable: true,
       });

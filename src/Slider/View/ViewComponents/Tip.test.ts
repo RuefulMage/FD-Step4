@@ -5,8 +5,6 @@ import Tip from './Tip';
 const mockSetPosition = jest.fn();
 const mockFunctionForResetStyles = jest.fn();
 
-/* eslint class-methods-use-this: ["error", { "exceptMethods": ["setPosition",
-"getPositionFromCoordinates", "resetStyles", "setRangePositions"] }] */
 class OrientationBehavior implements IOrientationBehavior {
   getPositionFromCoordinates(clientX: number, clientY: number, domElement: HTMLElement): number {
     return 0;
@@ -79,7 +77,7 @@ describe('Tip class', () => {
     test('Should set dom element inner text to input string', () => {
       tip.setInnerText('testString');
 
-      expect(tip.getDOMNode().innerText).toBe('testString');
+      expect(tip.getDOMNode().innerHTML).toBe('testString');
     });
   });
 

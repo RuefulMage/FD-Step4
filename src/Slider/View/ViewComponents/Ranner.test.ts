@@ -8,10 +8,8 @@ describe('Runner class', () => {
   const mockGetPositionFromCoordinates = jest.fn();
   const mockSetPosition = jest.fn();
   const mockFunctionForResetStyles = jest.fn();
-  let orientationBehavior;
+  let orientationBehavior: IOrientationBehavior;
 
-  /* eslint class-methods-use-this: ["error", { "exceptMethods": ["setPosition",
-"getPositionFromCoordinates", "resetStyles", "setRangePositions"] }] */
   class OrientationBehavior implements IOrientationBehavior {
     getPositionFromCoordinates(clientX: number, clientY: number, domElement: HTMLElement): number {
       mockGetPositionFromCoordinates();
@@ -86,7 +84,7 @@ describe('Runner class', () => {
 
   describe('Set orientation behavior', () => {
     test('Should  set orientation behavior to input orientation behavior'
-            + 'and call resetStyles method of orientation behavior', () => {
+      + 'and call resetStyles method of orientation behavior', () => {
       orientationBehavior = new OrientationBehavior();
       runner.setOrientationBehavior(orientationBehavior);
 
@@ -108,45 +106,108 @@ describe('Runner class', () => {
 
   describe('Add mouse event listeners', () => {
     test('When mousedown and mousemove happen, should call getPositionFromCoordinates of orientation behavior '
-            + 'and generate custom event slider-drag and after mouseup behavior not calling',
-    () => {
-      const mousedown = new MouseEvent('mousedown');
-      const dragstart = new Event('dragstart');
-      const mousemove = new MouseEvent('mousemove', {
-        bubbles: true,
-        cancelable: true,
-        clientX: 100,
-        clientY: 100,
+      + 'and generate custom event slider-drag and after mouseup behavior not calling',
+      () => {
+        const mousedown = new MouseEvent('mousedown');
+        const dragstart = new Event('dragstart');
+        const mousemove = new MouseEvent('mousemove', {
+          bubbles: true,
+          cancelable: true,
+          clientX: 100,
+          clientY: 100,
+        });
+        const mockEventHandler = jest.fn();
+        parentElement.addEventListener('slider-drag', mockEventHandler);
+        runner.getDOMNode().dispatchEvent(mousedown);
+        runner.getDOMNode().dispatchEvent(dragstart);
+        runner.getDOMNode().dispatchEvent(mousemove);
+
+        expect(mockEventHandler.mock.calls.length).toBe(1);
+        expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
+
+        const mouseup = new MouseEvent('mouseup', {
+          bubbles: true,
+          cancelable: true,
+          clientX: 100,
+          clientY: 100,
+        });
+        runner.getDOMNode().dispatchEvent(mouseup);
+        runner.getDOMNode().dispatchEvent(mousemove);
+
+        expect(mockEventHandler.mock.calls.length).toBe(1);
+        expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
+
+        mockGetPositionFromCoordinates.mock.calls.length = 0;
       });
-      const mockEventHandler = jest.fn();
-      parentElement.addEventListener('slider-drag', mockEventHandler);
-      runner.getDOMNode().dispatchEvent(mousedown);
-      runner.getDOMNode().dispatchEvent(dragstart);
-      runner.getDOMNode().dispatchEvent(mousemove);
 
-      expect(mockEventHandler.mock.calls.length).toBe(1);
-      expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
+    test('Should call handleMouseUp, when happens Error', () => {
+        orientationBehavior.getPositionFromCoordinates = () => {
+          throw new Error('');
+        };
+        const mousedown = new MouseEvent('mousedown');
+        const dragstart = new Event('dragstart');
+        const mousemove = new MouseEvent('mousemove', {
+          bubbles: true,
+          cancelable: true,
+          clientX: 100,
+          clientY: 100,
+        });
+        const mockEventHandler = jest.fn();
+        parentElement.addEventListener('slider-drag', mockEventHandler);
 
-      const mouseup = new MouseEvent('mouseup', {
-        bubbles: true,
-        cancelable: true,
-        clientX: 100,
-        clientY: 100,
-      });
-      runner.getDOMNode().dispatchEvent(mouseup);
-      runner.getDOMNode().dispatchEvent(mousemove);
-
-      expect(mockEventHandler.mock.calls.length).toBe(1);
-      expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
-
-      mockGetPositionFromCoordinates.mock.calls.length = 0;
-    });
+        expect(() => {
+          runner.getDOMNode().dispatchEvent(mousedown);
+          runner.getDOMNode().dispatchEvent(dragstart);
+          runner.getDOMNode().dispatchEvent(mousemove);
+        }).not.toThrow();
+      }
+    );
   });
 
   describe('Add touch event listeners', () => {
     test('When touchstart and touchmove happen, should call getPositionFromCoordinates of orientation behavior '
-            + 'and generate custom event slider-drag and after mouseup behavior not calling',
-    () => {
+      + 'and generate custom event slider-drag and after mouseup behavior not calling',
+      () => {
+        const touchStart = new TouchEvent('touchstart');
+        const dragstart = new Event('dragstart');
+
+        const touch = { clientY: 100, clientX: 100 } as Touch;
+        const touchMove = new TouchEvent('touchmove', {
+          bubbles: true,
+          cancelable: true,
+          targetTouches: [touch],
+        });
+
+        const mockTouchEventHandler = jest.fn();
+        parentElement.addEventListener('slider-drag', mockTouchEventHandler);
+        runner.getDOMNode().dispatchEvent(touchStart);
+        runner.getDOMNode().dispatchEvent(dragstart);
+        runner.getDOMNode().dispatchEvent(touchMove);
+
+        expect(mockTouchEventHandler.mock.calls.length).toBe(1);
+        expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
+
+        const touchEndEvent: TouchEventInit = {
+          bubbles: true,
+          cancelable: true,
+          clientX: 100,
+          clientY: 100,
+        } as TouchEventInit;
+
+        const touchEnd = new TouchEvent('touchend', touchEndEvent);
+        runner.getDOMNode().dispatchEvent(touchEnd);
+        runner.getDOMNode().dispatchEvent(touchMove);
+
+        expect(mockTouchEventHandler.mock.calls.length).toBe(1);
+        expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
+
+        mockGetPositionFromCoordinates.mock.calls.length = 0;
+      });
+
+    test('Should call touchend, when happens Error', () => {
+        orientationBehavior.getPositionFromCoordinates = () => {
+          throw new Error('');
+        };
       const touchStart = new TouchEvent('touchstart');
       const dragstart = new Event('dragstart');
 
@@ -159,28 +220,14 @@ describe('Runner class', () => {
 
       const mockTouchEventHandler = jest.fn();
       parentElement.addEventListener('slider-drag', mockTouchEventHandler);
-      runner.getDOMNode().dispatchEvent(touchStart);
-      runner.getDOMNode().dispatchEvent(dragstart);
-      runner.getDOMNode().dispatchEvent(touchMove);
 
-      expect(mockTouchEventHandler.mock.calls.length).toBe(1);
-      expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
 
-      const touchEndEvent: TouchEventInit = {
-        bubbles: true,
-        cancelable: true,
-        clientX: 100,
-        clientY: 100,
-      } as TouchEventInit;
-
-      const touchEnd = new TouchEvent('touchend', touchEndEvent);
-      runner.getDOMNode().dispatchEvent(touchEnd);
-      runner.getDOMNode().dispatchEvent(touchMove);
-
-      expect(mockTouchEventHandler.mock.calls.length).toBe(1);
-      expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
-
-      mockGetPositionFromCoordinates.mock.calls.length = 0;
-    });
+        expect(() => {
+          runner.getDOMNode().dispatchEvent(touchStart);
+          runner.getDOMNode().dispatchEvent(dragstart);
+          runner.getDOMNode().dispatchEvent(touchMove);
+        }).not.toThrow();
+      }
+    );
   });
 });
