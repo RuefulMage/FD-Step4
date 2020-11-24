@@ -17,8 +17,6 @@
   "plugins": ["@typescript-eslint", "fsd", "jest"],
   "rules": {
     "@typescript-eslint/no-unused-vars": "off",
-//    "class-methods-use-this": ["error", { "exceptMethods": ["update"] }],
     "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsForRegex": ["^domElement"] }]
-//    "fsd/hof-name-prefix": "off"
   }
 }
