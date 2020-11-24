@@ -8,6 +8,7 @@ class VerticalOrientationBehavior implements IOrientationBehavior {
   public setPosition(newPosition: number, domElement: HTMLElement): void {
     const parentHeight = domElement.parentElement.offsetHeight;
     const domElementHeightInPercent = (domElement.offsetHeight / parentHeight) * 100;
+    // eslint-disable-next-line no-param-reassign
     domElement.style.bottom = `${newPosition - domElementHeightInPercent / 2}%`;
   }
 
@@ -34,7 +35,9 @@ class VerticalOrientationBehavior implements IOrientationBehavior {
   // получает дом-элемент и граничные значения относительно родителя
   // и растягивает элемент до этих значений
   public setRangePositions(minEdge: number, maxEdge: number, domElement: HTMLElement): void {
+    // eslint-disable-next-line no-param-reassign
     domElement.style.bottom = `${minEdge}%`;
+    // eslint-disable-next-line no-param-reassign
     domElement.style.top = `${100 - maxEdge}%`;
   }
 }

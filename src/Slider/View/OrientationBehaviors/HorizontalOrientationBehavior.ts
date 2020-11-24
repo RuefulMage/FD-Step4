@@ -8,6 +8,7 @@ class HorizontalOrientationBehavior implements IOrientationBehavior {
   public setPosition(newPosition: number, domElement: HTMLElement): void {
     const parentWidth = domElement.parentElement.offsetWidth;
     const domElementWidthInPercent = (domElement.offsetWidth / parentWidth) * 100;
+    // eslint-disable-next-line no-param-reassign
     domElement.style.left = `${newPosition - domElementWidthInPercent / 2}%`;
   }
 
@@ -34,7 +35,9 @@ class HorizontalOrientationBehavior implements IOrientationBehavior {
   // получает дом-элемент и граничные значения относительно родителя
   // и растягивает элемент до этих значений
   public setRangePositions(minEdge: number, maxEdge: number, domElement: HTMLElement): void {
+    // eslint-disable-next-line no-param-reassign
     domElement.style.left = `${minEdge}%`;
+    // eslint-disable-next-line no-param-reassign
     domElement.style.right = `${100 - maxEdge}%`;
   }
 }

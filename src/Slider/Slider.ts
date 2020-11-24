@@ -129,7 +129,6 @@ class Slider implements IObserver {
   $.fn.slider = function (userOptions: SliderOptions) {
     const options = $.extend(true, $.fn.slider.defaultOptions, userOptions);
 
-    // eslint-disable-next-line no-param-reassign
     return this.each(function () {
       if (!$(this).data('slider')) {
         const slider = new Slider(this, options);
