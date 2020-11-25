@@ -47,5 +47,7 @@ declare class Model implements IPublisher {
     validateValueInPercent(value: number): number;
     convertPercentToValue(valueInPercent: number): number;
     convertValueToPercent(value: number): number;
+    validateRangeDivisionsAmount(divisionsAmount: number): number;
+    splitIntervalByStep(divisionsAmount: number): Map<number, number>;
 }
 export default Model;

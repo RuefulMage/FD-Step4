@@ -5,6 +5,7 @@ declare const CONSTANTS: {
     rangeClassName: string;
     scaleClassName: string;
     runnerClassName: string;
+    runnerCurrentModifier: string;
     stripClassName: string;
     scaleSubElementClassName: string;
     scaleSubElementMaxAmount: number;

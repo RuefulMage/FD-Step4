@@ -8,6 +8,7 @@ declare class Runner extends ViewComponent {
     setPosition(value: number): void;
     getOrientationBehavior(): IOrientationBehavior;
     setOrientationBehavior(value: IOrientationBehavior): void;
+    setCurrentStatus(newStatus: boolean): void;
     protected addMouseEventsHandlers(): void;
     protected addTouchEventsHandler(): void;
 }

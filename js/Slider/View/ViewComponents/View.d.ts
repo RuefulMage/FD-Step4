@@ -45,10 +45,15 @@ declare class View extends ViewComponent implements IPublisher {
     setOrientation(orientation: Orientation): void;
     setScale(valuesAndPositions: Map<number, number>): void;
     reCreateScale(): void;
-    getDivisionsAmount(): number;
+    computeDivisionsAmountBySize(): number;
+    updateView(runnersPositions: number[], tipsValues: number[], scalePositions: Map<number, number>, isRange: boolean): void;
     attach(observer: IObserver): void;
     detach(observer: IObserver): void;
     notify(eventType: string, data?: any): void;
     protected addHandlers(): void;
+    protected updateViewForInterval(runnersPositions: number[], tipsValues: number[], scalePositions: Map<number, number>): void;
+    protected updateAllTipsPositionAndText(runnersPositions: number[], tipsValues: number[]): void;
+    protected updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[], scalePositions: Map<number, number>): void;
+    protected joinTips(tipsValues: number[], tipsPositions: number[]): void;
 }
 export default View;
