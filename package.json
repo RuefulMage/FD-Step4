@@ -41,16 +41,11 @@
     "copy-webpack-plugin": "^6.0.3",
     "css-loader": "^3.6.0",
     "cssnano": "^4.1.10",
+    "eslint": "^7.4.0",
     "eslint-config-airbnb-typescript": "^9.0.0",
-    "eslint-config-prettier": "^6.11.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-fsd": "^1.0.1",
-    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^23.20.0",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-react-hooks": "^4.2.0",
     "gh-pages": "^3.1.0",
     "html-webpack-plugin": "^4.3.0",
     "jest": "^26.1.0",
@@ -58,12 +53,9 @@
     "node-sass": "^4.14.1",
     "path": "^0.12.7",
     "postcss-loader": "^3.0.0",
-    "prettier": "^2.0.5",
-    "prettier-loader": "^3.3.0",
     "pug": "^3.0.0",
     "pug-loader": "^2.4.0",
     "sass-loader": "^8.0.2",
-    "sonarjs": "^1.0.0",
     "style-loader": "^1.2.1",
     "ts-jest": "^26.1.1",
     "ts-loader": "^8.0.0",
@@ -75,7 +67,6 @@
   },
   "dependencies": {
     "big.js": "^5.2.2",
-    "eslint": "^7.4.0",
     "jquery": "^3.5.1"
   }
 }
