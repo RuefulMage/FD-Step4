@@ -11,17 +11,17 @@ import Tip from './Tip';
 
 
 class View extends ViewComponent{
-  protected strip: Strip;
+  private strip: Strip;
 
-  protected range: Range;
+  private range: Range;
 
-  protected scale: Scale;
+  private scale: Scale;
 
-  protected orientation: Orientation;
+  private orientation: Orientation;
 
-  protected runnersAndTips: Map<number, { runner: Runner, tip: Tip }>;
+  private runnersAndTips: Map<number, { runner: Runner, tip: Tip }>;
 
-  protected isTipsHidden: boolean;
+  private isTipsHidden: boolean;
 
   constructor(parentNode: HTMLElement, options: {
     orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
@@ -67,53 +67,9 @@ class View extends ViewComponent{
     this.addHandlers();
   }
 
-  // Ф-ии чтения и изменения св-в бегунков
-
-  public getRunnersAmount(): number {
-    return this.runnersAndTips.size;
-  }
-
-  public setRunnerPosition(runnerIndex: number, position: number): void {
-    const isRunnerExist = !(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0);
-
-    if (!isRunnerExist) {
-      throw new Error(`runner with index: ${runnerIndex} does not exits`);
-    }
-    this.runnersAndTips.get(runnerIndex).runner.setPosition(position);
-  }
-
-  public getRunnerPosition(runnerIndex: number): number {
-    const isRunnerExist = !(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0);
-
-    if (!isRunnerExist) {
-      throw new Error(`runner with index: ${runnerIndex} does not exits`);
-    }
-    return this.runnersAndTips.get(runnerIndex).runner.getPosition();
-  }
-
-  // Ф-ии изменения и чтения св-в подсказок
-  public setTipPosition(tipIndex: number, position: number): void {
-    const isTipExist = !(tipIndex >= this.getRunnersAmount() || tipIndex < 0);
-
-    if (!isTipExist) {
-      throw new Error(`tip with index ${tipIndex} does not exits`);
-    }
-    const { tip } = this.runnersAndTips.get(tipIndex);
-    tip.setPosition(position);
-  }
-
-  public setTipText(tipIndex: number, text: string): void {
-    const { tip } = this.runnersAndTips.get(tipIndex);
-    tip.setInnerText(text);
-  }
-
   public hideTips(): void {
     this.isTipsHidden = true;
     this.runnersAndTips.forEach(((item) => item.tip.hide()));
-  }
-
-  public hideTip(tipIndex: number): void {
-    this.runnersAndTips.get(tipIndex).tip.hide();
   }
 
   public showTips(): void {
@@ -133,56 +89,8 @@ class View extends ViewComponent{
     }
   }
 
-  public showTip(tipIndex: number): void {
-    this.isTipsHidden = false;
-    const { tip } = this.runnersAndTips.get(tipIndex);
-    tip.show();
-    tip.setPosition(this.getRunnerPosition(tipIndex));
-  }
-
   public getHideStatus(): boolean {
     return this.isTipsHidden;
-  }
-
-  // Ф-ии работы с режимом слайдера(промежуток или один бегунок)
-  public setRange(minEdge: number, maxEdge: number): void {
-    this.range.setLowEdge(minEdge);
-    this.range.setHighEdge(maxEdge);
-  }
-
-  public changeModeToRange(highRunnerPosition: number, highValue: number): void {
-    if (this.runnersAndTips.size === 2) {
-      return;
-    }
-
-    const orientationBehavior = OrientationBehaviorBuilder
-      .getOrientationBehaviorByOrientation(this.orientation);
-
-    const runner = new Runner(this.strip.getDOMNode(), orientationBehavior);
-    runner.setPosition(highRunnerPosition);
-
-    const tip = new Tip(this.strip.getDOMNode(), orientationBehavior, this.isTipsHidden);
-    tip.setInnerText(highValue.toString());
-    tip.setPosition(highRunnerPosition);
-
-    this.runnersAndTips.set(1, { runner, tip });
-    this.setRange(this.runnersAndTips.get(0).runner.getPosition(),
-      this.runnersAndTips.get(1).runner.getPosition());
-  }
-
-  public changeModeToSingle(): void {
-    if (this.runnersAndTips.size === 1) {
-      return;
-    }
-
-    const { runner } = this.runnersAndTips.get(1);
-    const { tip } = this.runnersAndTips.get(1);
-
-    this.runnersAndTips.delete(1);
-    runner.destroy();
-    tip.destroy();
-
-    this.setRange(0, this.runnersAndTips.get(0).runner.getPosition());
   }
 
   // Ф-ии работы с ориентацией слайдера
@@ -209,25 +117,6 @@ class View extends ViewComponent{
     this.strip.setOrientationBehavior(orientationBehavior);
     if (this.scale !== undefined) {
       this.scale.setOrientationBehavior(orientationBehavior);
-    }
-  }
-
-  // Ф-ии чтения и изменения св-в шкалы
-  public setScale(valuesAndPositions: Map<number, number>): void {
-    if (this.scale === undefined) {
-      const orientationBehavior = OrientationBehaviorBuilder
-        .getOrientationBehaviorByOrientation(this.orientation);
-      this.scale = new Scale(this.getDOMNode(),
-        { valuesAndPositions, orientationBehavior });
-    } else {
-      this.scale.setScale(valuesAndPositions);
-    }
-  }
-
-  // Пересоздает шкалу со старыми делениями
-  public reCreateScale(): void {
-    if (this.scale !== undefined) {
-      this.scale.reCreateScale();
     }
   }
 
@@ -259,24 +148,117 @@ class View extends ViewComponent{
     }
   }
 
-  // // Ф-ии оповещателя
-  // public attach(observer: IObserver): void {
-  //   this.observers.add(observer);
-  // }
-  //
-  // public detach(observer: IObserver): void {
-  //   this.observers.delete(observer);
-  // }
-  //
-  // public notify(eventType: string, data?: any): void {
-  //   if (data !== undefined) {
-  //     this.observers.forEach((observer: IObserver) => observer.update(eventType, data));
-  //   } else {
-  //     this.observers.forEach((observer: IObserver) => observer.update(eventType));
-  //   }
-  // }
+  protected hideTip(tipIndex: number): void {
+    this.runnersAndTips.get(tipIndex).tip.hide();
+  }
 
-  // Навешивает обработчики кастомных событий 'slider-drag' и 'slider-click' и события resize
+  protected showTip(tipIndex: number): void {
+    this.isTipsHidden = false;
+    const { tip } = this.runnersAndTips.get(tipIndex);
+    tip.show();
+    tip.setPosition(this.getRunnerPosition(tipIndex));
+  }
+
+  // Ф-ии работы с режимом слайдера(промежуток или один бегунок)
+  protected setRange(minEdge: number, maxEdge: number): void {
+    this.range.setLowEdge(minEdge);
+    this.range.setHighEdge(maxEdge);
+  }
+
+  protected changeModeToRange(highRunnerPosition: number, highValue: number): void {
+    if (this.runnersAndTips.size === 2) {
+      return;
+    }
+
+    const orientationBehavior = OrientationBehaviorBuilder
+      .getOrientationBehaviorByOrientation(this.orientation);
+
+    const runner = new Runner(this.strip.getDOMNode(), orientationBehavior);
+    runner.setPosition(highRunnerPosition);
+
+    const tip = new Tip(this.strip.getDOMNode(), orientationBehavior, this.isTipsHidden);
+    tip.setInnerText(highValue.toString());
+    tip.setPosition(highRunnerPosition);
+
+    this.runnersAndTips.set(1, { runner, tip });
+    this.setRange(this.runnersAndTips.get(0).runner.getPosition(),
+      this.runnersAndTips.get(1).runner.getPosition());
+  }
+
+  protected changeModeToSingle(): void {
+    if (this.runnersAndTips.size === 1) {
+      return;
+    }
+
+    const { runner } = this.runnersAndTips.get(1);
+    const { tip } = this.runnersAndTips.get(1);
+
+    this.runnersAndTips.delete(1);
+    runner.destroy();
+    tip.destroy();
+
+    this.setRange(0, this.runnersAndTips.get(0).runner.getPosition());
+  }
+
+  // Ф-ии чтения и изменения св-в шкалы
+  protected setScale(valuesAndPositions: Map<number, number>): void {
+    if (this.scale === undefined) {
+      const orientationBehavior = OrientationBehaviorBuilder
+        .getOrientationBehaviorByOrientation(this.orientation);
+      this.scale = new Scale(this.getDOMNode(),
+        { valuesAndPositions, orientationBehavior });
+    } else {
+      this.scale.setScale(valuesAndPositions);
+    }
+  }
+
+  // Ф-ии чтения и изменения св-в бегунков
+
+  protected getRunnersAmount(): number {
+    return this.runnersAndTips.size;
+  }
+
+  protected setRunnerPosition(runnerIndex: number, position: number): void {
+    const isRunnerExist = !(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0);
+
+    if (!isRunnerExist) {
+      throw new Error(`runner with index: ${runnerIndex} does not exits`);
+    }
+    this.runnersAndTips.get(runnerIndex).runner.setPosition(position);
+  }
+
+  protected getRunnerPosition(runnerIndex: number): number {
+    const isRunnerExist = !(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0);
+
+    if (!isRunnerExist) {
+      throw new Error(`runner with index: ${runnerIndex} does not exits`);
+    }
+    return this.runnersAndTips.get(runnerIndex).runner.getPosition();
+  }
+
+  // Ф-ии изменения и чтения св-в подсказок
+  protected setTipPosition(tipIndex: number, position: number): void {
+    const isTipExist = !(tipIndex >= this.getRunnersAmount() || tipIndex < 0);
+
+    if (!isTipExist) {
+      throw new Error(`tip with index ${tipIndex} does not exits`);
+    }
+    const { tip } = this.runnersAndTips.get(tipIndex);
+    tip.setPosition(position);
+  }
+
+  protected setTipText(tipIndex: number, text: string): void {
+    const { tip } = this.runnersAndTips.get(tipIndex);
+    tip.setInnerText(text);
+  }
+
+  // Пересоздает шкалу со старыми делениями
+  protected reCreateScale(): void {
+    if (this.scale !== undefined) {
+      this.scale.reCreateScale();
+    }
+  }
+
   protected addHandlers(): void {
     const that: View = this;
 

@@ -1,10 +1,6 @@
 import IOrientationBehavior from './IOrientationBehavior';
 
-/* eslint class-methods-use-this: ["error", { "exceptMethods": ["setPosition",
-"getPositionFromCoordinates", "resetStyles", "setRangePositions"] }] */
 class VerticalOrientationBehavior implements IOrientationBehavior {
-  // Получает новую позицию относительно родителя и дом-элемент и
-  // присваивает свойству bottom этого элемента новую позицию - половину высоты этого элемента
   public setPosition(newPosition: number, domElement: HTMLElement): void {
     const parentHeight = domElement.parentElement.offsetHeight;
     const domElementHeightInPercent = (domElement.offsetHeight / parentHeight) * 100;
@@ -27,7 +23,6 @@ class VerticalOrientationBehavior implements IOrientationBehavior {
     return (100 - position);
   }
 
-  // Очищает инлайновые стили полученного элемента
   public resetStyles(domElement: HTMLElement): void {
     domElement.setAttribute('style', '');
   }

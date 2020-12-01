@@ -3,11 +3,11 @@ import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
 
 class Range extends ViewComponent {
-  protected lowEdge: number;
+  private lowEdge: number;
 
-  protected highEdge: number;
+  private highEdge: number;
 
-  protected orientationBehavior: IOrientationBehavior;
+  private orientationBehavior: IOrientationBehavior;
 
   constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior,
     lowEdge: number = 0, highEdge: number = 100) {

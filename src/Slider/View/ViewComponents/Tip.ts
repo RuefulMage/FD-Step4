@@ -3,9 +3,9 @@ import CONSTANTS from '../../Utils/Constants';
 import ViewComponent from './ViewComponent';
 
 class Tip extends ViewComponent {
-  protected isHidden: boolean;
+  private isHidden: boolean;
 
-  protected orientationBehavior: IOrientationBehavior;
+  private orientationBehavior: IOrientationBehavior;
 
   constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior,
     isHidden: boolean = true) {

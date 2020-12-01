@@ -2,17 +2,17 @@ import Big from 'big.js';
 import Publisher from '../Publisher/Publisher';
 
 class Model extends Publisher{
-  protected isRange: boolean;
+  private isRange: boolean;
 
-  protected maxValue: number;
+  private maxValue: number;
 
-  protected minValue: number;
+  private minValue: number;
 
-  protected lowValue: number;
+  private lowValue: number;
 
-  protected highValue: number;
+  private highValue: number;
 
-  protected step: number;
+  private step: number;
 
   constructor(options: {
     isRange?: boolean, minValue?: number,
@@ -176,10 +176,36 @@ class Model extends Publisher{
       this.notify('step-change', {});
     }
   }
+
+
+  // Делит интервал на равные отрезки
+  public splitIntervalByStep(divisionsAmount: number): Map<number, number> {
+    const segmentsAmount = divisionsAmount - 1;
+    if (segmentsAmount <= 1) {
+      throw new Error('divisionsAmount must be greater or equal than 2');
+    }
+    const maxAndMinDifference = this.getMaxValue() - this.getMinValue();
+    const valuesAndPercents = new Map<number, number>();
+    let currentValue = this.getMinValue();
+    let currentValueInPercents = 0;
+    let grow = 0;
+    while (grow < (maxAndMinDifference / segmentsAmount)) {
+      grow += this.getStep();
+    }
+    do {
+      currentValue = this.validateValue(currentValue);
+      currentValueInPercents = this.convertValueToPercent(currentValue);
+      valuesAndPercents.set(currentValue, currentValueInPercents);
+      currentValue += grow;
+    } while (currentValueInPercents < 100);
+    return valuesAndPercents;
+  }
+
+
   // Проверяет значение на то, что оно находится в промежутке [minValue: maxValue]
   // и изменяет его на ближайшее число,
   // которое соответствует шагу.
-  public validateValue(value: number): number {
+  protected validateValue(value: number): number {
     let validatedValue;
     if (value <= this.minValue) {
       validatedValue = this.minValue;
@@ -202,7 +228,7 @@ class Model extends Publisher{
   // Проверяет значение на то, что оно находится в промежутке [0; 100]
   // и изменяет его на ближайшее число,
   // которое соответствует шагу.
-  public validateValueInPercent(value: number): number {
+  protected validateValueInPercent(value: number): number {
     let validatedValue;
     if (value >= 100) {
       validatedValue = 100;
@@ -227,14 +253,14 @@ class Model extends Publisher{
     return validatedValue;
   }
 
-  public convertPercentToValue(valueInPercent: number): number {
+  protected convertPercentToValue(valueInPercent: number): number {
     const differenceBetweenMaxAndMin = Big(this.maxValue).minus(this.minValue);
     const valuePartOfTotal = Big(valueInPercent).div(100);
     const value = Big(this.minValue).plus((valuePartOfTotal.times(differenceBetweenMaxAndMin)));
     return Number(value);
   }
 
-  public convertValueToPercent(value: number): number {
+  protected convertValueToPercent(value: number): number {
     const differenceBetweenMaxAndMin = Big(this.maxValue).minus(this.minValue);
     const differenceBetweenValueAndMin = Big(value).minus(this.minValue);
     const valueInPercent = (differenceBetweenValueAndMin.div(differenceBetweenMaxAndMin))
@@ -245,36 +271,13 @@ class Model extends Publisher{
   // Проверяет, можно ли поделить интервал на входное кол-во отрезков,
   // если да, то возвращает входное значение, если нет, то возвращает
   // максимально возможное
-  public validateRangeDivisionsAmount(divisionsAmount: number): number {
+  protected validateRangeDivisionsAmount(divisionsAmount: number): number {
     const maxAndMinDifference = Big(this.getMaxValue()).minus(this.getMinValue());
     const stepsInRange = Number(maxAndMinDifference.div(this.getStep())) + 1;
     if (stepsInRange >= divisionsAmount) {
       return divisionsAmount;
     }
     return stepsInRange;
-  }
-
-  // Делит интервал на равные отрезки
-  public splitIntervalByStep(divisionsAmount: number): Map<number, number> {
-    const segmentsAmount = divisionsAmount - 1;
-    if (segmentsAmount <= 1) {
-      throw new Error('divisionsAmount must be greater or equal than 2');
-    }
-    const maxAndMinDifference = this.getMaxValue() - this.getMinValue();
-    const valuesAndPercents = new Map<number, number>();
-    let currentValue = this.getMinValue();
-    let currentValueInPercents = 0;
-    let grow = 0;
-    while (grow < (maxAndMinDifference / segmentsAmount)) {
-      grow += this.getStep();
-    }
-    do {
-      currentValue = this.validateValue(currentValue);
-      currentValueInPercents = this.convertValueToPercent(currentValue);
-      valuesAndPercents.set(currentValue, currentValueInPercents);
-      currentValue += grow;
-    } while (currentValueInPercents < 100);
-    return valuesAndPercents;
   }
 }
 

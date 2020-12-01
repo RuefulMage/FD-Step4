@@ -2,7 +2,7 @@ import CONSTANTS from '../../Utils/Constants';
 import ViewComponent from './ViewComponent';
 
 class ScaleSubElement extends ViewComponent {
-  protected position: number;
+  private position: number;
 
   constructor(parentNode: HTMLElement, position: number) {
     super(parentNode, CONSTANTS.scaleSubElementClassName);

@@ -3,7 +3,7 @@ import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
 
 class Strip extends ViewComponent {
-  protected orientationBehavior: IOrientationBehavior;
+  private orientationBehavior: IOrientationBehavior;
 
   constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior) {
     super(parentNode, CONSTANTS.stripClassName);

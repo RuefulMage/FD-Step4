@@ -4,9 +4,9 @@ import ViewComponent from './ViewComponent';
 import ScaleSubElement from './ScaleSubElement';
 
 class Scale extends ViewComponent {
-  protected subElements: ScaleSubElement[] = [];
+  private subElements: ScaleSubElement[] = [];
 
-  protected orientationBehavior: IOrientationBehavior;
+  private orientationBehavior: IOrientationBehavior;
 
   constructor(parentNode: HTMLElement, options: {
     orientationBehavior: IOrientationBehavior,
@@ -17,7 +17,7 @@ class Scale extends ViewComponent {
     this.init(orientationBehavior, valuesAndPositions);
   }
 
-  public init(orientationBehavior: IOrientationBehavior,
+  protected init(orientationBehavior: IOrientationBehavior,
     valuesAndPositions: Map<number, number>) {
     this.orientationBehavior = orientationBehavior;
     this.setScale(valuesAndPositions);

@@ -6,13 +6,13 @@ import Orientation from './Utils/Orientation';
 import Logger from './Utils/Logger';
 
 class Slider {
-  protected view: View;
+  private view: View;
 
-  protected model: Model;
+  private model: Model;
 
-  protected controller: Controller;
+  private controller: Controller;
 
-  protected rootElement: HTMLElement;
+  private rootElement: HTMLElement;
 
   constructor(rootElement: HTMLElement, options: SliderOptions) {
     this.rootElement = rootElement;

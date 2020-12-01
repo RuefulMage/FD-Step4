@@ -3,9 +3,9 @@ import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
 
 class Runner extends ViewComponent {
-  protected position: number;
+  private position: number;
 
-  protected orientationBehavior: IOrientationBehavior;
+  private orientationBehavior: IOrientationBehavior;
 
   constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior,
     startPosition: number = 0) {
@@ -42,7 +42,6 @@ class Runner extends ViewComponent {
     }
   }
 
-  // Навешивает обработчики событий мыши на дом-элемент бегунка для Drag'n'Drop
   protected addMouseEventsHandlers(): void {
     const that: Runner = this;
 

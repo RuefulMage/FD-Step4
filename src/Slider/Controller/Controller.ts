@@ -3,9 +3,9 @@ import Model from '../Model/Model';
 import ViewEventName from '../Utils/ViewEventName';
 
 class Controller{
-  protected model: Model;
+  private model: Model;
 
-  protected view: View;
+  private view: View;
 
   constructor(view: View, model: Model) {
     this.init(view, model);

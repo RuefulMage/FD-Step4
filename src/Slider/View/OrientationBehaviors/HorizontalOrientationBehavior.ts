@@ -1,10 +1,7 @@
 import IOrientationBehavior from './IOrientationBehavior';
 
-/* eslint class-methods-use-this: ["error", { "exceptMethods": ["setPosition",
-"getPositionFromCoordinates", "resetStyles", "setRangePositions"] }] */
 class HorizontalOrientationBehavior implements IOrientationBehavior {
-  // Получает новую позицию относительно родителя и дом-элемент и
-  // присваивает свойству left этого элемента новую позицию - половину ширины этого элемента
+
   public setPosition(newPosition: number, domElement: HTMLElement): void {
     const parentWidth = domElement.parentElement.offsetWidth;
     const domElementWidthInPercent = (domElement.offsetWidth / parentWidth) * 100;
@@ -27,7 +24,6 @@ class HorizontalOrientationBehavior implements IOrientationBehavior {
     return position;
   }
 
-  // Очищает инлайновые стили полученного элемента
   public resetStyles(domElement: HTMLElement): void {
     domElement.setAttribute('style', '');
   }
