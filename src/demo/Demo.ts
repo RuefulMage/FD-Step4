@@ -2,27 +2,27 @@ import SliderOptions from '../Slider/Utils/SliderOptions';
 import Slider from '../Slider/Slider';
 
 class Demo {
-  protected sliderElement: JQuery<HTMLElement>;
+  private sliderElement: JQuery<HTMLElement>;
 
-  protected panelElement: HTMLElement;
+  private panelElement: HTMLElement;
 
-  protected slider: Slider;
+  private slider: Slider;
 
-  protected maxValueInput: HTMLInputElement;
+  private maxValueInput: HTMLInputElement;
 
-  protected minValueInput: HTMLInputElement;
+  private minValueInput: HTMLInputElement;
 
-  protected lowValueInput: HTMLInputElement;
+  private lowValueInput: HTMLInputElement;
 
-  protected highValueInput: HTMLInputElement;
+  private highValueInput: HTMLInputElement;
 
-  protected stepInput: HTMLInputElement;
+  private stepInput: HTMLInputElement;
 
-  protected isRangeInput: HTMLInputElement;
+  private isRangeInput: HTMLInputElement;
 
-  protected isTipsHiddenInput: HTMLInputElement;
+  private isTipsHiddenInput: HTMLInputElement;
 
-  protected isVerticalInput: HTMLInputElement;
+  private isVerticalInput: HTMLInputElement;
 
   constructor(sliderElement: JQuery, panelElement: HTMLElement, sliderOptions: SliderOptions) {
     this.panelElement = panelElement;
@@ -31,7 +31,7 @@ class Demo {
     this.init();
   }
 
-  init(): void {
+  private init(): void {
     this.initMaxValueInput();
     this.initMinValueInput();
     this.initLowValueInput();
