@@ -1,8 +1,7 @@
 import Big from 'big.js';
-import IPublisher from '../Observer/IPublisher';
-import IObserver from '../Observer/IObserver';
+import Publisher from '../Publisher/Publisher';
 
-class Model implements IPublisher {
+class Model extends Publisher{
   protected isRange: boolean;
 
   protected maxValue: number;
@@ -15,13 +14,12 @@ class Model implements IPublisher {
 
   protected step: number;
 
-  protected observers: Set<IObserver> = new Set<IObserver>();
-
   constructor(options: {
     isRange?: boolean, minValue?: number,
     maxValue?: number, startValueLow?: number,
     startValueHigh?: number, step?: number
   }) {
+    super();
     this.init(options);
   }
 
@@ -84,7 +82,7 @@ class Model implements IPublisher {
       }
 
       this.setLowValue(this.lowValue);
-      this.notify('edge-value-change');
+      this.notify('edge-value-change', {});
     }
   }
 
@@ -105,7 +103,7 @@ class Model implements IPublisher {
         this.setLowValue(this.lowValue);
       }
       this.setHighValue(this.highValue);
-      this.notify('edge-value-change');
+      this.notify('edge-value-change', {});
     }
   }
 
@@ -128,7 +126,7 @@ class Model implements IPublisher {
       newLowValue = this.validateValue(newLowValue);
     }
     this.lowValue = newLowValue;
-    this.notify('value-change');
+    this.notify('value-change', {});
   }
 
   public setLowValueByPercent(valueInPercent: number): void {
@@ -159,7 +157,7 @@ class Model implements IPublisher {
     }
 
     this.highValue = newValue;
-    this.notify('value-change');
+    this.notify('value-change', {});
   }
 
   public getStep(): number {
@@ -175,26 +173,9 @@ class Model implements IPublisher {
       this.step = value;
       this.setLowValue(this.lowValue);
       this.setHighValue(this.highValue);
-      this.notify('step-change');
+      this.notify('step-change', {});
     }
   }
-
-  public attach(observer: IObserver): void {
-    this.observers.add(observer);
-  }
-
-  public detach(observer: IObserver): void {
-    this.observers.delete(observer);
-  }
-
-  public notify(eventType: string, data?: any): void {
-    if (data !== undefined) {
-      this.observers.forEach((value: IObserver) => value.update(eventType, data));
-    } else {
-      this.observers.forEach((value: IObserver) => value.update(eventType));
-    }
-  }
-
   // Проверяет значение на то, что оно находится в промежутке [minValue: maxValue]
   // и изменяет его на ближайшее число,
   // которое соответствует шагу.

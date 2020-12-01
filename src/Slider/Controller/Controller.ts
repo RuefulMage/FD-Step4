@@ -1,8 +1,7 @@
 import View from '../View/ViewComponents/View';
 import Model from '../Model/Model';
-import IObserver from '../Observer/IObserver';
 
-class Controller implements IObserver {
+class Controller{
   protected model: Model;
 
   protected view: View;
@@ -14,29 +13,35 @@ class Controller implements IObserver {
   protected init(view: View, model: Model): void {
     this.view = view;
     this.model = model;
-    this.view.attach(this);
-    this.model.attach(this);
+    this.view.attach(this.handleViewEvents.bind(this));
+    this.model.attach(this.handleModelEvents.bind(this));
     this.updateView();
   }
 
-  // Вызывает соответствующий метод в зависимости от события
-  public update(eventName: string, data?: any): void {
+  public handleViewEvents(eventName: string, data: any) {
     if (eventName === 'position-change-by-drag') {
       this.setValues(data.runnerIndex, data.position);
     } else if (eventName === 'position-change-by-click') {
       this.setValues(data.runnerIndex, data.position);
-    } else if (eventName === 'edge-value-change') {
+    } else if (eventName === 'resize') {
+      this.updateView();
+    } else {
+      throw new Error('unknown view event');
+    }
+  }
+
+
+  public handleModelEvents(eventName: string, data: any): void {
+    if (eventName === 'edge-value-change') {
       this.updateView();
     } else if (eventName === 'value-change') {
       this.updateView();
     } else if (eventName === 'range-mode-change') {
       this.updateView();
-    } else if (eventName === 'resize') {
-      this.updateView();
     } else if (eventName === 'step-change') {
       this.updateView();
     } else {
-      throw new Error('unknown event');
+      throw new Error('unknown model event');
     }
   }
 

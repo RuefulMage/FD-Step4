@@ -1,5 +1,3 @@
-import IPublisher from '../../Observer/IPublisher';
-import IObserver from '../../Observer/IObserver';
 import Orientation from '../../Utils/Orientation';
 import CONSTANTS from '../../Utils/Constants';
 import OrientationBehaviorBuilder from '../OrientationBehaviors/OrientationBehaviorBuilder';
@@ -11,7 +9,8 @@ import Scale from './Scale';
 import Range from './Range';
 import Tip from './Tip';
 
-class View extends ViewComponent implements IPublisher {
+
+class View extends ViewComponent{
   protected strip: Strip;
 
   protected range: Range;
@@ -24,12 +23,11 @@ class View extends ViewComponent implements IPublisher {
 
   protected isTipsHidden: boolean;
 
-  protected observers: Set<IObserver> = new Set<IObserver>();
-
   constructor(parentNode: HTMLElement, options: {
     orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
   }) {
     super(parentNode, CONSTANTS.viewWrapperClassName);
+
     this.init(options);
   }
 
@@ -261,22 +259,22 @@ class View extends ViewComponent implements IPublisher {
     }
   }
 
-  // Ф-ии оповещателя
-  public attach(observer: IObserver): void {
-    this.observers.add(observer);
-  }
-
-  public detach(observer: IObserver): void {
-    this.observers.delete(observer);
-  }
-
-  public notify(eventType: string, data?: any): void {
-    if (data !== undefined) {
-      this.observers.forEach((observer: IObserver) => observer.update(eventType, data));
-    } else {
-      this.observers.forEach((observer: IObserver) => observer.update(eventType));
-    }
-  }
+  // // Ф-ии оповещателя
+  // public attach(observer: IObserver): void {
+  //   this.observers.add(observer);
+  // }
+  //
+  // public detach(observer: IObserver): void {
+  //   this.observers.delete(observer);
+  // }
+  //
+  // public notify(eventType: string, data?: any): void {
+  //   if (data !== undefined) {
+  //     this.observers.forEach((observer: IObserver) => observer.update(eventType, data));
+  //   } else {
+  //     this.observers.forEach((observer: IObserver) => observer.update(eventType));
+  //   }
+  // }
 
   // Навешивает обработчики кастомных событий 'slider-drag' и 'slider-click' и события resize
   protected addHandlers(): void {

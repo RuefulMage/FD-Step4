@@ -1,4 +1,3 @@
-import IObserver from './Observer/IObserver';
 import View from './View/ViewComponents/View';
 import Model from './Model/Model';
 import Controller from './Controller/Controller';
@@ -6,7 +5,7 @@ import SliderOptions from './Utils/SliderOptions';
 import Orientation from './Utils/Orientation';
 import Logger from './Utils/Logger';
 
-class Slider implements IObserver {
+class Slider {
   protected view: View;
 
   protected model: Model;
@@ -18,7 +17,7 @@ class Slider implements IObserver {
   constructor(rootElement: HTMLElement, options: SliderOptions) {
     this.rootElement = rootElement;
     this.model = new Model(options);
-    this.model.attach(this);
+    this.model.attach(this.update.bind(this));
 
     const viewOptions: {
       orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
@@ -28,7 +27,7 @@ class Slider implements IObserver {
       isTipsHidden: options.isTipsHidden,
     };
     this.view = new View(rootElement, viewOptions);
-    this.view.attach(this);
+    this.view.attach(this.update.bind(this));
     this.controller = new Controller(this.view, this.model);
   }
 
@@ -118,7 +117,7 @@ class Slider implements IObserver {
     return this.view.getHideStatus();
   }
 
-  public update(eventName: string, data?: any): void {
+  public update(eventName: string, data: any): void {
     const changeEvent = new CustomEvent('slider-change', { bubbles: true, cancelable: true });
     this.rootElement.dispatchEvent(changeEvent);
   }

@@ -1,7 +1,10 @@
-abstract class ViewComponent {
+import Publisher from '../../Publisher/Publisher';
+
+class ViewComponent extends Publisher{
   protected DOMNode: HTMLElement;
 
   protected constructor(parentNode: HTMLElement, classList: string) {
+    super();
     this.DOMNode = document.createElement('div');
     this.DOMNode.classList.add(classList);
     parentNode.append(this.DOMNode);
