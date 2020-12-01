@@ -19,7 +19,7 @@ class Controller{
     this.updateView();
   }
 
-  public handleViewEvents(eventName: ViewEventName, data: any) {
+  public handleViewEvents(eventName: ViewEventName, data: any): void {
     const isPositionChangeEvent = eventName === 'position-change-by-drag'
       ||  eventName === 'position-change-by-click';
 
@@ -35,7 +35,7 @@ class Controller{
     this.updateView();
   }
 
-  private setValues(runnerIndex: number, position: number) {
+  private setValues(runnerIndex: 0 | 1, position: number): void {
     if (runnerIndex === 0) {
       this.model.setLowValueByPercent(position);
     } else if (runnerIndex === 1) {

@@ -6,7 +6,7 @@ function initDemo(element: Element): Demo {
     isTipsHidden: (element.getAttribute('data-tips-hidden') === 'true'),
     maxValue: Number(element.getAttribute('data-max-value')),
     minValue: Number(element.getAttribute('data-min-value')),
-    orientation: element.getAttribute('data-orientation'),
+    orientation: element.getAttribute('data-orientation') as 'horizontal'| 'vertical',
     startValueHigh: Number(element.getAttribute('data-start-high')),
     startValueLow: Number(element.getAttribute('data-start-low')),
     step: Number(element.getAttribute('data-step')),

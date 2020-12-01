@@ -74,7 +74,7 @@ class View extends ViewComponent{
 
   public showTips(): void {
     this.isTipsHidden = false;
-    this.runnersAndTips.forEach((item, index) => this.showTip(index));
+    this.runnersAndTips.forEach((item, index: 0 | 1) => this.showTip(index));
 
     if (this.runnersAndTips.size > 1) {
       const isRunnersTooClose = Math.abs(this.getRunnerPosition(0)
@@ -148,11 +148,11 @@ class View extends ViewComponent{
     }
   }
 
-  private hideTip(tipIndex: number): void {
+  private hideTip(tipIndex: 0 | 1): void {
     this.runnersAndTips.get(tipIndex).tip.hide();
   }
 
-  private showTip(tipIndex: number): void {
+  private showTip(tipIndex: 0 | 1): void {
     this.isTipsHidden = false;
     const { tip } = this.runnersAndTips.get(tipIndex);
     tip.show();
@@ -200,7 +200,6 @@ class View extends ViewComponent{
     this.setRange(0, this.runnersAndTips.get(0).runner.getPosition());
   }
 
-  // Ф-ии чтения и изменения св-в шкалы
   private setScale(valuesAndPositions: Map<number, number>): void {
     if (this.scale === undefined) {
       const orientationBehavior = OrientationBehaviorBuilder
@@ -212,13 +211,12 @@ class View extends ViewComponent{
     }
   }
 
-  // Ф-ии чтения и изменения св-в бегунков
 
   private getRunnersAmount(): number {
     return this.runnersAndTips.size;
   }
 
-  private setRunnerPosition(runnerIndex: number, position: number): void {
+  private setRunnerPosition(runnerIndex: 0 | 1, position: number): void {
     const isRunnerExist = !(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0);
 
     if (!isRunnerExist) {
@@ -227,7 +225,7 @@ class View extends ViewComponent{
     this.runnersAndTips.get(runnerIndex).runner.setPosition(position);
   }
 
-  private getRunnerPosition(runnerIndex: number): number {
+  private getRunnerPosition(runnerIndex: 0 | 1): number {
     const isRunnerExist = !(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0);
 
     if (!isRunnerExist) {
@@ -237,7 +235,7 @@ class View extends ViewComponent{
   }
 
   // Ф-ии изменения и чтения св-в подсказок
-  private setTipPosition(tipIndex: number, position: number): void {
+  private setTipPosition(tipIndex: 0 | 1, position: number): void {
     const isTipExist = !(tipIndex >= this.getRunnersAmount() || tipIndex < 0);
 
     if (!isTipExist) {
@@ -247,7 +245,7 @@ class View extends ViewComponent{
     tip.setPosition(position);
   }
 
-  private setTipText(tipIndex: number, text: string): void {
+  private setTipText(tipIndex: 0 | 1, text: string): void {
     const { tip } = this.runnersAndTips.get(tipIndex);
     tip.setInnerText(text);
   }

@@ -101,7 +101,7 @@ class Slider {
     return this.view.getOrientation();
   }
 
-  public setOrientation(orientation: string): void {
+  public setOrientation(orientation: 'horizontal' | 'vertical'): void {
     this.view.setOrientation(orientation as Orientation);
   }
 
@@ -117,7 +117,7 @@ class Slider {
     return this.view.getHideStatus();
   }
 
-  public update(eventName: string, data: any): void {
+  public update(): void {
     const changeEvent = new CustomEvent('slider-change', { bubbles: true, cancelable: true });
     this.rootElement.dispatchEvent(changeEvent);
   }

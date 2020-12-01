@@ -34,7 +34,7 @@ class Runner extends ViewComponent {
     this.orientationBehavior = value;
   }
 
-  public setCurrentStatus(newStatus: boolean) {
+  public setCurrentStatus(newStatus: boolean): void {
     if (newStatus) {
       this.getDOMNode().classList.add(CONSTANTS.runnerCurrentModifier);
     } else {
