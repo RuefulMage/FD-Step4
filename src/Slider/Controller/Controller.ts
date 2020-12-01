@@ -1,5 +1,6 @@
 import View from '../View/ViewComponents/View';
 import Model from '../Model/Model';
+import ViewEventName from '../Utils/ViewEventName';
 
 class Controller{
   protected model: Model;
@@ -18,34 +19,22 @@ class Controller{
     this.updateView();
   }
 
-  public handleViewEvents(eventName: string, data: any) {
-    if (eventName === 'position-change-by-drag') {
-      this.setValues(data.runnerIndex, data.position);
-    } else if (eventName === 'position-change-by-click') {
+  public handleViewEvents(eventName: ViewEventName, data: any) {
+    const isPositionChangeEvent = eventName === 'position-change-by-drag'
+      ||  eventName === 'position-change-by-click';
+
+    if (isPositionChangeEvent) {
       this.setValues(data.runnerIndex, data.position);
     } else if (eventName === 'resize') {
       this.updateView();
-    } else {
-      throw new Error('unknown view event');
     }
   }
 
 
-  public handleModelEvents(eventName: string, data: any): void {
-    if (eventName === 'edge-value-change') {
-      this.updateView();
-    } else if (eventName === 'value-change') {
-      this.updateView();
-    } else if (eventName === 'range-mode-change') {
-      this.updateView();
-    } else if (eventName === 'step-change') {
-      this.updateView();
-    } else {
-      throw new Error('unknown model event');
-    }
+  public handleModelEvents(): void {
+    this.updateView();
   }
 
-  // Обновляет значения в модели
   protected setValues(runnerIndex: number, position: number) {
     if (runnerIndex === 0) {
       this.model.setLowValueByPercent(position);
@@ -54,7 +43,6 @@ class Controller{
     }
   }
 
-  // Берет из Модели данные и передает их Вью для обновления
   protected updateView(): void{
     const runnerPositions = [this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
     const tipsValues = [this.model.getLowValue(), this.model.getHighValue()];

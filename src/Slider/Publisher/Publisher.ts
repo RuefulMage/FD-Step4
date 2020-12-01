@@ -1,3 +1,6 @@
+import ModelEventName from '../Utils/ModelEventName';
+import ViewEventName from '../Utils/ViewEventName';
+
 class Publisher {
   observersCallbacks: Set<Function> = new Set<Function>();
 
@@ -9,7 +12,7 @@ class Publisher {
     this.observersCallbacks.delete(callback);
   };
 
-  notify(eventType: string, data: any): void {
+  notify(eventType: ModelEventName | ViewEventName, data: any): void {
     this.observersCallbacks.forEach(callback => callback(eventType, data));
   };
 }
