@@ -17,7 +17,7 @@ class Scale extends ViewComponent {
     this.init(orientationBehavior, valuesAndPositions);
   }
 
-  protected init(orientationBehavior: IOrientationBehavior,
+  private init(orientationBehavior: IOrientationBehavior,
     valuesAndPositions: Map<number, number>) {
     this.orientationBehavior = orientationBehavior;
     this.setScale(valuesAndPositions);
@@ -61,7 +61,7 @@ class Scale extends ViewComponent {
   }
 
   // Навершивает обработчик события клик на шкалу
-  protected addHandler(): void {
+  private addHandler(): void {
     const that: Scale = this;
 
     // Если элемент, на который кликнули является дочерним, то создается

@@ -42,7 +42,7 @@ class Runner extends ViewComponent {
     }
   }
 
-  protected addMouseEventsHandlers(): void {
+  private addMouseEventsHandlers(): void {
     const that: Runner = this;
 
     function handleDragStart(): boolean {
@@ -85,7 +85,7 @@ class Runner extends ViewComponent {
 
   // Навешивает обработчики событий касания на дом-элемент бегунка
   // для Drag'n'Drop на сенсоных устройствах
-  protected addTouchEventsHandler(): void {
+  private addTouchEventsHandler(): void {
     const that: Runner = this;
 
     // Получает позицию положения касания относительно род. элемента бегунка и вызывает на себе

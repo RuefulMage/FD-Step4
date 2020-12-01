@@ -11,7 +11,7 @@ class Controller{
     this.init(view, model);
   }
 
-  protected init(view: View, model: Model): void {
+  private init(view: View, model: Model): void {
     this.view = view;
     this.model = model;
     this.view.attach(this.handleViewEvents.bind(this));
@@ -35,7 +35,7 @@ class Controller{
     this.updateView();
   }
 
-  protected setValues(runnerIndex: number, position: number) {
+  private setValues(runnerIndex: number, position: number) {
     if (runnerIndex === 0) {
       this.model.setLowValueByPercent(position);
     } else if (runnerIndex === 1) {
@@ -43,7 +43,7 @@ class Controller{
     }
   }
 
-  protected updateView(): void{
+  private updateView(): void{
     const runnerPositions = [this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
     const tipsValues = [this.model.getLowValue(), this.model.getHighValue()];
     const scalePositions = this.model

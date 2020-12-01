@@ -20,7 +20,7 @@ class Strip extends ViewComponent {
   }
 
   // Навешивает обработчик клика на дорожку бегунков
-  protected addHandlers(): void {
+  private addHandlers(): void {
     const that: Strip = this;
 
     // Если клик был не по бегунку, то вычисляется позиция клика относительно род. элемента

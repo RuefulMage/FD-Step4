@@ -13,7 +13,7 @@ class Tip extends ViewComponent {
     this.init(orientationBehavior, isHidden);
   }
 
-  protected init(orientationBehavior: IOrientationBehavior, isHidden: boolean) {
+  private init(orientationBehavior: IOrientationBehavior, isHidden: boolean) {
     if (isHidden) {
       this.DOMNode.classList.add(CONSTANTS.tipHiddenClassName);
     }

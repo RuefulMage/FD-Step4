@@ -31,7 +31,7 @@ class View extends ViewComponent{
     this.init(options);
   }
 
-  protected init(options: {
+  private init(options: {
     orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
   }): void {
     const {
@@ -148,11 +148,11 @@ class View extends ViewComponent{
     }
   }
 
-  protected hideTip(tipIndex: number): void {
+  private hideTip(tipIndex: number): void {
     this.runnersAndTips.get(tipIndex).tip.hide();
   }
 
-  protected showTip(tipIndex: number): void {
+  private showTip(tipIndex: number): void {
     this.isTipsHidden = false;
     const { tip } = this.runnersAndTips.get(tipIndex);
     tip.show();
@@ -160,12 +160,12 @@ class View extends ViewComponent{
   }
 
   // Ф-ии работы с режимом слайдера(промежуток или один бегунок)
-  protected setRange(minEdge: number, maxEdge: number): void {
+  private setRange(minEdge: number, maxEdge: number): void {
     this.range.setLowEdge(minEdge);
     this.range.setHighEdge(maxEdge);
   }
 
-  protected changeModeToRange(highRunnerPosition: number, highValue: number): void {
+  private changeModeToRange(highRunnerPosition: number, highValue: number): void {
     if (this.runnersAndTips.size === 2) {
       return;
     }
@@ -185,7 +185,7 @@ class View extends ViewComponent{
       this.runnersAndTips.get(1).runner.getPosition());
   }
 
-  protected changeModeToSingle(): void {
+  private changeModeToSingle(): void {
     if (this.runnersAndTips.size === 1) {
       return;
     }
@@ -201,7 +201,7 @@ class View extends ViewComponent{
   }
 
   // Ф-ии чтения и изменения св-в шкалы
-  protected setScale(valuesAndPositions: Map<number, number>): void {
+  private setScale(valuesAndPositions: Map<number, number>): void {
     if (this.scale === undefined) {
       const orientationBehavior = OrientationBehaviorBuilder
         .getOrientationBehaviorByOrientation(this.orientation);
@@ -214,11 +214,11 @@ class View extends ViewComponent{
 
   // Ф-ии чтения и изменения св-в бегунков
 
-  protected getRunnersAmount(): number {
+  private getRunnersAmount(): number {
     return this.runnersAndTips.size;
   }
 
-  protected setRunnerPosition(runnerIndex: number, position: number): void {
+  private setRunnerPosition(runnerIndex: number, position: number): void {
     const isRunnerExist = !(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0);
 
     if (!isRunnerExist) {
@@ -227,7 +227,7 @@ class View extends ViewComponent{
     this.runnersAndTips.get(runnerIndex).runner.setPosition(position);
   }
 
-  protected getRunnerPosition(runnerIndex: number): number {
+  private getRunnerPosition(runnerIndex: number): number {
     const isRunnerExist = !(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0);
 
     if (!isRunnerExist) {
@@ -237,7 +237,7 @@ class View extends ViewComponent{
   }
 
   // Ф-ии изменения и чтения св-в подсказок
-  protected setTipPosition(tipIndex: number, position: number): void {
+  private setTipPosition(tipIndex: number, position: number): void {
     const isTipExist = !(tipIndex >= this.getRunnersAmount() || tipIndex < 0);
 
     if (!isTipExist) {
@@ -247,19 +247,19 @@ class View extends ViewComponent{
     tip.setPosition(position);
   }
 
-  protected setTipText(tipIndex: number, text: string): void {
+  private setTipText(tipIndex: number, text: string): void {
     const { tip } = this.runnersAndTips.get(tipIndex);
     tip.setInnerText(text);
   }
 
   // Пересоздает шкалу со старыми делениями
-  protected reCreateScale(): void {
+  private reCreateScale(): void {
     if (this.scale !== undefined) {
       this.scale.reCreateScale();
     }
   }
 
-  protected addHandlers(): void {
+  private addHandlers(): void {
     const that: View = this;
 
     function isCustomEvent(event: Event): event is CustomEvent {
@@ -329,7 +329,7 @@ class View extends ViewComponent{
   }
 
   // Обновляет Вью, когда бегунков два
-  protected updateViewForInterval(runnersPositions: number[], tipsValues: number[],
+  private updateViewForInterval(runnersPositions: number[], tipsValues: number[],
     scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() < 2) {
       this.changeModeToRange(runnersPositions[1], tipsValues[1]);
@@ -342,7 +342,7 @@ class View extends ViewComponent{
   }
 
   // Обновляет Бегунки и подсказки, когда интервал
-  protected updateAllTipsPositionAndText(runnersPositions: number[], tipsValues: number[]) {
+  private updateAllTipsPositionAndText(runnersPositions: number[], tipsValues: number[]) {
     if (this.getRunnersAmount() < 2) {
       throw new Error('Runners amount is too small');
     }
@@ -365,7 +365,7 @@ class View extends ViewComponent{
   }
 
   // Обновляет Вью, когда только один бегунок
-  protected updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
+  private updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
     scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() > 1) {
       this.changeModeToSingle();
@@ -378,7 +378,7 @@ class View extends ViewComponent{
   }
 
   // Объединяет две подсказки в одну
-  protected joinTips(tipsValues: number[], tipsPositions: number[]): void {
+  private joinTips(tipsValues: number[], tipsPositions: number[]): void {
     this.hideTip(1);
     const tipText = `${tipsValues[0]}&nbsp;&mdash;&nbsp;${tipsValues[1]}`;
     this.setTipText(0, tipText);

@@ -23,7 +23,7 @@ class Model extends Publisher{
     this.init(options);
   }
 
-  protected init(options: {
+  private init(options: {
     isRange?: boolean, minValue?: number,
     maxValue?: number, startValueLow?: number,
     startValueHigh?: number, step?: number,
@@ -205,7 +205,7 @@ class Model extends Publisher{
   // Проверяет значение на то, что оно находится в промежутке [minValue: maxValue]
   // и изменяет его на ближайшее число,
   // которое соответствует шагу.
-  protected validateValue(value: number): number {
+  private validateValue(value: number): number {
     let validatedValue;
     if (value <= this.minValue) {
       validatedValue = this.minValue;
@@ -228,7 +228,7 @@ class Model extends Publisher{
   // Проверяет значение на то, что оно находится в промежутке [0; 100]
   // и изменяет его на ближайшее число,
   // которое соответствует шагу.
-  protected validateValueInPercent(value: number): number {
+  private validateValueInPercent(value: number): number {
     let validatedValue;
     if (value >= 100) {
       validatedValue = 100;
@@ -253,14 +253,14 @@ class Model extends Publisher{
     return validatedValue;
   }
 
-  protected convertPercentToValue(valueInPercent: number): number {
+  private convertPercentToValue(valueInPercent: number): number {
     const differenceBetweenMaxAndMin = Big(this.maxValue).minus(this.minValue);
     const valuePartOfTotal = Big(valueInPercent).div(100);
     const value = Big(this.minValue).plus((valuePartOfTotal.times(differenceBetweenMaxAndMin)));
     return Number(value);
   }
 
-  protected convertValueToPercent(value: number): number {
+  private convertValueToPercent(value: number): number {
     const differenceBetweenMaxAndMin = Big(this.maxValue).minus(this.minValue);
     const differenceBetweenValueAndMin = Big(value).minus(this.minValue);
     const valueInPercent = (differenceBetweenValueAndMin.div(differenceBetweenMaxAndMin))
@@ -271,7 +271,7 @@ class Model extends Publisher{
   // Проверяет, можно ли поделить интервал на входное кол-во отрезков,
   // если да, то возвращает входное значение, если нет, то возвращает
   // максимально возможное
-  protected validateRangeDivisionsAmount(divisionsAmount: number): number {
+  private validateRangeDivisionsAmount(divisionsAmount: number): number {
     const maxAndMinDifference = Big(this.getMaxValue()).minus(this.getMinValue());
     const stepsInRange = Number(maxAndMinDifference.div(this.getStep())) + 1;
     if (stepsInRange >= divisionsAmount) {
