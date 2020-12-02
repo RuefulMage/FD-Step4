@@ -131,7 +131,6 @@ class View extends ViewComponent {
     return 3;
   }
 
-  // обновляет Вью
   public updateView(runnersPositions: number[], tipsValues: number[],
     scalePositions: Map<number, number>, isRange: boolean): void {
     if (isRange) {
@@ -154,7 +153,6 @@ class View extends ViewComponent {
     tip.setPosition(this.getRunnerPosition(tipIndex));
   }
 
-  // Ф-ии работы с режимом слайдера(промежуток или один бегунок)
   private setRange(minEdge: number, maxEdge: number): void {
     this.range.setLowEdge(minEdge);
     this.range.setHighEdge(maxEdge);
@@ -213,7 +211,6 @@ class View extends ViewComponent {
     return this.runnersAndTips.get(runnerIndex).runner.getPosition();
   }
 
-  // Ф-ии изменения и чтения св-в подсказок
   private setTipPosition(tipIndex: 0 | 1, position: number): void {
     const { tip } = this.runnersAndTips.get(tipIndex);
     tip.setPosition(position);
@@ -230,7 +227,6 @@ class View extends ViewComponent {
     window.addEventListener('resize', this.handleResize);
   }
 
-  // Ставит входящий бегунок поверх остальных
   private setRunnerToCurrent = (runner: Runner): void => {
     this.runnersAndTips.forEach((item) => {
       if (item.runner === runner) {
@@ -241,8 +237,6 @@ class View extends ViewComponent {
     });
   };
 
-  // Оповещает подписчиков и передает им индекс бегунка, на котором произошло событие
-  // и полученную позицию
   private handleRunnerDrag = (event: CustomEvent) => {
     let runnerIndex: number = 0;
     const dragTarget = event.detail.target;
@@ -254,8 +248,6 @@ class View extends ViewComponent {
       { runnerIndex, position: event.detail.position });
   };
 
-  // Получает позицию клика, вычисляет ближайший к позиции бегунок,
-  // оповещает подписчиков и передает им полученную позицию и индекс бегунка
   private handleSliderClick = (event: CustomEvent): void => {
     let runnerIndex: number = 0;
     let minPosDifference = Number.MAX_VALUE;
@@ -271,8 +263,6 @@ class View extends ViewComponent {
       { position: event.detail.position, runnerIndex });
   };
 
-  // Оповещает подписщиков об изменении размеров окна
-  // и передает им высчитанное кол-во делений шкалы
   private handleResize = (): void => {
     const scaleDivisionsAmount = this.computeDivisionsAmountBySize();
     this.notify('resize', { scaleDivisionsAmount });
@@ -321,7 +311,6 @@ class View extends ViewComponent {
     this.setRange(0, runnersPositions[0]);
   }
 
-  // Объединяет две подсказки в одну
   private joinTips(tipsValues: number[], tipsPositions: number[]): void {
     this.hideTip(1);
     const tipText = `${tipsValues[0]}&nbsp;&mdash;&nbsp;${tipsValues[1]}`;

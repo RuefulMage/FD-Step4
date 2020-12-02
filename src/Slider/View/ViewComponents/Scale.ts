@@ -26,7 +26,6 @@ class Scale extends ViewComponent {
     });
   }
 
-  // Пересоздает шкалу со старыми значениями
   public reCreateScale(): void {
     this.subElements.forEach((element, index) => {
       const position = element.getPosition();
@@ -39,7 +38,6 @@ class Scale extends ViewComponent {
     });
   }
 
-  // Навершивает обработчик события клик на шкалу
   private addHandler(): void {
     this.DOMNode.addEventListener('click', this.handleRangeCLick);
   }

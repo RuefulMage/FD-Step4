@@ -8,7 +8,6 @@ class Strip extends ViewComponent {
     this.addHandlers();
   }
 
-  // Навешивает обработчик клика на дорожку бегунков
   private addHandlers(): void {
     this.DOMNode.addEventListener('mousedown', this.handleMouseDown);
   }

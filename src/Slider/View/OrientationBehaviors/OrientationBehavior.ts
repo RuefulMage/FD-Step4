@@ -44,8 +44,6 @@ const OrientationBehavior = {
     domElement.setAttribute('style', '');
   },
 
-  // получает дом-элемент и граничные значения относительно родителя
-  // и растягивает элемент до этих значений
   setRangePositions(minEdge: number, maxEdge: number,
     domElement: HTMLElement): void {
     if (this.orientation === Orientation.HORIZONTAL) {

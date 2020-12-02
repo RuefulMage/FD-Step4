@@ -1,6 +1,5 @@
 import CONSTANTS from '../../Utils/Constants';
 import ViewComponent from './ViewComponent';
-import Orientation from '../../Utils/Orientation';
 import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
 class Runner extends ViewComponent {
@@ -54,21 +53,17 @@ class Runner extends ViewComponent {
     }
   };
 
-  // удаляет обработчики событий движения и отклика мыши
   private handleMouseUp = (): void => {
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);
   };
 
-  // Навешивает на бегунок обработчики событий движения и отклика мыши
   private handleMouseDown = (event: MouseEvent): void => {
     event.preventDefault();
     document.addEventListener('mousemove', this.handleMouseMove);
     document.addEventListener('mouseup', this.handleMouseUp);
   };
 
-  // Навешивает обработчики событий касания на дом-элемент бегунка
-  // для Drag'n'Drop на сенсоных устройствах
   private addTouchEventsHandler(): void {
     this.DOMNode.addEventListener('touchstart', this.handleTouchStart);
     this.DOMNode.addEventListener('dragstart', this.handleDragStart);
@@ -91,14 +86,12 @@ class Runner extends ViewComponent {
     }
   };
 
-  // Удаляет обработчики событий движения и окончания касания
   private handleTouchEnd = (event: TouchEvent): void => {
     document.removeEventListener('touchmove', this.handleTouchMove);
     document.removeEventListener('touchend', this.handleTouchEnd);
     document.removeEventListener('touchcancel', this.handleTouchEnd);
   };
 
-  // Навешивает на бегунок обработчики событий движения и окончания касания
   private handleTouchStart = (event: TouchEvent): void => {
     event.preventDefault();
     document.addEventListener('touchmove', this.handleTouchMove);
