@@ -58,7 +58,7 @@ class Demo {
     } else {
       this.isVerticalInput.checked = false;
     }
-  }
+  };
 
   private initMaxValueInput(): void {
     this.maxValueInput = this.panelElement.querySelector('.js-max-value');
@@ -73,7 +73,7 @@ class Demo {
       // eslint-disable-next-line no-param-reassign
       (event.target as HTMLInputElement).value = this.slider.getMaxValue().toString();
     }
-  }
+  };
 
   private initMinValueInput(): void {
     this.minValueInput = this.panelElement.querySelector('.js-min-value');
@@ -87,35 +87,30 @@ class Demo {
       // eslint-disable-next-line no-param-reassign
       (event.target as HTMLInputElement).value = this.slider.getMinValue().toString();
     }
-  }
+  };
 
   private initLowValueInput(): void {
     this.lowValueInput = this.panelElement.querySelector('.js-low-value');
     this.lowValueInput.addEventListener('change', this.handleLowValueChange);
   }
 
-
   private handleLowValueChange = () => {
     this.slider.setLowValue(Number(this.lowValueInput.value));
-  }
-
+  };
 
   private initHighValueInput(): void {
     this.highValueInput = this.panelElement.querySelector('.js-high-value');
     this.highValueInput.addEventListener('change', this.handleHighValueChange);
   }
 
-
   private handleHighValueChange = () => {
     this.slider.setHighValue(Number(this.highValueInput.value));
-  }
-
+  };
 
   private initStepInput(): void {
     this.stepInput = this.panelElement.querySelector('.js-step');
     this.stepInput.addEventListener('change', this.handleStepChange);
   }
-
 
   private handleStepChange = (event: Event) => {
     const isChangeSuccessful = this.slider.setStep(Number(this.stepInput.value));
@@ -124,13 +119,12 @@ class Demo {
       // eslint-disable-next-line no-param-reassign
       (event.target as HTMLInputElement).value = Number(this.slider.getStep()).toString();
     }
-  }
+  };
 
   private initRangeInput(): void {
     this.isRangeInput = this.panelElement.querySelector('.js-range');
     this.isRangeInput.addEventListener('change', this.handleRangeChange);
   }
-
 
   private handleRangeChange = () => {
     this.slider.setRangeMode(this.isRangeInput.checked);
@@ -139,13 +133,12 @@ class Demo {
     } else {
       this.highValueInput.disabled = false;
     }
-  }
+  };
 
   private initTipsHiddenInput(): void {
     this.isTipsHiddenInput = this.panelElement.querySelector('.js-tips-hidden');
     this.isTipsHiddenInput.addEventListener('change', this.handleTipsHiddenInputChange);
   }
-
 
   private handleTipsHiddenInputChange = () => {
     if (this.isTipsHiddenInput.checked) {
@@ -153,7 +146,7 @@ class Demo {
     } else {
       this.slider.showTips();
     }
-  }
+  };
 
   private initIsVerticalInput(): void {
     this.isVerticalInput = this.panelElement.querySelector('.js-vertical');
@@ -166,7 +159,7 @@ class Demo {
     } else {
       this.slider.setOrientation('horizontal');
     }
-  }
+  };
 }
 
 export default Demo;

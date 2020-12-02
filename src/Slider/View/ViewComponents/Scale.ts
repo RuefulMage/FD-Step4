@@ -6,13 +6,11 @@ import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 class Scale extends ViewComponent {
   private subElements: ScaleSubElement[] = [];
 
-
   constructor(parentNode: HTMLElement, valuesAndPositions: Map<number, number>) {
     super(parentNode, CONSTANTS.scaleClassName);
     this.setScale(valuesAndPositions);
     this.addHandler();
   }
-
 
   public setScale(valuesAndPositions: Map<number, number>): void {
     this.getDOMNode().innerHTML = '';
@@ -63,9 +61,7 @@ class Scale extends ViewComponent {
         });
       this.getDOMNode().dispatchEvent(customEvent);
     }
-  }
-
-
+  };
 }
 
 export default Scale;

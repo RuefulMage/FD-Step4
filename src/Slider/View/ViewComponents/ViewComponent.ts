@@ -1,6 +1,6 @@
 import Publisher from '../../Publisher/Publisher';
 
-class ViewComponent extends Publisher{
+class ViewComponent extends Publisher {
   protected DOMNode: HTMLElement;
 
   constructor(parentNode: HTMLElement, classList: string) {

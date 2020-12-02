@@ -9,7 +9,6 @@ import Range from './Range';
 import Tip from './Tip';
 import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
-
 class View extends ViewComponent {
   private strip: Strip;
 
@@ -134,7 +133,7 @@ class View extends ViewComponent {
 
   // обновляет Вью
   public updateView(runnersPositions: number[], tipsValues: number[],
-                    scalePositions: Map<number, number>, isRange: boolean): void {
+    scalePositions: Map<number, number>, isRange: boolean): void {
     if (isRange) {
       this.updateViewForInterval(runnersPositions, tipsValues,
         scalePositions);
@@ -195,13 +194,12 @@ class View extends ViewComponent {
 
   private setScale(valuesAndPositions: Map<number, number>): void {
     if (this.scale === undefined) {
-      const orientation = this.orientation;
+      const { orientation } = this;
       this.scale = new Scale(this.getDOMNode(), valuesAndPositions);
     } else {
       this.scale.setScale(valuesAndPositions);
     }
   }
-
 
   private getRunnersAmount(): number {
     return this.runnersAndTips.size;
@@ -226,7 +224,6 @@ class View extends ViewComponent {
     tip.setInnerText(text);
   }
 
-
   private addHandlers(): void {
     this.DOMNode.addEventListener('slider-drag', this.handleRunnerDrag);
     this.DOMNode.addEventListener('slider-click', this.handleSliderClick);
@@ -248,8 +245,8 @@ class View extends ViewComponent {
   // и полученную позицию
   private handleRunnerDrag = (event: CustomEvent) => {
     let runnerIndex: number = 0;
-    let dragTarget = event.detail.target;
-    let lowRunner = this.runnersAndTips.get(0).runner;
+    const dragTarget = event.detail.target;
+    const lowRunner = this.runnersAndTips.get(0).runner;
     runnerIndex = lowRunner === dragTarget ? 0 : 1;
 
     this.setRunnerToCurrent(event.detail.target);
@@ -281,9 +278,8 @@ class View extends ViewComponent {
     this.notify('resize', { scaleDivisionsAmount });
   };
 
-
   private updateViewForInterval(runnersPositions: number[], tipsValues: number[],
-                                scalePositions: Map<number, number>): void {
+    scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() === 1) {
       this.changeModeToRange(runnersPositions[1], tipsValues[1]);
     }
@@ -314,7 +310,7 @@ class View extends ViewComponent {
   }
 
   private updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
-                                    scalePositions: Map<number, number>): void {
+    scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() === 2) {
       this.changeModeToSingle();
     }

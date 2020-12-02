@@ -1,10 +1,10 @@
 import Orientation from '../../Utils/Orientation';
 
-let OrientationBehavior = {
+const OrientationBehavior = {
   orientation: Orientation.HORIZONTAL,
 
   setPosition(newPosition: number, domElement: HTMLElement): void {
-    if( this.orientation === Orientation.HORIZONTAL ) {
+    if (this.orientation === Orientation.HORIZONTAL) {
       const parentWidth = domElement.parentElement.offsetWidth;
       const elementWidth = domElement.offsetWidth;
       const domElementWidthInPercent = (elementWidth / parentWidth) * 100;
@@ -23,22 +23,21 @@ let OrientationBehavior = {
   // и возвращает позиуию точки относительно
   // родителя дом-элемента
   getPositionFromCoordinates(clientX: number, clientY: number,
-                                    domElement: HTMLElement): number {
+    domElement: HTMLElement): number {
     if (clientX > window.innerWidth || clientY > window.innerHeight) {
       throw new Error('clientX or clientY is too big');
     }
 
-    if(this.orientation === Orientation.HORIZONTAL){
+    if (this.orientation === Orientation.HORIZONTAL) {
       const positionInPixels = clientX - domElement.parentElement.getBoundingClientRect().left;
       const parentSize = domElement.parentElement.offsetWidth;
       const position = (positionInPixels / parentSize) * 100;
       return position;
-    } else {
-      const positionInPixels = clientY - domElement.parentElement.getBoundingClientRect().top;
-      const parentSize = domElement.parentElement.offsetHeight;
-      const position = (positionInPixels / parentSize) * 100;
-      return 100 - position;
     }
+    const positionInPixels = clientY - domElement.parentElement.getBoundingClientRect().top;
+    const parentSize = domElement.parentElement.offsetHeight;
+    const position = (positionInPixels / parentSize) * 100;
+    return 100 - position;
   },
 
   resetStyles(domElement: HTMLElement): void {
@@ -48,8 +47,8 @@ let OrientationBehavior = {
   // получает дом-элемент и граничные значения относительно родителя
   // и растягивает элемент до этих значений
   setRangePositions(minEdge: number, maxEdge: number,
-                           domElement: HTMLElement): void {
-    if(this.orientation === Orientation.HORIZONTAL){
+    domElement: HTMLElement): void {
+    if (this.orientation === Orientation.HORIZONTAL) {
       // eslint-disable-next-line no-param-reassign
       domElement.style.left = `${minEdge}%`;
       // eslint-disable-next-line no-param-reassign
@@ -60,7 +59,7 @@ let OrientationBehavior = {
       // eslint-disable-next-line no-param-reassign
       domElement.style.top = `${100 - maxEdge}%`;
     }
-  }
-}
+  },
+};
 
 export default OrientationBehavior;

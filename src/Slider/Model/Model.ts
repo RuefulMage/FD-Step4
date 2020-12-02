@@ -1,7 +1,7 @@
 import Big from 'big.js';
 import Publisher from '../Publisher/Publisher';
 
-class Model extends Publisher{
+class Model extends Publisher {
   private isRange: boolean;
 
   private maxValue: number;
@@ -177,7 +177,6 @@ class Model extends Publisher{
     }
   }
 
-
   // Делит интервал на равные отрезки
   public splitIntervalByStep(divisionsAmount: number): Map<number, number> {
     const segmentsAmount = divisionsAmount - 1;
@@ -200,7 +199,6 @@ class Model extends Publisher{
     } while (currentValueInPercents < 100);
     return valuesAndPercents;
   }
-
 
   // Проверяет значение на то, что оно находится в промежутке [minValue: maxValue]
   // и изменяет его на ближайшее число,

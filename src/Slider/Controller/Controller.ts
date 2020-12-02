@@ -2,7 +2,7 @@ import View from '../View/ViewComponents/View';
 import Model from '../Model/Model';
 import ViewEventName from '../Utils/ViewEventName';
 
-class Controller{
+class Controller {
   private model: Model;
 
   private view: View;
@@ -21,7 +21,7 @@ class Controller{
 
   public handleViewEvents(eventName: ViewEventName, data: any): void {
     const isPositionChangeEvent = eventName === 'position-change-by-drag'
-      ||  eventName === 'position-change-by-click';
+      || eventName === 'position-change-by-click';
 
     if (isPositionChangeEvent) {
       this.setValues(data.runnerIndex, data.position);
@@ -29,7 +29,6 @@ class Controller{
       this.updateView();
     }
   }
-
 
   public handleModelEvents(): void {
     this.updateView();

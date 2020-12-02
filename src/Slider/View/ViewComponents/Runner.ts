@@ -36,9 +36,7 @@ class Runner extends ViewComponent {
     this.DOMNode.addEventListener('dragstart', this.handleDragStart);
   }
 
-  private handleDragStart = (): boolean => {
-    return false;
-  }
+  private handleDragStart = (): boolean => false;
 
   // Получает позицию положения мыши относительно род. элемента бегунка и вызывает на себе
   // пользовательское событие 'slider-drag', которое содержит объект бегунка
@@ -54,21 +52,20 @@ class Runner extends ViewComponent {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       this.handleMouseUp();
     }
-  }
-
+  };
 
   // удаляет обработчики событий движения и отклика мыши
   private handleMouseUp = (): void => {
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);
-  }
+  };
 
   // Навешивает на бегунок обработчики событий движения и отклика мыши
-  private handleMouseDown = (event: MouseEvent): void  => {
+  private handleMouseDown = (event: MouseEvent): void => {
     event.preventDefault();
     document.addEventListener('mousemove', this.handleMouseMove);
     document.addEventListener('mouseup', this.handleMouseUp);
-  }
+  };
 
   // Навешивает обработчики событий касания на дом-элемент бегунка
   // для Drag'n'Drop на сенсоных устройствах
@@ -76,7 +73,6 @@ class Runner extends ViewComponent {
     this.DOMNode.addEventListener('touchstart', this.handleTouchStart);
     this.DOMNode.addEventListener('dragstart', this.handleDragStart);
   }
-
 
   // Получает позицию положения касания относительно род. элемента бегунка и вызывает на себе
   // пользовательское событие 'slider-drag', которое содержит объект бегунка
@@ -93,14 +89,14 @@ class Runner extends ViewComponent {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
       this.handleTouchEnd(event);
     }
-  }
+  };
 
   // Удаляет обработчики событий движения и окончания касания
   private handleTouchEnd = (event: TouchEvent): void => {
     document.removeEventListener('touchmove', this.handleTouchMove);
     document.removeEventListener('touchend', this.handleTouchEnd);
     document.removeEventListener('touchcancel', this.handleTouchEnd);
-  }
+  };
 
   // Навешивает на бегунок обработчики событий движения и окончания касания
   private handleTouchStart = (event: TouchEvent): void => {
@@ -108,7 +104,7 @@ class Runner extends ViewComponent {
     document.addEventListener('touchmove', this.handleTouchMove);
     document.addEventListener('touchend', this.handleTouchEnd);
     document.addEventListener('touchcancel', this.handleTouchEnd);
-  }
+  };
 }
 
 export default Runner;

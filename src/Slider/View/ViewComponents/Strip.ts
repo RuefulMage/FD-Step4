@@ -3,7 +3,6 @@ import ViewComponent from './ViewComponent';
 import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
 class Strip extends ViewComponent {
-
   constructor(parentNode: HTMLElement) {
     super(parentNode, CONSTANTS.stripClassName);
     this.addHandlers();
@@ -41,7 +40,7 @@ class Strip extends ViewComponent {
         });
       this.getDOMNode().dispatchEvent(customEvent);
     }
-  }
+  };
 }
 
 export default Strip;
