@@ -1,6 +1,5 @@
 import Orientation from '../../Utils/Orientation';
 import CONSTANTS from '../../Utils/Constants';
-import OrientationBehaviorBuilder from '../OrientationBehaviors/OrientationBehaviorBuilder';
 
 import ViewComponent from './ViewComponent';
 import Strip from './Strip';
@@ -8,9 +7,10 @@ import Runner from './Runner';
 import Scale from './Scale';
 import Range from './Range';
 import Tip from './Tip';
+import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
 
-class View extends ViewComponent{
+class View extends ViewComponent {
   private strip: Strip;
 
   private range: Range;
@@ -39,31 +39,30 @@ class View extends ViewComponent{
     } = options;
 
     this.orientation = orientation;
+    OrientationBehavior.orientation = orientation;
     this.DOMNode.classList.add(CONSTANTS.orientationClassNames.get(orientation));
-    const orientationBehavior = OrientationBehaviorBuilder
-      .getOrientationBehaviorByOrientation(orientation);
 
-    this.strip = new Strip(this.DOMNode, orientationBehavior);
+    this.strip = new Strip(this.DOMNode);
     this.isTipsHidden = isTipsHidden;
 
     if (isRange) {
-      const lowValueRunner = new Runner(this.strip.getDOMNode(), orientationBehavior);
-      const lowValueTip = new Tip(this.strip.getDOMNode(), orientationBehavior, isTipsHidden);
+      const lowValueRunner = new Runner(this.strip.getDOMNode());
+      const lowValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden);
 
-      const highValueRunner = new Runner(this.strip.getDOMNode(), orientationBehavior);
-      const highValueTip = new Tip(this.strip.getDOMNode(), orientationBehavior, isTipsHidden);
+      const highValueRunner = new Runner(this.strip.getDOMNode());
+      const highValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden);
 
       this.runnersAndTips = new Map([
         [0, { runner: lowValueRunner, tip: lowValueTip }],
         [1, { runner: highValueRunner, tip: highValueTip }]]);
     } else {
-      const lowValueRunner = new Runner(this.strip.getDOMNode(), orientationBehavior);
-      const lowValueTip = new Tip(this.strip.getDOMNode(), orientationBehavior, isTipsHidden);
+      const lowValueRunner = new Runner(this.strip.getDOMNode());
+      const lowValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden);
 
       this.runnersAndTips = new Map([[0, { runner: lowValueRunner, tip: lowValueTip }]]);
     }
 
-    this.range = new Range(this.strip.getDOMNode(), orientationBehavior);
+    this.range = new Range(this.strip.getDOMNode());
     this.addHandlers();
   }
 
@@ -93,7 +92,6 @@ class View extends ViewComponent{
     return this.isTipsHidden;
   }
 
-  // Ф-ии работы с ориентацией слайдера
   public getOrientation(): Orientation {
     return this.orientation;
   }
@@ -102,22 +100,19 @@ class View extends ViewComponent{
     this.DOMNode.classList.remove(<string>CONSTANTS.orientationClassNames.get(this.orientation));
     this.DOMNode.classList.add(<string>CONSTANTS.orientationClassNames.get(orientation));
 
+    OrientationBehavior.orientation = orientation;
     this.orientation = orientation;
-    const orientationBehavior = OrientationBehaviorBuilder
-      .getOrientationBehaviorByOrientation(orientation);
 
     this.runnersAndTips.forEach((item) => {
-      item.tip.setOrientationBehavior(orientationBehavior);
-      item.tip.setPosition(item.runner.getPosition());
-      item.runner.setOrientationBehavior(orientationBehavior);
-      item.runner.setPosition(item.runner.getPosition());
+      OrientationBehavior.resetStyles(item.tip.getDOMNode());
+      OrientationBehavior.resetStyles(item.runner.getDOMNode());
     });
-
-    this.range.setOrientationBehavior(orientationBehavior);
-    this.strip.setOrientationBehavior(orientationBehavior);
+    OrientationBehavior.resetStyles(this.range.getDOMNode());
     if (this.scale !== undefined) {
-      this.scale.setOrientationBehavior(orientationBehavior);
+      this.scale.reCreateScale();
     }
+
+    this.notify('orientation-change', {});
   }
 
   // По размерам слайдера, вычисляет кол-во отрезков шкалы
@@ -138,7 +133,7 @@ class View extends ViewComponent{
 
   // обновляет Вью
   public updateView(runnersPositions: number[], tipsValues: number[],
-    scalePositions: Map<number, number>, isRange: boolean): void {
+                    scalePositions: Map<number, number>, isRange: boolean): void {
     if (isRange) {
       this.updateViewForInterval(runnersPositions, tipsValues,
         scalePositions);
@@ -170,13 +165,11 @@ class View extends ViewComponent{
       return;
     }
 
-    const orientationBehavior = OrientationBehaviorBuilder
-      .getOrientationBehaviorByOrientation(this.orientation);
 
-    const runner = new Runner(this.strip.getDOMNode(), orientationBehavior);
+    const runner = new Runner(this.strip.getDOMNode());
     runner.setPosition(highRunnerPosition);
 
-    const tip = new Tip(this.strip.getDOMNode(), orientationBehavior, this.isTipsHidden);
+    const tip = new Tip(this.strip.getDOMNode());
     tip.setInnerText(highValue.toString());
     tip.setPosition(highRunnerPosition);
 
@@ -202,10 +195,8 @@ class View extends ViewComponent{
 
   private setScale(valuesAndPositions: Map<number, number>): void {
     if (this.scale === undefined) {
-      const orientationBehavior = OrientationBehaviorBuilder
-        .getOrientationBehaviorByOrientation(this.orientation);
-      this.scale = new Scale(this.getDOMNode(),
-        { valuesAndPositions, orientationBehavior });
+      const orientation = this.orientation;
+      this.scale = new Scale(this.getDOMNode(), valuesAndPositions);
     } else {
       this.scale.setScale(valuesAndPositions);
     }
@@ -328,7 +319,7 @@ class View extends ViewComponent{
 
   // Обновляет Вью, когда бегунков два
   private updateViewForInterval(runnersPositions: number[], tipsValues: number[],
-    scalePositions: Map<number, number>): void {
+                                scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() < 2) {
       this.changeModeToRange(runnersPositions[1], tipsValues[1]);
     }
@@ -364,7 +355,7 @@ class View extends ViewComponent{
 
   // Обновляет Вью, когда только один бегунок
   private updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
-    scalePositions: Map<number, number>): void {
+                                    scalePositions: Map<number, number>): void {
     if (this.getRunnersAmount() > 1) {
       this.changeModeToSingle();
     }

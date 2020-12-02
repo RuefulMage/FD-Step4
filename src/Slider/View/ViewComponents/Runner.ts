@@ -1,16 +1,14 @@
 import CONSTANTS from '../../Utils/Constants';
-import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
+import Orientation from '../../Utils/Orientation';
+import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
 class Runner extends ViewComponent {
   private position: number;
 
-  private orientationBehavior: IOrientationBehavior;
-
-  constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior,
+  constructor(parentNode: HTMLElement,
     startPosition: number = 0) {
     super(parentNode, CONSTANTS.runnerClassName);
-    this.orientationBehavior = orientationBehavior;
     this.setPosition(startPosition);
     this.addMouseEventsHandlers();
     this.addTouchEventsHandler();
@@ -22,16 +20,7 @@ class Runner extends ViewComponent {
 
   public setPosition(value: number): void {
     this.position = value;
-    this.orientationBehavior.setPosition(value, this.DOMNode);
-  }
-
-  public getOrientationBehavior(): IOrientationBehavior {
-    return this.orientationBehavior;
-  }
-
-  public setOrientationBehavior(value: IOrientationBehavior): void {
-    this.orientationBehavior.resetStyles(this.DOMNode);
-    this.orientationBehavior = value;
+    OrientationBehavior.setPosition(value, this.DOMNode);
   }
 
   public setCurrentStatus(newStatus: boolean): void {
@@ -54,7 +43,7 @@ class Runner extends ViewComponent {
     // и вычисленную позицию
     function handleMouseMove(event: MouseEvent): void {
       try {
-        const newPosition = that.getOrientationBehavior()
+        const newPosition = OrientationBehavior
           .getPositionFromCoordinates(event.clientX, event.clientY, that.DOMNode);
         const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
           { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });
@@ -94,7 +83,7 @@ class Runner extends ViewComponent {
     function handleTouchMove(event: TouchEvent): void {
       try {
         const touch: Touch = event.targetTouches[0];
-        const newPosition = that.getOrientationBehavior().getPositionFromCoordinates(touch.clientX,
+        const newPosition = OrientationBehavior.getPositionFromCoordinates(touch.clientX,
           touch.clientY, that.DOMNode);
         const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
           { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });

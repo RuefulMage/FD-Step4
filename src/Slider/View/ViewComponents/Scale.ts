@@ -1,28 +1,18 @@
 import CONSTANTS from '../../Utils/Constants';
-import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
 import ScaleSubElement from './ScaleSubElement';
+import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
 class Scale extends ViewComponent {
   private subElements: ScaleSubElement[] = [];
 
-  private orientationBehavior: IOrientationBehavior;
 
-  constructor(parentNode: HTMLElement, options: {
-    orientationBehavior: IOrientationBehavior,
-    valuesAndPositions: Map<number, number>
-  }) {
+  constructor(parentNode: HTMLElement, valuesAndPositions: Map<number, number>) {
     super(parentNode, CONSTANTS.scaleClassName);
-    const { orientationBehavior, valuesAndPositions } = options;
-    this.init(orientationBehavior, valuesAndPositions);
-  }
-
-  private init(orientationBehavior: IOrientationBehavior,
-    valuesAndPositions: Map<number, number>) {
-    this.orientationBehavior = orientationBehavior;
     this.setScale(valuesAndPositions);
     this.addHandler();
   }
+
 
   public setScale(valuesAndPositions: Map<number, number>): void {
     this.getDOMNode().innerHTML = '';
@@ -33,18 +23,9 @@ class Scale extends ViewComponent {
         const subElement = new ScaleSubElement(this.getDOMNode(), position);
         subElement.getDOMNode().innerText = value.toString();
         this.subElements.push(subElement);
-        this.orientationBehavior.setPosition(position, subElement.getDOMNode());
+        OrientationBehavior.setPosition(position, subElement.getDOMNode());
       }
     });
-  }
-
-  public getOrientationBehavior(): IOrientationBehavior {
-    return this.orientationBehavior;
-  }
-
-  public setOrientationBehavior(value: IOrientationBehavior): void {
-    this.orientationBehavior = value;
-    this.reCreateScale();
   }
 
   // Пересоздает шкалу со старыми значениями
@@ -54,7 +35,7 @@ class Scale extends ViewComponent {
       const value = element.getDOMNode().innerText;
       const subElement = new ScaleSubElement(this.getDOMNode(), position);
       subElement.getDOMNode().innerText = value;
-      this.orientationBehavior.setPosition(position, subElement.getDOMNode());
+      OrientationBehavior.setPosition(position, subElement.getDOMNode());
       this.subElements[index].destroy();
       this.subElements[index] = subElement;
     });

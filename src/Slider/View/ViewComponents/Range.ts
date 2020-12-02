@@ -1,18 +1,15 @@
 import CONSTANTS from '../../Utils/Constants';
-import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
+import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
 class Range extends ViewComponent {
   private lowEdge: number;
 
   private highEdge: number;
 
-  private orientationBehavior: IOrientationBehavior;
-
-  constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior,
+  constructor(parentNode: HTMLElement,
     lowEdge: number = 0, highEdge: number = 100) {
     super(parentNode, CONSTANTS.rangeClassName);
-    this.orientationBehavior = orientationBehavior;
     this.lowEdge = lowEdge;
     this.highEdge = highEdge;
   }
@@ -23,7 +20,7 @@ class Range extends ViewComponent {
 
   public setLowEdge(value: number): void {
     this.lowEdge = value;
-    this.orientationBehavior.setRangePositions(this.lowEdge, this.highEdge, this.DOMNode);
+    OrientationBehavior.setRangePositions(this.lowEdge, this.highEdge, this.DOMNode);
   }
 
   public getHighEdge(): number {
@@ -32,17 +29,7 @@ class Range extends ViewComponent {
 
   public setHighEdge(value: number): void {
     this.highEdge = value;
-    this.orientationBehavior.setRangePositions(this.lowEdge, this.highEdge, this.DOMNode);
-  }
-
-  public getOrientationBehavior(): IOrientationBehavior {
-    return this.orientationBehavior;
-  }
-
-  public setOrientationBehavior(value: IOrientationBehavior): void {
-    this.orientationBehavior = value;
-    this.orientationBehavior.resetStyles(this.DOMNode);
-    this.orientationBehavior.setRangePositions(this.lowEdge, this.highEdge, this.DOMNode);
+    OrientationBehavior.setRangePositions(this.lowEdge, this.highEdge, this.DOMNode);
   }
 }
 

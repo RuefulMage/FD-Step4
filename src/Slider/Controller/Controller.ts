@@ -25,7 +25,7 @@ class Controller{
 
     if (isPositionChangeEvent) {
       this.setValues(data.runnerIndex, data.position);
-    } else if (eventName === 'resize') {
+    } else {
       this.updateView();
     }
   }

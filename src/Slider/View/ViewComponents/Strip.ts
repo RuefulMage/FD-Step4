@@ -1,22 +1,12 @@
 import CONSTANTS from '../../Utils/Constants';
-import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
+import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
 class Strip extends ViewComponent {
-  private orientationBehavior: IOrientationBehavior;
 
-  constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior) {
+  constructor(parentNode: HTMLElement) {
     super(parentNode, CONSTANTS.stripClassName);
-    this.orientationBehavior = orientationBehavior;
     this.addHandlers();
-  }
-
-  public setOrientationBehavior(orientationBehavior: IOrientationBehavior): void {
-    this.orientationBehavior = orientationBehavior;
-  }
-
-  public getOrientationBehavior(): IOrientationBehavior {
-    return this.orientationBehavior;
   }
 
   // Навешивает обработчик клика на дорожку бегунков
@@ -36,8 +26,9 @@ class Strip extends ViewComponent {
       });
 
       if (!isTargetRunner) {
-        const position = that.orientationBehavior
-          .getPositionFromCoordinates(event.clientX, event.clientY, that.DOMNode);
+        const position = OrientationBehavior
+          .getPositionFromCoordinates(event.clientX, event.clientY,
+            that.DOMNode);
 
         const customEvent = new CustomEvent('slider-click',
           {
