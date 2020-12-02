@@ -208,30 +208,15 @@ class View extends ViewComponent {
   }
 
   private setRunnerPosition(runnerIndex: 0 | 1, position: number): void {
-    const isRunnerExist = !(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0);
-
-    if (!isRunnerExist) {
-      throw new Error(`runner with index: ${runnerIndex} does not exits`);
-    }
     this.runnersAndTips.get(runnerIndex).runner.setPosition(position);
   }
 
   private getRunnerPosition(runnerIndex: 0 | 1): number {
-    const isRunnerExist = !(runnerIndex >= this.getRunnersAmount() || runnerIndex < 0);
-
-    if (!isRunnerExist) {
-      throw new Error(`runner with index: ${runnerIndex} does not exits`);
-    }
     return this.runnersAndTips.get(runnerIndex).runner.getPosition();
   }
 
   // Ф-ии изменения и чтения св-в подсказок
   private setTipPosition(tipIndex: 0 | 1, position: number): void {
-    const isTipExist = !(tipIndex >= this.getRunnersAmount() || tipIndex < 0);
-
-    if (!isTipExist) {
-      throw new Error(`tip with index ${tipIndex} does not exits`);
-    }
     const { tip } = this.runnersAndTips.get(tipIndex);
     tip.setPosition(position);
   }
