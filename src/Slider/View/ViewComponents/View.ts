@@ -75,7 +75,7 @@ class View extends ViewComponent {
     this.isTipsHidden = false;
     this.runnersAndTips.forEach((item, index: 0 | 1) => this.showTip(index));
 
-    if (this.runnersAndTips.size > 1) {
+    if (this.runnersAndTips.size === 2) {
       const isRunnersTooClose = Math.abs(this.getRunnerPosition(0)
         - this.getRunnerPosition(1)) <= CONSTANTS.tipsJoinDistance;
 
@@ -108,6 +108,7 @@ class View extends ViewComponent {
       OrientationBehavior.resetStyles(item.runner.getDOMNode());
     });
     OrientationBehavior.resetStyles(this.range.getDOMNode());
+
     if (this.scale !== undefined) {
       this.scale.reCreateScale();
     }
@@ -164,7 +165,6 @@ class View extends ViewComponent {
     if (this.runnersAndTips.size === 2) {
       return;
     }
-
 
     const runner = new Runner(this.strip.getDOMNode());
     runner.setPosition(highRunnerPosition);
@@ -241,12 +241,6 @@ class View extends ViewComponent {
     tip.setInnerText(text);
   }
 
-  // Пересоздает шкалу со старыми делениями
-  private reCreateScale(): void {
-    if (this.scale !== undefined) {
-      this.scale.reCreateScale();
-    }
-  }
 
   private addHandlers(): void {
     const that: View = this;
@@ -257,7 +251,7 @@ class View extends ViewComponent {
 
     // Ставит входящий бегунок поверх остальных
     function setRunnerToCurrent(runner: Runner): void {
-      that.runnersAndTips.forEach((item, index) => {
+      that.runnersAndTips.forEach((item) => {
         if (item.runner === runner) {
           item.runner.setCurrentStatus(true);
         } else {
@@ -273,11 +267,10 @@ class View extends ViewComponent {
         throw new Error('not a custom event');
       } else {
         let runnerIndex: number = 0;
-        that.runnersAndTips.forEach((item, index) => {
-          if (item.runner === event.detail.target) {
-            runnerIndex = index;
-          }
-        });
+        let dragTarget = event.detail.target;
+        let lowRunner = that.runnersAndTips.get(0).runner;
+        runnerIndex = lowRunner === dragTarget ? 0: 1;
+
         setRunnerToCurrent(event.detail.target);
         that.notify('position-change-by-drag',
           { runnerIndex, position: event.detail.position });
@@ -317,10 +310,9 @@ class View extends ViewComponent {
     window.addEventListener('resize', handleResize);
   }
 
-  // Обновляет Вью, когда бегунков два
   private updateViewForInterval(runnersPositions: number[], tipsValues: number[],
                                 scalePositions: Map<number, number>): void {
-    if (this.getRunnersAmount() < 2) {
+    if (this.getRunnersAmount() === 1) {
       this.changeModeToRange(runnersPositions[1], tipsValues[1]);
     }
     this.setScale(scalePositions);
@@ -330,11 +322,7 @@ class View extends ViewComponent {
     this.setRange(runnersPositions[0], runnersPositions[1]);
   }
 
-  // Обновляет Бегунки и подсказки, когда интервал
   private updateAllTipsPositionAndText(runnersPositions: number[], tipsValues: number[]) {
-    if (this.getRunnersAmount() < 2) {
-      throw new Error('Runners amount is too small');
-    }
     const isRunnersTooClose = Math.abs(runnersPositions[0]
       - runnersPositions[1]) <= CONSTANTS.tipsJoinDistance;
 
@@ -353,10 +341,9 @@ class View extends ViewComponent {
     }
   }
 
-  // Обновляет Вью, когда только один бегунок
   private updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
                                     scalePositions: Map<number, number>): void {
-    if (this.getRunnersAmount() > 1) {
+    if (this.getRunnersAmount() === 2) {
       this.changeModeToSingle();
     }
     this.setScale(scalePositions);
