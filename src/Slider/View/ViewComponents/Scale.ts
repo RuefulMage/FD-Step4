@@ -43,29 +43,29 @@ class Scale extends ViewComponent {
 
   // Навершивает обработчик события клик на шкалу
   private addHandler(): void {
-    const that: Scale = this;
-
-    // Если элемент, на который кликнули является дочерним, то создается
-    // пользовательское событие, содержащее позицию места клика.
-    // Позиция берется из пользовательского
-    // аттрибута 'data-scale-position'
-    function handleRangeCLick(event: MouseEvent) {
-      if (event.target !== event.currentTarget) {
-        const target = event.target as HTMLElement;
-        const customEvent = new CustomEvent('slider-click',
-          {
-            bubbles: true,
-            cancelable: true,
-            detail: {
-              position: target.getAttribute('data-scale-position'),
-            },
-          });
-        that.DOMNode.dispatchEvent(customEvent);
-      }
-    }
-
-    this.DOMNode.addEventListener('click', handleRangeCLick);
+    this.DOMNode.addEventListener('click', this.handleRangeCLick);
   }
+
+  // Если элемент, на который кликнули является дочерним, то создается
+  // пользовательское событие, содержащее позицию места клика.
+  // Позиция берется из пользовательского
+  // аттрибута 'data-scale-position'
+  private handleRangeCLick = (event: MouseEvent) => {
+    if (event.target !== event.currentTarget) {
+      const target = event.target as HTMLElement;
+      const customEvent = new CustomEvent('slider-click',
+        {
+          bubbles: true,
+          cancelable: true,
+          detail: {
+            position: target.getAttribute('data-scale-position'),
+          },
+        });
+      this.getDOMNode().dispatchEvent(customEvent);
+    }
+  }
+
+
 }
 
 export default Scale;

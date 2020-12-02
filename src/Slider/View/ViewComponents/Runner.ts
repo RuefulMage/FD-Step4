@@ -32,90 +32,82 @@ class Runner extends ViewComponent {
   }
 
   private addMouseEventsHandlers(): void {
-    const that: Runner = this;
+    this.DOMNode.addEventListener('mousedown', this.handleMouseDown);
+    this.DOMNode.addEventListener('dragstart', this.handleDragStart);
+  }
 
-    function handleDragStart(): boolean {
-      return false;
+  private handleDragStart = (): boolean => {
+    return false;
+  }
+
+  // Получает позицию положения мыши относительно род. элемента бегунка и вызывает на себе
+  // пользовательское событие 'slider-drag', которое содержит объект бегунка
+  // и вычисленную позицию
+  private handleMouseMove = (event: MouseEvent): void => {
+    try {
+      const newPosition = OrientationBehavior
+        .getPositionFromCoordinates(event.clientX, event.clientY, this.DOMNode);
+      const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
+        { bubbles: true, cancelable: true, detail: { position: newPosition, target: this } });
+      this.DOMNode.dispatchEvent(changePositionEvent);
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      this.handleMouseUp();
     }
+  }
 
-    // Получает позицию положения мыши относительно род. элемента бегунка и вызывает на себе
-    // пользовательское событие 'slider-drag', которое содержит объект бегунка
-    // и вычисленную позицию
-    function handleMouseMove(event: MouseEvent): void {
-      try {
-        const newPosition = OrientationBehavior
-          .getPositionFromCoordinates(event.clientX, event.clientY, that.DOMNode);
-        const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
-          { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });
-        that.DOMNode.dispatchEvent(changePositionEvent);
-      } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        handleMouseUp();
-      }
-    }
 
-    // удаляет обработчики событий движения и отклика мыши
-    function handleMouseUp(): void {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    }
+  // удаляет обработчики событий движения и отклика мыши
+  private handleMouseUp = (): void => {
+    document.removeEventListener('mousemove', this.handleMouseMove);
+    document.removeEventListener('mouseup', this.handleMouseUp);
+  }
 
-    // Навешивает на бегунок обработчики событий движения и отклика мыши
-    function handleMouseDown(event: MouseEvent): void {
-      event.preventDefault();
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    }
-
-    this.DOMNode.addEventListener('mousedown', handleMouseDown);
-
-    this.DOMNode.addEventListener('dragstart', handleDragStart);
+  // Навешивает на бегунок обработчики событий движения и отклика мыши
+  private handleMouseDown = (event: MouseEvent): void  => {
+    event.preventDefault();
+    document.addEventListener('mousemove', this.handleMouseMove);
+    document.addEventListener('mouseup', this.handleMouseUp);
   }
 
   // Навешивает обработчики событий касания на дом-элемент бегунка
   // для Drag'n'Drop на сенсоных устройствах
   private addTouchEventsHandler(): void {
-    const that: Runner = this;
+    this.DOMNode.addEventListener('touchstart', this.handleTouchStart);
+    this.DOMNode.addEventListener('dragstart', this.handleDragStart);
+  }
 
-    // Получает позицию положения касания относительно род. элемента бегунка и вызывает на себе
-    // пользовательское событие 'slider-drag', которое содержит объект бегунка
-    // и вычисленную позицию
-    function handleTouchMove(event: TouchEvent): void {
-      try {
-        const touch: Touch = event.targetTouches[0];
-        const newPosition = OrientationBehavior.getPositionFromCoordinates(touch.clientX,
-          touch.clientY, that.DOMNode);
-        const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
-          { bubbles: true, cancelable: true, detail: { position: newPosition, target: that } });
-        that.DOMNode.dispatchEvent(changePositionEvent);
-      } catch (error) {
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        handleTouchEnd(event);
-      }
+
+  // Получает позицию положения касания относительно род. элемента бегунка и вызывает на себе
+  // пользовательское событие 'slider-drag', которое содержит объект бегунка
+  // и вычисленную позицию
+  private handleTouchMove = (event: TouchEvent): void => {
+    try {
+      const touch: Touch = event.targetTouches[0];
+      const newPosition = OrientationBehavior.getPositionFromCoordinates(touch.clientX,
+        touch.clientY, this.getDOMNode());
+      const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
+        { bubbles: true, cancelable: true, detail: { position: newPosition, target: this } });
+      this.getDOMNode().dispatchEvent(changePositionEvent);
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-use-before-define
+      this.handleTouchEnd(event);
     }
+  }
 
-    // Удаляет обработчики событий движения и окончания касания
-    function handleTouchEnd(event: TouchEvent): void {
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleTouchEnd);
-      document.removeEventListener('touchcancel', handleTouchEnd);
-    }
+  // Удаляет обработчики событий движения и окончания касания
+  private handleTouchEnd = (event: TouchEvent): void => {
+    document.removeEventListener('touchmove', this.handleTouchMove);
+    document.removeEventListener('touchend', this.handleTouchEnd);
+    document.removeEventListener('touchcancel', this.handleTouchEnd);
+  }
 
-    // Навешивает на бегунок обработчики событий движения и окончания касания
-    function handleTouchStart(event: TouchEvent): void {
-      event.preventDefault();
-      document.addEventListener('touchmove', handleTouchMove);
-      document.addEventListener('touchend', handleTouchEnd);
-      document.addEventListener('touchcancel', handleTouchEnd);
-    }
-
-    function handleDragStart(): boolean {
-      return false;
-    }
-
-    this.DOMNode.addEventListener('touchstart', handleTouchStart);
-
-    this.DOMNode.addEventListener('dragstart', handleDragStart);
+  // Навешивает на бегунок обработчики событий движения и окончания касания
+  private handleTouchStart = (event: TouchEvent): void => {
+    event.preventDefault();
+    document.addEventListener('touchmove', this.handleTouchMove);
+    document.addEventListener('touchend', this.handleTouchEnd);
+    document.addEventListener('touchcancel', this.handleTouchEnd);
   }
 }
 

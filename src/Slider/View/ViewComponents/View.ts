@@ -228,72 +228,72 @@ class View extends ViewComponent {
 
 
   private addHandlers(): void {
-    const that: View = this;
+    this.DOMNode.addEventListener('slider-drag', this.handleRunnerDrag);
+    this.DOMNode.addEventListener('slider-click', this.handleSliderClick);
+    window.addEventListener('resize', this.handleResize);
+  }
 
-    function isCustomEvent(event: Event): event is CustomEvent {
-      return (event as CustomEvent).detail !== undefined;
+  private isCustomEvent(event: Event): event is CustomEvent {
+    return (event as CustomEvent).detail !== undefined;
+  }
+
+  // Ставит входящий бегунок поверх остальных
+  private setRunnerToCurrent = (runner: Runner): void => {
+    this.runnersAndTips.forEach((item) => {
+      if (item.runner === runner) {
+        item.runner.setCurrentStatus(true);
+      } else {
+        item.runner.setCurrentStatus(false);
+      }
+    });
+  }
+
+  // Оповещает подписчиков и передает им индекс бегунка, на котором произошло событие
+  // и полученную позицию
+  private handleRunnerDrag = (event: Event) => {
+    if (!this.isCustomEvent(event)) {
+      throw new Error('not a custom event');
+    } else {
+      let runnerIndex: number = 0;
+      let dragTarget = event.detail.target;
+      let lowRunner = this.runnersAndTips.get(0).runner;
+      runnerIndex = lowRunner === dragTarget ? 0: 1;
+
+      this.setRunnerToCurrent(event.detail.target);
+      this.notify('position-change-by-drag',
+        { runnerIndex, position: event.detail.position });
     }
+  }
 
-    // Ставит входящий бегунок поверх остальных
-    function setRunnerToCurrent(runner: Runner): void {
-      that.runnersAndTips.forEach((item) => {
-        if (item.runner === runner) {
-          item.runner.setCurrentStatus(true);
-        } else {
-          item.runner.setCurrentStatus(false);
+  // Получает позицию клика, вычисляет ближайший к позиции бегунок,
+  // оповещает подписчиков и передает им полученную позицию и индекс бегунка
+  private handleSliderClick = (event: Event): void => {
+    if (!this.isCustomEvent(event)) {
+      throw new Error('not a custom event');
+    } else {
+      let runnerIndex: number = 0;
+      let minPosDifference = Number.MAX_VALUE;
+      this.runnersAndTips.forEach((item, index) => {
+        const difference = Math.abs(item.runner.getPosition() - event.detail.position);
+        if (difference < minPosDifference) {
+          runnerIndex = index;
+          minPosDifference = difference;
         }
       });
+      this.setRunnerToCurrent(this.runnersAndTips.get(runnerIndex).runner);
+      this.notify('position-change-by-click',
+        { position: event.detail.position, runnerIndex });
     }
-
-    // Оповещает подписчиков и передает им индекс бегунка, на котором произошло событие
-    // и полученную позицию
-    function handleRunnerDrag(event: Event) {
-      if (!isCustomEvent(event)) {
-        throw new Error('not a custom event');
-      } else {
-        let runnerIndex: number = 0;
-        let dragTarget = event.detail.target;
-        let lowRunner = that.runnersAndTips.get(0).runner;
-        runnerIndex = lowRunner === dragTarget ? 0: 1;
-
-        setRunnerToCurrent(event.detail.target);
-        that.notify('position-change-by-drag',
-          { runnerIndex, position: event.detail.position });
-      }
-    }
-
-    // Получает позицию клика, вычисляет ближайший к позиции бегунок,
-    // оповещает подписчиков и передает им полученную позицию и индекс бегунка
-    function handleSliderClick(event: Event): void {
-      if (!isCustomEvent(event)) {
-        throw new Error('not a custom event');
-      } else {
-        let runnerIndex: number = 0;
-        let minPosDifference = Number.MAX_VALUE;
-        that.runnersAndTips.forEach((item, index) => {
-          const difference = Math.abs(item.runner.getPosition() - event.detail.position);
-          if (difference < minPosDifference) {
-            runnerIndex = index;
-            minPosDifference = difference;
-          }
-        });
-        setRunnerToCurrent(that.runnersAndTips.get(runnerIndex).runner);
-        that.notify('position-change-by-click',
-          { position: event.detail.position, runnerIndex });
-      }
-    }
-
-    // Оповещает подписщиков об изменении размеров окна
-    // и передает им высчитанное кол-во делений шкалы
-    function handleResize(): void {
-      const scaleDivisionsAmount = that.computeDivisionsAmountBySize();
-      that.notify('resize', { scaleDivisionsAmount });
-    }
-
-    this.DOMNode.addEventListener('slider-drag', handleRunnerDrag);
-    this.DOMNode.addEventListener('slider-click', handleSliderClick);
-    window.addEventListener('resize', handleResize);
   }
+
+  // Оповещает подписщиков об изменении размеров окна
+  // и передает им высчитанное кол-во делений шкалы
+  private handleResize = (): void => {
+    const scaleDivisionsAmount = this.computeDivisionsAmountBySize();
+    this.notify('resize', { scaleDivisionsAmount });
+  }
+
+
 
   private updateViewForInterval(runnersPositions: number[], tipsValues: number[],
                                 scalePositions: Map<number, number>): void {
