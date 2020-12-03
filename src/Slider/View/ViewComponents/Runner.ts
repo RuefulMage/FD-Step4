@@ -4,10 +4,12 @@ import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
 class Runner extends ViewComponent {
   private position: number;
+  private orientationBehavior: OrientationBehavior;
 
-  constructor(parentNode: HTMLElement,
+  constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior,
     startPosition: number = 0) {
     super(parentNode, CONSTANTS.runnerClassName);
+    this.orientationBehavior = orientationBehavior;
     this.setPosition(startPosition);
     this.addMouseEventsHandlers();
     this.addTouchEventsHandler();
@@ -19,7 +21,7 @@ class Runner extends ViewComponent {
 
   public setPosition(value: number): void {
     this.position = value;
-    OrientationBehavior.setPosition(value, this.DOMNode);
+    this.orientationBehavior.setPosition(value, this.DOMNode);
   }
 
   public setCurrentStatus(newStatus: boolean): void {
@@ -42,7 +44,7 @@ class Runner extends ViewComponent {
   // и вычисленную позицию
   private handleMouseMove = (event: MouseEvent): void => {
     try {
-      const newPosition = OrientationBehavior
+      const newPosition = this.orientationBehavior
         .getPositionFromCoordinates(event.clientX, event.clientY, this.DOMNode);
       const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
         { bubbles: true, cancelable: true, detail: { position: newPosition, target: this } });
@@ -75,7 +77,7 @@ class Runner extends ViewComponent {
   private handleTouchMove = (event: TouchEvent): void => {
     try {
       const touch: Touch = event.targetTouches[0];
-      const newPosition = OrientationBehavior.getPositionFromCoordinates(touch.clientX,
+      const newPosition = this.orientationBehavior.getPositionFromCoordinates(touch.clientX,
         touch.clientY, this.getDOMNode());
       const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
         { bubbles: true, cancelable: true, detail: { position: newPosition, target: this } });

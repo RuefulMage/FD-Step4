@@ -1,9 +1,17 @@
 import Orientation from '../../Utils/Orientation';
 
-const OrientationBehavior = {
-  orientation: Orientation.HORIZONTAL,
+class OrientationBehavior{
+  private orientation: Orientation
 
-  setPosition(newPosition: number, domElement: HTMLElement): void {
+  constructor(orientation: Orientation) {
+    this.orientation = orientation;
+  }
+
+  public setOrientation(orientation: Orientation) {
+    this.orientation = orientation;
+  }
+
+  public setPosition(newPosition: number, domElement: HTMLElement): void {
     if (this.orientation === Orientation.HORIZONTAL) {
       const parentWidth = domElement.parentElement.offsetWidth;
       const elementWidth = domElement.offsetWidth;
@@ -17,13 +25,14 @@ const OrientationBehavior = {
       // eslint-disable-next-line no-param-reassign
       domElement.style.bottom = `${newPosition - domElementHeightInPercent / 2}%`;
     }
-  },
+
+  }
 
   // Получает координаты точки относительно окна и дом-элемент
   // и возвращает позиуию точки относительно
   // родителя дом-элемента
-  getPositionFromCoordinates(clientX: number, clientY: number,
-    domElement: HTMLElement): number {
+  public getPositionFromCoordinates(clientX: number, clientY: number,
+                             domElement: HTMLElement): number {
     if (clientX > window.innerWidth || clientY > window.innerHeight) {
       throw new Error('clientX or clientY is too big');
     }
@@ -38,14 +47,14 @@ const OrientationBehavior = {
     const parentSize = domElement.parentElement.offsetHeight;
     const position = (positionInPixels / parentSize) * 100;
     return 100 - position;
-  },
+  }
 
-  resetStyles(domElement: HTMLElement): void {
+  public resetStyles(domElement: HTMLElement): void {
     domElement.setAttribute('style', '');
-  },
+  }
 
-  setRangePositions(minEdge: number, maxEdge: number,
-    domElement: HTMLElement): void {
+  public setRangePositions(minEdge: number, maxEdge: number,
+                    domElement: HTMLElement): void {
     if (this.orientation === Orientation.HORIZONTAL) {
       // eslint-disable-next-line no-param-reassign
       domElement.style.left = `${minEdge}%`;
@@ -57,7 +66,7 @@ const OrientationBehavior = {
       // eslint-disable-next-line no-param-reassign
       domElement.style.top = `${100 - maxEdge}%`;
     }
-  },
+  }
 };
 
 export default OrientationBehavior;

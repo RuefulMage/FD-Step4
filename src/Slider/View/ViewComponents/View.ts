@@ -18,6 +18,8 @@ class View extends ViewComponent {
 
   private orientation: Orientation;
 
+  private orientationBehavior: OrientationBehavior;
+
   private runnersAndTips: Map<number, { runner: Runner, tip: Tip }>;
 
   private isTipsHidden: boolean;
@@ -38,30 +40,32 @@ class View extends ViewComponent {
     } = options;
 
     this.orientation = orientation;
-    OrientationBehavior.orientation = orientation;
+
+    this.orientationBehavior = new OrientationBehavior(orientation);
+
     this.DOMNode.classList.add(CONSTANTS.orientationClassNames.get(orientation));
 
-    this.strip = new Strip(this.DOMNode);
+    this.strip = new Strip(this.DOMNode, this.orientationBehavior);
     this.isTipsHidden = isTipsHidden;
 
     if (isRange) {
-      const lowValueRunner = new Runner(this.strip.getDOMNode());
-      const lowValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden);
+      const lowValueRunner = new Runner(this.strip.getDOMNode(), this.orientationBehavior);
+      const lowValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden, this.orientationBehavior);
 
-      const highValueRunner = new Runner(this.strip.getDOMNode());
-      const highValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden);
+      const highValueRunner = new Runner(this.strip.getDOMNode(), this.orientationBehavior);
+      const highValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden, this.orientationBehavior);
 
       this.runnersAndTips = new Map([
         [0, { runner: lowValueRunner, tip: lowValueTip }],
         [1, { runner: highValueRunner, tip: highValueTip }]]);
     } else {
-      const lowValueRunner = new Runner(this.strip.getDOMNode());
-      const lowValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden);
+      const lowValueRunner = new Runner(this.strip.getDOMNode(), this.orientationBehavior);
+      const lowValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden, this.orientationBehavior);
 
       this.runnersAndTips = new Map([[0, { runner: lowValueRunner, tip: lowValueTip }]]);
     }
 
-    this.range = new Range(this.strip.getDOMNode());
+    this.range = new Range(this.strip.getDOMNode(), this.orientationBehavior);
     this.addHandlers();
   }
 
@@ -99,14 +103,14 @@ class View extends ViewComponent {
     this.DOMNode.classList.remove(<string>CONSTANTS.orientationClassNames.get(this.orientation));
     this.DOMNode.classList.add(<string>CONSTANTS.orientationClassNames.get(orientation));
 
-    OrientationBehavior.orientation = orientation;
+    this.orientationBehavior.setOrientation(orientation);
     this.orientation = orientation;
 
     this.runnersAndTips.forEach((item) => {
-      OrientationBehavior.resetStyles(item.tip.getDOMNode());
-      OrientationBehavior.resetStyles(item.runner.getDOMNode());
+      this.orientationBehavior.resetStyles(item.tip.getDOMNode());
+      this.orientationBehavior.resetStyles(item.runner.getDOMNode());
     });
-    OrientationBehavior.resetStyles(this.range.getDOMNode());
+    this.orientationBehavior.resetStyles(this.range.getDOMNode());
 
     if (this.scale !== undefined) {
       this.scale.reCreateScale();
@@ -133,6 +137,7 @@ class View extends ViewComponent {
 
   public updateView(runnersPositions: number[], tipsValues: number[],
     scalePositions: Map<number, number>, isRange: boolean): void {
+
     if (isRange) {
       this.updateViewForInterval(runnersPositions, tipsValues,
         scalePositions);
@@ -163,10 +168,10 @@ class View extends ViewComponent {
       return;
     }
 
-    const runner = new Runner(this.strip.getDOMNode());
+    const runner = new Runner(this.strip.getDOMNode(), this.orientationBehavior);
     runner.setPosition(highRunnerPosition);
 
-    const tip = new Tip(this.strip.getDOMNode());
+    const tip = new Tip(this.strip.getDOMNode(), this.isTipsHidden, this.orientationBehavior);
     tip.setInnerText(highValue.toString());
     tip.setPosition(highRunnerPosition);
 
@@ -193,7 +198,7 @@ class View extends ViewComponent {
   private setScale(valuesAndPositions: Map<number, number>): void {
     if (this.scale === undefined) {
       const { orientation } = this;
-      this.scale = new Scale(this.getDOMNode(), valuesAndPositions);
+      this.scale = new Scale(this.getDOMNode(), valuesAndPositions, this.orientationBehavior);
     } else {
       this.scale.setScale(valuesAndPositions);
     }

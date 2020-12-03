@@ -3,8 +3,11 @@ import ViewComponent from './ViewComponent';
 import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
 class Strip extends ViewComponent {
-  constructor(parentNode: HTMLElement) {
+  private orientationBehavior: OrientationBehavior;
+
+  constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior) {
     super(parentNode, CONSTANTS.stripClassName);
+    this.orientationBehavior = orientationBehavior;
     this.addHandlers();
   }
 
@@ -25,7 +28,7 @@ class Strip extends ViewComponent {
     });
 
     if (!isTargetRunner) {
-      const position = OrientationBehavior
+      const position = this.orientationBehavior
         .getPositionFromCoordinates(event.clientX, event.clientY,
           this.getDOMNode());
 

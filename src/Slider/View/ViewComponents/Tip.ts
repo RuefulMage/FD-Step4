@@ -5,8 +5,11 @@ import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 class Tip extends ViewComponent {
   private isHidden: boolean;
 
-  constructor(parentNode: HTMLElement, isHidden: boolean = true) {
+  private orientationBehavior: OrientationBehavior;
+
+  constructor(parentNode: HTMLElement, isHidden: boolean = true, orientationBehavior: OrientationBehavior) {
     super(parentNode, CONSTANTS.tipClassName);
+    this.orientationBehavior = orientationBehavior;
     if (isHidden) {
       this.DOMNode.classList.add(CONSTANTS.tipHiddenClassName);
     }
@@ -14,7 +17,7 @@ class Tip extends ViewComponent {
   }
 
   public setPosition(newPosition: number): void {
-    OrientationBehavior.setPosition(newPosition, this.DOMNode);
+    this.orientationBehavior.setPosition(newPosition, this.DOMNode);
   }
 
   public setInnerText(text: string): void {
