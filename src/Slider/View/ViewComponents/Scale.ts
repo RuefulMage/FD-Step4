@@ -6,8 +6,11 @@ import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 class Scale extends ViewComponent {
   private subElements: ScaleSubElement[] = [];
 
-  constructor(parentNode: HTMLElement, valuesAndPositions: Map<number, number>) {
+  private orientationBehavior: OrientationBehavior;
+
+  constructor(parentNode: HTMLElement, valuesAndPositions: Map<number, number>, orientationBehavior: OrientationBehavior) {
     super(parentNode, CONSTANTS.scaleClassName);
+    this.orientationBehavior = orientationBehavior;
     this.setScale(valuesAndPositions);
     this.addHandler();
   }
@@ -21,7 +24,7 @@ class Scale extends ViewComponent {
         const subElement = new ScaleSubElement(this.getDOMNode(), position);
         subElement.getDOMNode().innerText = value.toString();
         this.subElements.push(subElement);
-        OrientationBehavior.setPosition(position, subElement.getDOMNode());
+        this.orientationBehavior.setPosition(position, subElement.getDOMNode());
       }
     });
   }
@@ -32,7 +35,7 @@ class Scale extends ViewComponent {
       const value = element.getDOMNode().innerText;
       const subElement = new ScaleSubElement(this.getDOMNode(), position);
       subElement.getDOMNode().innerText = value;
-      OrientationBehavior.setPosition(position, subElement.getDOMNode());
+      this.orientationBehavior.setPosition(position, subElement.getDOMNode());
       this.subElements[index].destroy();
       this.subElements[index] = subElement;
     });
