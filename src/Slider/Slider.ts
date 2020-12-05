@@ -123,30 +123,30 @@ class Slider {
   }
 }
 
-// (function ($) {
-//   // eslint-disable-next-line no-param-reassign
-//   $.fn.slider = function (userOptions: SliderOptions) {
-//     const options = $.extend(true, $.fn.slider.defaultOptions, userOptions);
-//
-//     return this.each(function () {
-//       if (!$(this).data('slider')) {
-//         const slider = new Slider(this, options);
-//         $(this).data('slider', slider);
-//       }
-//     });
-//   };
-//
-//   // eslint-disable-next-line no-param-reassign
-//   $.fn.slider.defaultOptions = {
-//     isRange: false,
-//     isTipsHidden: false,
-//     maxValue: 100,
-//     minValue: 0,
-//     orientation: 'horizontal',
-//     startValueHigh: 100,
-//     startValueLow: 0,
-//     step: 1,
-//   };
-// }(jQuery));
+(function ($) {
+  // eslint-disable-next-line no-param-reassign
+  $.fn.slider = function (userOptions: SliderOptions) {
+    const options = $.extend(true, $.fn.slider.defaultOptions, userOptions);
+
+    return this.each(function () {
+      if (!$(this).data('slider')) {
+        const slider = new Slider(this, options);
+        $(this).data('slider', slider);
+      }
+    });
+  };
+
+  // eslint-disable-next-line no-param-reassign
+  $.fn.slider.defaultOptions = {
+    isRange: false,
+    isTipsHidden: false,
+    maxValue: 100,
+    minValue: 0,
+    orientation: 'horizontal',
+    startValueHigh: 100,
+    startValueLow: 0,
+    step: 1,
+  };
+}(jQuery));
 
 export default Slider;
