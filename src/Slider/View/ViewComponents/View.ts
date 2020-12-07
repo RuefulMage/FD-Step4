@@ -246,7 +246,7 @@ class View extends ViewComponent {
     const lowRunner = this.runnersAndTips.get(0).runner.getDOMNode();
     runnerIndex = lowRunner === dragTarget ? 0 : 1;
 
-    this.setRunnerToCurrent(event.detail.target);
+    this.setRunnerToCurrent(this.runnersAndTips.get(runnerIndex).runner);
     this.notify('position-change-by-drag',
       { runnerIndex, position: event.detail.position });
   };
