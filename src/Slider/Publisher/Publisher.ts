@@ -2,7 +2,7 @@ import ModelEventName from '../Utils/ModelEventName';
 import ViewEventName from '../Utils/ViewEventName';
 
 class Publisher {
-  observersCallbacks: Set<Function> = new Set<Function>();
+  private observersCallbacks: Set<Function> = new Set<Function>();
 
   public attach(callback: Function): void {
     this.observersCallbacks.add(callback);
