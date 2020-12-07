@@ -197,7 +197,6 @@ class View extends ViewComponent {
 
   private setScale(valuesAndPositions: Map<number, number>): void {
     if (this.scale === undefined) {
-      const { orientation } = this;
       this.scale = new Scale(this.getDOMNode(), valuesAndPositions, this.orientationBehavior);
     } else {
       this.scale.setScale(valuesAndPositions);
@@ -245,7 +244,7 @@ class View extends ViewComponent {
   private handleRunnerDrag = (event: CustomEvent) => {
     let runnerIndex: number = 0;
     const dragTarget = event.detail.target;
-    const lowRunner = this.runnersAndTips.get(0).runner;
+    const lowRunner = this.runnersAndTips.get(0).runner.getDOMNode();
     runnerIndex = lowRunner === dragTarget ? 0 : 1;
 
     this.setRunnerToCurrent(event.detail.target);
