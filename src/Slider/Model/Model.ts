@@ -49,12 +49,10 @@ class Model extends Publisher {
     this.setHighValue(startValueHigh);
   }
 
-  // Возвращает true, если стоит режим промежутка
   public getRangeStatus(): boolean {
     return this.isRange;
   }
 
-  // Изменяет режим промежутка
   public setRangeMode(isRange: boolean): void {
     this.isRange = isRange;
     this.notify('range-mode-change', { isRange });
@@ -177,7 +175,7 @@ class Model extends Publisher {
     }
   }
 
-  // Делит интервал на равные отрезки
+  // Делит интервал на равные отрезки согласно шагу
   public splitIntervalByStep(divisionsAmount: number): Map<number, number> {
     const segmentsAmount = divisionsAmount - 1;
     if (segmentsAmount <= 1) {
