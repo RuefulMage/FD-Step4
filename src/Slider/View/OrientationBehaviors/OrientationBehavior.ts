@@ -7,6 +7,10 @@ class OrientationBehavior{
     this.orientation = orientation;
   }
 
+  public getOrientation(): Orientation {
+    return this.orientation;
+  }
+
   public setOrientation(orientation: Orientation) {
     this.orientation = orientation;
   }
