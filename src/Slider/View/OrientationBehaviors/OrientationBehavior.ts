@@ -1,7 +1,8 @@
 import Orientation from '../../Utils/Orientation';
 
-class OrientationBehavior{
-  private orientation: Orientation
+/* eslint class-methods-use-this: ["error", { "exceptMethods": ["resetStyles"] }] */
+class OrientationBehavior {
+  private orientation: Orientation;
 
   constructor(orientation: Orientation) {
     this.orientation = orientation;
@@ -29,14 +30,13 @@ class OrientationBehavior{
       // eslint-disable-next-line no-param-reassign
       domElement.style.bottom = `${newPosition - domElementHeightInPercent / 2}%`;
     }
-
   }
 
   // Получает координаты точки относительно окна и дом-элемент
   // и возвращает позиуию точки относительно
   // родителя дом-элемента
   public getPositionFromCoordinates(clientX: number, clientY: number,
-                             domElement: HTMLElement): number {
+    domElement: HTMLElement): number {
     if (clientX > window.innerWidth || clientY > window.innerHeight) {
       throw new Error('clientX or clientY is too big');
     }
@@ -58,7 +58,7 @@ class OrientationBehavior{
   }
 
   public setRangePositions(minEdge: number, maxEdge: number,
-                    domElement: HTMLElement): void {
+    domElement: HTMLElement): void {
     if (this.orientation === Orientation.HORIZONTAL) {
       // eslint-disable-next-line no-param-reassign
       domElement.style.left = `${minEdge}%`;
@@ -71,6 +71,6 @@ class OrientationBehavior{
       domElement.style.top = `${100 - maxEdge}%`;
     }
   }
-};
+}
 
 export default OrientationBehavior;

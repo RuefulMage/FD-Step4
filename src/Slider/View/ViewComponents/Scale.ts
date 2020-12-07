@@ -8,7 +8,8 @@ class Scale extends ViewComponent {
 
   private orientationBehavior: OrientationBehavior;
 
-  constructor(parentNode: HTMLElement, valuesAndPositions: Map<number, number>, orientationBehavior: OrientationBehavior) {
+  constructor(parentNode: HTMLElement, valuesAndPositions: Map<number, number>,
+    orientationBehavior: OrientationBehavior) {
     super(parentNode, CONSTANTS.scaleClassName);
     this.orientationBehavior = orientationBehavior;
     this.setScale(valuesAndPositions);

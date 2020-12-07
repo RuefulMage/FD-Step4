@@ -9,7 +9,7 @@ describe('Publisher class', () => {
 
   describe('attach method', () => {
     test('Should add to observers list input function', () => {
-      let callback = () => {alert('function')};
+      const callback = () => { };
       publisher.attach(callback);
 
       expect(publisher.getObserversCallbacks()).toContain(callback);
@@ -18,16 +18,17 @@ describe('Publisher class', () => {
 
   describe('getObserversCallbacks method', () => {
     test('Should return all observers functions', () => {
-      let firstCallback = () => {alert('1')};
-      let secondCallback = () => {alert('2')};
-      let thirdCallback = () => {alert('3')};
-      let fourthCallback = () => {alert('4')};
+      const firstCallback = () => { };
+      const secondCallback = () => { };
+      const thirdCallback = () => { };
+      const fourthCallback = () => { };
 
       publisher.attach(firstCallback);
       publisher.attach(secondCallback);
       publisher.attach(thirdCallback);
       publisher.attach(fourthCallback);
-      let expectedResult = new Set([firstCallback, secondCallback, thirdCallback, fourthCallback]);
+      const expectedResult = new Set([
+        firstCallback, secondCallback, thirdCallback, fourthCallback]);
 
       expect(publisher.getObserversCallbacks()).toEqual(expectedResult);
     });
@@ -35,7 +36,7 @@ describe('Publisher class', () => {
 
   describe('detach method', () => {
     test('Should remove observerCallback from observerCallback list', () => {
-      let callback = () => {alert('callback')};
+      const callback = () => { };
       publisher.attach(callback);
       publisher.detach(callback);
 
@@ -45,12 +46,11 @@ describe('Publisher class', () => {
 
   describe('notify method', () => {
     test('Should call all observers methods', () => {
-      let callback = jest.fn();
+      const callback = jest.fn();
       publisher.attach(callback);
       publisher.notify('edge-value-change', {});
 
       expect(callback.mock.calls.length).toBe(1);
     });
   });
-
 });

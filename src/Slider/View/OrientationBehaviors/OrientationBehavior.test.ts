@@ -27,7 +27,7 @@ describe('OrientationBehavior class', () => {
               top: 10,
               bottom: 15,
               left: 10,
-              right: 15
+              right: 15,
             };
           };
         },
@@ -131,7 +131,6 @@ describe('OrientationBehavior class', () => {
     });
   });
 
-
   describe('Reset styles', () => {
     test('Should clean style attribute of dom element', () => {
       const element = document.createElement('div');
@@ -166,5 +165,4 @@ describe('OrientationBehavior class', () => {
       expect(domElement.style.bottom).toBe('20%');
     });
   });
-
 });

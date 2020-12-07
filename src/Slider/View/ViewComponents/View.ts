@@ -137,7 +137,6 @@ class View extends ViewComponent {
 
   public updateView(runnersPositions: number[], tipsValues: number[],
     scalePositions: Map<number, number>, isRange: boolean): void {
-
     if (isRange) {
       this.updateViewForInterval(runnersPositions, tipsValues,
         scalePositions);

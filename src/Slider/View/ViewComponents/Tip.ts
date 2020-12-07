@@ -7,7 +7,8 @@ class Tip extends ViewComponent {
 
   private orientationBehavior: OrientationBehavior;
 
-  constructor(parentNode: HTMLElement, isHidden: boolean = true, orientationBehavior: OrientationBehavior) {
+  constructor(parentNode: HTMLElement,
+    isHidden: boolean = true, orientationBehavior: OrientationBehavior) {
     super(parentNode, CONSTANTS.tipClassName);
     this.orientationBehavior = orientationBehavior;
     if (isHidden) {

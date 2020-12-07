@@ -197,25 +197,24 @@ describe('View class', () => {
 
   describe('Set orientation', () => {
     test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes'
-      + 'When scale is not defined case.',
-      () => {
-        options.orientation = Orientation.HORIZONTAL;
-        const view = new View(parentElement, options);
-        view.setOrientation(Orientation.VERTICAL);
-        const orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
+      + 'When scale is not defined case.', () => {
+      options.orientation = Orientation.HORIZONTAL;
+      const view = new View(parentElement, options);
+      view.setOrientation(Orientation.VERTICAL);
+      const orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
 
-        expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
-        expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
-      });
+      expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
+      expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
+    });
   });
-
 
   describe('Event handlers', () => {
     test('When slider-drag happens should notify all observers and get data of event',
       () => {
         const view = new View(parentElement, options);
         view.attach(mockUpdate);
-        const runnerDOMElement = view.getDOMNode().getElementsByClassName(CONSTANTS.runnerClassName)[0];
+        const runnerDOMElement = view.getDOMNode()
+          .getElementsByClassName(CONSTANTS.runnerClassName)[0];
         const runnerChangeEvent = new CustomEvent('slider-drag',
           { bubbles: true, cancelable: true, detail: { position: 40, target: runnerDOMElement } });
 

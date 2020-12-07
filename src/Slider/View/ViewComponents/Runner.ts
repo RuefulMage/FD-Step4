@@ -4,6 +4,7 @@ import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 
 class Runner extends ViewComponent {
   private position: number;
+
   private orientationBehavior: OrientationBehavior;
 
   constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior,
@@ -47,7 +48,11 @@ class Runner extends ViewComponent {
       const newPosition = this.orientationBehavior
         .getPositionFromCoordinates(event.clientX, event.clientY, this.DOMNode);
       const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
-        { bubbles: true, cancelable: true, detail: { position: newPosition, target: this.getDOMNode() } });
+        {
+          bubbles: true,
+          cancelable: true,
+          detail: { position: newPosition, target: this.getDOMNode() },
+        });
       this.DOMNode.dispatchEvent(changePositionEvent);
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -79,8 +84,16 @@ class Runner extends ViewComponent {
       const touch: Touch = event.targetTouches[0];
       const newPosition = this.orientationBehavior.getPositionFromCoordinates(touch.clientX,
         touch.clientY, this.getDOMNode());
-      const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
-        { bubbles: true, cancelable: true, detail: { position: newPosition, target: this.getDOMNode() } });
+
+      const changePositionEvent: CustomEvent = new CustomEvent(
+        'slider-drag',
+        {
+          bubbles: true,
+          cancelable: true,
+          detail: { position: newPosition, target: this.getDOMNode() },
+        },
+      );
+
       this.getDOMNode().dispatchEvent(changePositionEvent);
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define

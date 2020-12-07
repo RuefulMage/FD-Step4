@@ -54,7 +54,7 @@ describe('Controller class', () => {
         expect(mockSetLowValueByPercent.mock.calls[0][0])
           .toEqual(80);
 
-        mockSetLowValueByPercent.mock.calls.length = 0
+        mockSetLowValueByPercent.mock.calls.length = 0;
 
         controller.handleViewEvents('position-change-by-click', { runnerIndex: 0, position: 90 });
 

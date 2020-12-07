@@ -14,7 +14,7 @@ describe('Range class', () => {
   beforeEach(() => {
     parentElement = document.createElement('div');
     document.body.append(parentElement);
-    let orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
+    const orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
 
     range = new Range(parentElement, orientationBehavior);
   });
