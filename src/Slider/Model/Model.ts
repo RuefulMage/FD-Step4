@@ -265,18 +265,6 @@ class Model extends Publisher {
       .times(100);
     return Number(valueInPercent);
   }
-
-  // Проверяет, можно ли поделить интервал на входное кол-во отрезков,
-  // если да, то возвращает входное значение, если нет, то возвращает
-  // максимально возможное
-  private validateRangeDivisionsAmount(divisionsAmount: number): number {
-    const maxAndMinDifference = Big(this.getMaxValue()).minus(this.getMinValue());
-    const stepsInRange = Number(maxAndMinDifference.div(this.getStep())) + 1;
-    if (stepsInRange >= divisionsAmount) {
-      return divisionsAmount;
-    }
-    return stepsInRange;
-  }
 }
 
 export default Model;
