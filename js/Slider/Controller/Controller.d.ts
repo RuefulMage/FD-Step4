@@ -1,13 +1,14 @@
 import View from '../View/ViewComponents/View';
 import Model from '../Model/Model';
-import IObserver from '../Observer/IObserver';
-declare class Controller implements IObserver {
-    protected model: Model;
-    protected view: View;
+import ViewEventName from '../Utils/ViewEventName';
+declare class Controller {
+    private model;
+    private view;
     constructor(view: View, model: Model);
-    protected init(view: View, model: Model): void;
-    update(eventName: string, data?: any): void;
-    protected setValues(runnerIndex: number, position: number): void;
-    protected updateView(): void;
+    private init;
+    handleViewEvents(eventName: ViewEventName, data: any): void;
+    handleModelEvents(): void;
+    private setValues;
+    private updateView;
 }
 export default Controller;

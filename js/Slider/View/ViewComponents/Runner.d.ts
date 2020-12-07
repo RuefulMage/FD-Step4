@@ -1,15 +1,20 @@
-import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
+import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 declare class Runner extends ViewComponent {
-    protected position: number;
-    protected orientationBehavior: IOrientationBehavior;
-    constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior, startPosition?: number);
+    private position;
+    private orientationBehavior;
+    constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior, startPosition?: number);
     getPosition(): number;
     setPosition(value: number): void;
-    getOrientationBehavior(): IOrientationBehavior;
-    setOrientationBehavior(value: IOrientationBehavior): void;
     setCurrentStatus(newStatus: boolean): void;
-    protected addMouseEventsHandlers(): void;
-    protected addTouchEventsHandler(): void;
+    private addMouseEventsHandlers;
+    private handleDragStart;
+    private handleMouseMove;
+    private handleMouseUp;
+    private handleMouseDown;
+    private addTouchEventsHandler;
+    private handleTouchMove;
+    private handleTouchEnd;
+    private handleTouchStart;
 }
 export default Runner;

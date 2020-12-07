@@ -1,13 +1,11 @@
-import IPublisher from '../Observer/IPublisher';
-import IObserver from '../Observer/IObserver';
-declare class Model implements IPublisher {
-    protected isRange: boolean;
-    protected maxValue: number;
-    protected minValue: number;
-    protected lowValue: number;
-    protected highValue: number;
-    protected step: number;
-    protected observers: Set<IObserver>;
+import Publisher from '../Publisher/Publisher';
+declare class Model extends Publisher {
+    private isRange;
+    private maxValue;
+    private minValue;
+    private lowValue;
+    private highValue;
+    private step;
     constructor(options: {
         isRange?: boolean;
         minValue?: number;
@@ -16,14 +14,7 @@ declare class Model implements IPublisher {
         startValueHigh?: number;
         step?: number;
     });
-    protected init(options: {
-        isRange?: boolean;
-        minValue?: number;
-        maxValue?: number;
-        startValueLow?: number;
-        startValueHigh?: number;
-        step?: number;
-    }): void;
+    private init;
     getRangeStatus(): boolean;
     setRangeMode(isRange: boolean): void;
     getMaxValue(): number;
@@ -40,14 +31,10 @@ declare class Model implements IPublisher {
     setHighValue(value: number): void;
     getStep(): number;
     setStep(value: number): void;
-    attach(observer: IObserver): void;
-    detach(observer: IObserver): void;
-    notify(eventType: string, data?: any): void;
-    validateValue(value: number): number;
-    validateValueInPercent(value: number): number;
-    convertPercentToValue(valueInPercent: number): number;
-    convertValueToPercent(value: number): number;
-    validateRangeDivisionsAmount(divisionsAmount: number): number;
     splitIntervalByStep(divisionsAmount: number): Map<number, number>;
+    private validateValue;
+    private validateValueInPercent;
+    private convertPercentToValue;
+    private convertValueToPercent;
 }
 export default Model;

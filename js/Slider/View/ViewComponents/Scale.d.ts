@@ -1,18 +1,12 @@
-import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
-import ScaleSubElement from './ScaleSubElement';
+import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 declare class Scale extends ViewComponent {
-    protected subElements: ScaleSubElement[];
-    protected orientationBehavior: IOrientationBehavior;
-    constructor(parentNode: HTMLElement, options: {
-        orientationBehavior: IOrientationBehavior;
-        valuesAndPositions: Map<number, number>;
-    });
-    init(orientationBehavior: IOrientationBehavior, valuesAndPositions: Map<number, number>): void;
+    private subElements;
+    private orientationBehavior;
+    constructor(parentNode: HTMLElement, valuesAndPositions: Map<number, number>, orientationBehavior: OrientationBehavior);
     setScale(valuesAndPositions: Map<number, number>): void;
-    getOrientationBehavior(): IOrientationBehavior;
-    setOrientationBehavior(value: IOrientationBehavior): void;
     reCreateScale(): void;
-    protected addHandler(): void;
+    private addHandler;
+    private handleRangeCLick;
 }
 export default Scale;

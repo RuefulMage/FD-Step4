@@ -3,7 +3,7 @@ declare type SliderOptions = {
     isTipsHidden: boolean;
     maxValue: number;
     minValue: number;
-    orientation: string;
+    orientation: 'horizontal' | 'vertical';
     startValueHigh: number;
     startValueLow: number;
     step: number;

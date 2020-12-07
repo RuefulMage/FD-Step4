@@ -1,6 +1,7 @@
-declare abstract class ViewComponent {
+import Publisher from '../../Publisher/Publisher';
+declare class ViewComponent extends Publisher {
     protected DOMNode: HTMLElement;
-    protected constructor(parentNode: HTMLElement, classList: string);
+    constructor(parentNode: HTMLElement, classList: string);
     getDOMNode(): HTMLElement;
     destroy(): void;
 }

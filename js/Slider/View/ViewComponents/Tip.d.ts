@@ -1,15 +1,12 @@
-import IOrientationBehavior from '../OrientationBehaviors/IOrientationBehavior';
 import ViewComponent from './ViewComponent';
+import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 declare class Tip extends ViewComponent {
-    protected isHidden: boolean;
-    protected orientationBehavior: IOrientationBehavior;
-    constructor(parentNode: HTMLElement, orientationBehavior: IOrientationBehavior, isHidden?: boolean);
-    protected init(orientationBehavior: IOrientationBehavior, isHidden: boolean): void;
+    private isHidden;
+    private orientationBehavior;
+    constructor(parentNode: HTMLElement, isHidden: boolean, orientationBehavior: OrientationBehavior);
     setPosition(newPosition: number): void;
     setInnerText(text: string): void;
     getHideStatus(): boolean;
-    getOrientationBehavior(): IOrientationBehavior;
-    setOrientationBehavior(value: IOrientationBehavior): void;
     hide(): void;
     show(): void;
 }

@@ -1,13 +1,9 @@
-import IObserver from './Observer/IObserver';
-import View from './View/ViewComponents/View';
-import Model from './Model/Model';
-import Controller from './Controller/Controller';
 import SliderOptions from './Utils/SliderOptions';
-declare class Slider implements IObserver {
-    protected view: View;
-    protected model: Model;
-    protected controller: Controller;
-    protected rootElement: HTMLElement;
+declare class Slider {
+    private view;
+    private model;
+    private controller;
+    private rootElement;
     constructor(rootElement: HTMLElement, options: SliderOptions);
     isRange(): boolean;
     setRangeMode(isRange: boolean): void;
@@ -22,10 +18,10 @@ declare class Slider implements IObserver {
     getStep(): number;
     setStep(step: number): boolean;
     getOrientation(): string;
-    setOrientation(orientation: string): void;
+    setOrientation(orientation: 'horizontal' | 'vertical'): void;
     hideTips(): void;
     showTips(): void;
     getHideStatus(): boolean;
-    update(eventName: string, data?: any): void;
+    update(): void;
 }
 export default Slider;
