@@ -4,6 +4,7 @@ import Controller from './Controller/Controller';
 import SliderOptions from './Utils/SliderOptions';
 import Orientation from './Utils/Orientation';
 import Logger from './Utils/Logger';
+import DefaultSliderOptions from './Utils/DefaultSliderOptions';
 
 class Slider {
   private view: View;
@@ -126,7 +127,7 @@ class Slider {
 (function ($) {
   // eslint-disable-next-line no-param-reassign
   $.fn.slider = function (userOptions: SliderOptions) {
-    const options = $.extend(true, $.fn.slider.defaultOptions, userOptions);
+    const options = $.extend(true, DefaultSliderOptions, userOptions);
 
     return this.each(function () {
       if (!$(this).data('slider')) {
@@ -134,18 +135,6 @@ class Slider {
         $(this).data('slider', slider);
       }
     });
-  };
-
-  // eslint-disable-next-line no-param-reassign
-  $.fn.slider.defaultOptions = {
-    isRange: false,
-    isTipsHidden: false,
-    maxValue: 100,
-    minValue: 0,
-    orientation: 'horizontal',
-    startValueHigh: 100,
-    startValueLow: 0,
-    step: 1,
   };
 }(jQuery));
 
