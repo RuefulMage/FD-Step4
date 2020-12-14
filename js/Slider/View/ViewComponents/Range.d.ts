@@ -4,7 +4,7 @@ declare class Range extends ViewComponent {
     private lowEdge;
     private highEdge;
     private orientationBehavior;
-    constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior, lowEdge?: number, highEdge?: number);
+    constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior);
     getLowEdge(): number;
     setLowEdge(value: number): void;
     getHighEdge(): number;

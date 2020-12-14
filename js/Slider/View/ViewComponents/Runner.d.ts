@@ -3,7 +3,7 @@ import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
 declare class Runner extends ViewComponent {
     private position;
     private orientationBehavior;
-    constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior, startPosition?: number);
+    constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior);
     getPosition(): number;
     setPosition(value: number): void;
     setCurrentStatus(newStatus: boolean): void;
