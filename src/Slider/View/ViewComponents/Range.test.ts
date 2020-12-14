@@ -22,7 +22,7 @@ describe('Range class', () => {
   describe('Create range object', () => {
     test('Should be created an instance of range and not to be undefined', () => {
       const orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
-      range = new Range(parentElement, orientationBehavior, 0, 100);
+      range = new Range(parentElement, orientationBehavior);
 
       expect(range).toBeDefined();
     });

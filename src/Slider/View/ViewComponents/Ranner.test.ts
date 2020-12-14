@@ -28,7 +28,7 @@ describe('Runner class', () => {
 
   describe('Create range object', () => {
     test('Should be created an instance of range and not to be undefined', () => {
-      runner = new Runner(parentElement, orientationBehavior, 0);
+      runner = new Runner(parentElement, orientationBehavior);
 
       expect(runner).toBeDefined();
     });

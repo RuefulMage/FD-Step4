@@ -9,12 +9,11 @@ class Range extends ViewComponent {
 
   private orientationBehavior: OrientationBehavior;
 
-  constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior,
-    lowEdge: number = 0, highEdge: number = 100) {
+  constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior) {
     super(parentNode, CONSTANTS.rangeClassName);
     this.orientationBehavior = orientationBehavior;
-    this.lowEdge = lowEdge;
-    this.highEdge = highEdge;
+    this.lowEdge = 0;
+    this.highEdge = 100;
   }
 
   public getLowEdge(): number {

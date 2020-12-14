@@ -7,11 +7,10 @@ class Runner extends ViewComponent {
 
   private orientationBehavior: OrientationBehavior;
 
-  constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior,
-    startPosition: number = 0) {
+  constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior) {
     super(parentNode, CONSTANTS.runnerClassName);
     this.orientationBehavior = orientationBehavior;
-    this.setPosition(startPosition);
+    this.setPosition(0);
     this.addMouseEventsHandlers();
     this.addTouchEventsHandler();
   }
