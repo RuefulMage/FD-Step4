@@ -20,8 +20,11 @@ class Slider {
     try {
       this.model = new Model(options);
     } catch (error) {
+      // eslint-disable-next-line no-param-reassign
       options.step = DefaultSliderOptions.step;
+      // eslint-disable-next-line no-param-reassign
       options.maxValue = DefaultSliderOptions.maxValue;
+      // eslint-disable-next-line no-param-reassign
       options.minValue = DefaultSliderOptions.minValue;
       this.model = new Model(options);
     }
@@ -29,6 +32,7 @@ class Slider {
 
     const isOrientationValueIsValid = (options.orientation === 'horizontal') || (options.orientation === 'vertical');
     if (!isOrientationValueIsValid) {
+      // eslint-disable-next-line no-param-reassign
       options.orientation = DefaultSliderOptions.orientation;
     }
 
