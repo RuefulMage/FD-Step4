@@ -31,14 +31,14 @@
     return n.d(e, 'a', e), e;
   }, n.o = function(t, e) {
     return Object.prototype.hasOwnProperty.call(t, e);
-  }, n.p = '/', n(n.s = 5);
+  }, n.p = '/', n(n.s = 4);
 }([function(t, e, n) {
   'use strict';
   var i = this && this.__importDefault || function(t) {
     return t && t.__esModule ? t : { default: t };
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
-  var o = i(n(3)), r = {
+  var o = i(n(2)), r = {
     viewWrapperClassName: 'slider',
     orientationClassNames: new Map([[o.default.HORIZONTAL, 'slider_horizontal'], [o.default.VERTICAL, 'slider_vertical']]),
     rangeClassName: 'slider__range',
@@ -83,124 +83,8 @@
     }, e.prototype.destroy = function() {
       this.DOMNode.remove();
     }, e;
-  }(r(n(4)).default);
+  }(r(n(3)).default);
   e.default = s;
-}, function(t, e, n) {
-  'use strict';
-  var i, o = function() {
-    return void 0 === i && (i = Boolean(window && document && document.all && !window.atob)), i;
-  }, r = function() {
-    var t = {};
-    return function(e) {
-      if (void 0 === t[e]) {
-        var n = document.querySelector(e);
-        if (window.HTMLIFrameElement && n instanceof window.HTMLIFrameElement) try {
-          n = n.contentDocument.head;
-        } catch (t) {
-          n = null;
-        }
-        t[e] = n;
-      }
-      return t[e];
-    };
-  }(), s = [];
-
-  function a(t) {
-    for (var e = -1, n = 0; n < s.length; n++) if (s[n].identifier === t) {
-      e = n;
-      break;
-    }
-    return e;
-  }
-
-  function u(t, e) {
-    for (var n = {}, i = [], o = 0; o < t.length; o++) {
-      var r = t[o], u = e.base ? r[0] + e.base : r[0], l = n[u] || 0, h = ''.concat(u, ' ').concat(l);
-      n[u] = l + 1;
-      var c = a(h), d = { css: r[1], media: r[2], sourceMap: r[3] };
-      -1 !== c ? (s[c].references++, s[c].updater(d)) : s.push({
-        identifier: h,
-        updater: g(d, e),
-        references: 1,
-      }), i.push(h);
-    }
-    return i;
-  }
-
-  function l(t) {
-    var e = document.createElement('style'), i = t.attributes || {};
-    if (void 0 === i.nonce) {
-      var o = n.nc;
-      o && (i.nonce = o);
-    }
-    if (Object.keys(i).forEach((function(t) {
-      e.setAttribute(t, i[t]);
-    })), 'function' == typeof t.insert) t.insert(e); else {
-      var s = r(t.insert || 'head');
-      if (!s) throw new Error('Couldn\'t find a style target. This probably means that the value for the \'insert\' parameter is invalid.');
-      s.appendChild(e);
-    }
-    return e;
-  }
-
-  var h, c = (h = [], function(t, e) {
-    return h[t] = e, h.filter(Boolean).join('\n');
-  });
-
-  function d(t, e, n, i) {
-    var o = n ? '' : i.media ? '@media '.concat(i.media, ' {').concat(i.css, '}') : i.css;
-    if (t.styleSheet) t.styleSheet.cssText = c(e, o); else {
-      var r = document.createTextNode(o), s = t.childNodes;
-      s[e] && t.removeChild(s[e]), s.length ? t.insertBefore(r, s[e]) : t.appendChild(r);
-    }
-  }
-
-  function f(t, e, n) {
-    var i = n.css, o = n.media, r = n.sourceMap;
-    if (o ? t.setAttribute('media', o) : t.removeAttribute('media'), r && btoa && (i += '\n/*# sourceMappingURL=data:application/json;base64,'.concat(btoa(unescape(encodeURIComponent(JSON.stringify(r)))), ' */')), t.styleSheet) t.styleSheet.cssText = i; else {
-      for (; t.firstChild;) t.removeChild(t.firstChild);
-      t.appendChild(document.createTextNode(i));
-    }
-  }
-
-  var p = null, v = 0;
-
-  function g(t, e) {
-    var n, i, o;
-    if (e.singleton) {
-      var r = v++;
-      n = p || (p = l(e)), i = d.bind(null, n, r, !1), o = d.bind(null, n, r, !0);
-    } else n = l(e), i = f.bind(null, n, e), o = function() {
-      !function(t) {
-        if (null === t.parentNode) return !1;
-        t.parentNode.removeChild(t);
-      }(n);
-    };
-    return i(t), function(e) {
-      if (e) {
-        if (e.css === t.css && e.media === t.media && e.sourceMap === t.sourceMap) return;
-        i(t = e);
-      } else o();
-    };
-  }
-
-  t.exports = function(t, e) {
-    (e = e || {}).singleton || 'boolean' == typeof e.singleton || (e.singleton = o());
-    var n = u(t = t || [], e);
-    return function(t) {
-      if (t = t || [], '[object Array]' === Object.prototype.toString.call(t)) {
-        for (var i = 0; i < n.length; i++) {
-          var o = a(n[i]);
-          s[o].references--;
-        }
-        for (var r = u(t, e), l = 0; l < n.length; l++) {
-          var h = a(n[l]);
-          0 === s[h].references && (s[h].updater(), s.splice(h, 1));
-        }
-        n = r;
-      }
-    };
-  };
 }, function(t, e, n) {
   'use strict';
   var i;
@@ -223,66 +107,31 @@
       this.observersCallbacks.forEach((function(n) {
         return n(t, e);
       }));
+    }, t.prototype.getObserversCallbacks = function() {
+      return this.observersCallbacks;
     }, t;
   }();
   e.default = i;
 }, function(t, e, n) {
   'use strict';
-  var i = this && this.__importDefault || function(t) {
-    return t && t.__esModule ? t : { default: t };
-  };
-  Object.defineProperty(e, '__esModule', { value: !0 }), n(6), n(8), n(10);
-  var o, r = i(n(12));
-  (o = jQuery).fn.slider = function(t) {
-    var e = o.extend(!0, o.fn.slider.defaultOptions, t);
-    return this.each((function() {
-      if (!o(this).data('slider')) {
-        var t = new r.default(this, e);
-        o(this).data('slider', t);
-      }
-    }));
-  }, o.fn.slider.defaultOptions = {
-    isRange: !1,
-    isTipsHidden: !1,
-    maxValue: 100,
-    minValue: 0,
-    orientation: 'horizontal',
-    startValueHigh: 100,
-    startValueLow: 0,
-    step: 1,
-  };
-}, function(t, e, n) {
-  var i = n(2), o = n(7);
-  'string' == typeof (o = o.__esModule ? o.default : o) && (o = [[t.i, o, '']]);
-  var r = { insert: 'head', singleton: !1 };
-  i(o, r);
-  t.exports = o.locals || {};
-}, function(t, e, n) {
-}, function(t, e, n) {
-  var i = n(2), o = n(9);
-  'string' == typeof (o = o.__esModule ? o.default : o) && (o = [[t.i, o, '']]);
-  var r = { insert: 'head', singleton: !1 };
-  i(o, r);
-  t.exports = o.locals || {};
-}, function(t, e, n) {
-}, function(t, e, n) {
-  var i = n(2), o = n(11);
-  'string' == typeof (o = o.__esModule ? o.default : o) && (o = [[t.i, o, '']]);
-  var r = { insert: 'head', singleton: !1 };
-  i(o, r);
-  t.exports = o.locals || {};
-}, function(t, e, n) {
+  Object.defineProperty(e, '__esModule', { value: !0 }), n(5), n(19);
 }, function(t, e, n) {
   'use strict';
   var i = this && this.__importDefault || function(t) {
     return t && t.__esModule ? t : { default: t };
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
-  var o = i(n(13)), r = i(n(21)), s = i(n(23)), a = i(n(24)), u = function() {
+  var o, r = i(n(6)), s = i(n(14)), a = i(n(16)), u = i(n(17)), l = i(n(18)), h = function() {
     function t(t, e) {
-      this.rootElement = t, this.model = new r.default(e), this.model.attach(this.update.bind(this));
+      this.rootElement = t;
+      try {
+        this.model = new s.default(e);
+      } catch (t) {
+        e.step = l.default.step, e.maxValue = l.default.maxValue, e.minValue = l.default.minValue, this.model = new s.default(e);
+      }
+      this.model.attach(this.update.bind(this)), 'horizontal' === e.orientation || 'vertical' === e.orientation || (e.orientation = l.default.orientation);
       var n = { orientation: e.orientation, isRange: e.isRange, isTipsHidden: e.isTipsHidden };
-      this.view = new o.default(t, n), this.view.attach(this.update.bind(this)), this.controller = new s.default(this.view, this.model);
+      this.view = new r.default(t, n), this.view.attach(this.update.bind(this)), this.controller = new a.default(this.view, this.model);
     }
 
     return t.prototype.isRange = function() {
@@ -295,7 +144,7 @@
       try {
         return this.model.setMinValue(t), !0;
       } catch (t) {
-        return a.default.logWarning('Model', t.message), !1;
+        return u.default.logWarning('Model', t.message), !1;
       }
     }, t.prototype.getMaxValue = function() {
       return this.model.getMaxValue();
@@ -303,7 +152,7 @@
       try {
         return this.model.setMaxValue(t), !0;
       } catch (t) {
-        return a.default.logWarning('Model', t.message), !1;
+        return u.default.logWarning('Model', t.message), !1;
       }
     }, t.prototype.getHighValue = function() {
       return this.model.getHighValue();
@@ -319,7 +168,7 @@
       try {
         return this.model.setStep(t), !0;
       } catch (t) {
-        return a.default.logWarning('Model', t.message), !1;
+        return u.default.logWarning('Model', t.message), !1;
       }
     }, t.prototype.getOrientation = function() {
       return this.view.getOrientation();
@@ -334,9 +183,18 @@
     }, t.prototype.update = function() {
       var t = new CustomEvent('slider-change', { bubbles: !0, cancelable: !0 });
       this.rootElement.dispatchEvent(t);
+    }, t.prototype.validateInputOptions = function() {
     }, t;
   }();
-  e.default = u;
+  (o = jQuery).fn.slider = function(t) {
+    var e = o.extend(!0, {}, l.default, t);
+    return this.each((function() {
+      if (!o(this).data('slider')) {
+        var t = new h(this, e);
+        o(this).data('slider', t);
+      }
+    }));
+  }, e.default = h;
 }, function(t, e, n) {
   'use strict';
   var i, o = this && this.__extends || (i = function(t, e) {
@@ -355,8 +213,8 @@
     return t && t.__esModule ? t : { default: t };
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
-  var s = r(n(3)), a = r(n(0)), u = r(n(1)), l = r(n(14)), h = r(n(15)), c = r(n(16)), d = r(n(18)), f = r(n(19)),
-    p = r(n(20)), v = function(t) {
+  var s = r(n(2)), a = r(n(0)), u = r(n(1)), l = r(n(7)), h = r(n(8)), c = r(n(9)), d = r(n(11)), f = r(n(12)),
+    p = r(n(13)), v = function(t) {
       function e(e, n) {
         var i = t.call(this, e, a.default.viewWrapperClassName) || this;
         return i.setRunnerToCurrent = function(t) {
@@ -365,7 +223,7 @@
           }));
         }, i.handleRunnerDrag = function(t) {
           var e, n = t.detail.target;
-          e = i.runnersAndTips.get(0).runner === n ? 0 : 1, i.setRunnerToCurrent(t.detail.target), i.notify('position-change-by-drag', {
+          e = i.runnersAndTips.get(0).runner.getDOMNode() === n ? 0 : 1, i.setRunnerToCurrent(i.runnersAndTips.get(e).runner), i.notify('position-change-by-drag', {
             runnerIndex: e,
             position: t.detail.position,
           });
@@ -451,10 +309,7 @@
           this.runnersAndTips.delete(1), t.destroy(), e.destroy(), this.setRange(0, this.runnersAndTips.get(0).runner.getPosition());
         }
       }, e.prototype.setScale = function(t) {
-        if (void 0 === this.scale) {
-          this.orientation;
-          this.scale = new c.default(this.getDOMNode(), t, this.orientationBehavior);
-        } else this.scale.setScale(t);
+        void 0 === this.scale ? this.scale = new c.default(this.getDOMNode(), t, this.orientationBehavior) : this.scale.setScale(t);
       }, e.prototype.getRunnersAmount = function() {
         return this.runnersAndTips.size;
       }, e.prototype.setRunnerPosition = function(t, e) {
@@ -539,37 +394,44 @@
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
   var s = r(n(0)), a = function(t) {
-    function e(e, n, i) {
-      void 0 === i && (i = 0);
-      var o = t.call(this, e, s.default.runnerClassName) || this;
-      return o.handleDragStart = function() {
+    function e(e, n) {
+      var i = t.call(this, e, s.default.runnerClassName) || this;
+      return i.handleDragStart = function() {
         return !1;
-      }, o.handleMouseMove = function(t) {
+      }, i.handleMouseMove = function(t) {
         try {
-          var e = o.orientationBehavior.getPositionFromCoordinates(t.clientX, t.clientY, o.DOMNode),
-            n = new CustomEvent('slider-drag', { bubbles: !0, cancelable: !0, detail: { position: e, target: o } });
-          o.DOMNode.dispatchEvent(n);
+          var e = i.orientationBehavior.getPositionFromCoordinates(t.clientX, t.clientY, i.DOMNode),
+            n = new CustomEvent('slider-drag', {
+              bubbles: !0,
+              cancelable: !0,
+              detail: { position: e, target: i.getDOMNode() },
+            });
+          i.DOMNode.dispatchEvent(n);
         } catch (t) {
-          o.handleMouseUp();
+          i.handleMouseUp();
         }
-      }, o.handleMouseUp = function() {
-        document.removeEventListener('mousemove', o.handleMouseMove), document.removeEventListener('mouseup', o.handleMouseUp);
-      }, o.handleMouseDown = function(t) {
-        t.preventDefault(), document.addEventListener('mousemove', o.handleMouseMove), document.addEventListener('mouseup', o.handleMouseUp);
-      }, o.handleTouchMove = function(t) {
+      }, i.handleMouseUp = function() {
+        document.removeEventListener('mousemove', i.handleMouseMove), document.removeEventListener('mouseup', i.handleMouseUp);
+      }, i.handleMouseDown = function(t) {
+        t.preventDefault(), document.addEventListener('mousemove', i.handleMouseMove), document.addEventListener('mouseup', i.handleMouseUp);
+      }, i.handleTouchMove = function(t) {
         try {
           var e = t.targetTouches[0],
-            n = o.orientationBehavior.getPositionFromCoordinates(e.clientX, e.clientY, o.getDOMNode()),
-            i = new CustomEvent('slider-drag', { bubbles: !0, cancelable: !0, detail: { position: n, target: o } });
-          o.getDOMNode().dispatchEvent(i);
+            n = i.orientationBehavior.getPositionFromCoordinates(e.clientX, e.clientY, i.getDOMNode()),
+            o = new CustomEvent('slider-drag', {
+              bubbles: !0,
+              cancelable: !0,
+              detail: { position: n, target: i.getDOMNode() },
+            });
+          i.getDOMNode().dispatchEvent(o);
         } catch (e) {
-          o.handleTouchEnd(t);
+          i.handleTouchEnd(t);
         }
-      }, o.handleTouchEnd = function(t) {
-        document.removeEventListener('touchmove', o.handleTouchMove), document.removeEventListener('touchend', o.handleTouchEnd), document.removeEventListener('touchcancel', o.handleTouchEnd);
-      }, o.handleTouchStart = function(t) {
-        t.preventDefault(), document.addEventListener('touchmove', o.handleTouchMove), document.addEventListener('touchend', o.handleTouchEnd), document.addEventListener('touchcancel', o.handleTouchEnd);
-      }, o.orientationBehavior = n, o.setPosition(i), o.addMouseEventsHandlers(), o.addTouchEventsHandler(), o;
+      }, i.handleTouchEnd = function(t) {
+        document.removeEventListener('touchmove', i.handleTouchMove), document.removeEventListener('touchend', i.handleTouchEnd), document.removeEventListener('touchcancel', i.handleTouchEnd);
+      }, i.handleTouchStart = function(t) {
+        t.preventDefault(), document.addEventListener('touchmove', i.handleTouchMove), document.addEventListener('touchend', i.handleTouchEnd), document.addEventListener('touchcancel', i.handleTouchEnd);
+      }, i.orientationBehavior = n, i.setPosition(0), i.addMouseEventsHandlers(), i.addTouchEventsHandler(), i;
     }
 
     return o(e, t), e.prototype.getPosition = function() {
@@ -603,7 +465,7 @@
     return t && t.__esModule ? t : { default: t };
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
-  var s = r(n(0)), a = r(n(1)), u = r(n(17)), l = function(t) {
+  var s = r(n(0)), a = r(n(1)), u = r(n(10)), l = function(t) {
     function e(e, n, i) {
       var o = t.call(this, e, s.default.scaleClassName) || this;
       return o.subElements = [], o.handleRangeCLick = function(t) {
@@ -687,10 +549,9 @@
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
   var s = r(n(0)), a = function(t) {
-    function e(e, n, i, o) {
-      void 0 === i && (i = 0), void 0 === o && (o = 100);
-      var r = t.call(this, e, s.default.rangeClassName) || this;
-      return r.orientationBehavior = n, r.lowEdge = i, r.highEdge = o, r;
+    function e(e, n) {
+      var i = t.call(this, e, s.default.rangeClassName) || this;
+      return i.orientationBehavior = n, i.lowEdge = 0, i.highEdge = 100, i;
     }
 
     return o(e, t), e.prototype.getLowEdge = function() {
@@ -748,12 +609,14 @@
     return t && t.__esModule ? t : { default: t };
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
-  var o = i(n(3)), r = function() {
+  var o = i(n(2)), r = function() {
     function t(t) {
       this.orientation = t;
     }
 
-    return t.prototype.setOrientation = function(t) {
+    return t.prototype.getOrientation = function() {
+      return this.orientation;
+    }, t.prototype.setOrientation = function(t) {
       this.orientation = t;
     }, t.prototype.setPosition = function(t, e) {
       if (this.orientation === o.default.HORIZONTAL) {
@@ -791,7 +654,7 @@
     return t && t.__esModule ? t : { default: t };
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
-  var s = r(n(22)), a = function(t) {
+  var s = r(n(15)), a = function(t) {
     function e(e) {
       var n = t.call(this) || this;
       return n.init(e), n;
@@ -802,7 +665,7 @@
         s = void 0 === r ? 100 : r, a = t.startValueLow, u = void 0 === a ? 0 : a, l = t.startValueHigh,
         h = void 0 === l ? 100 : l, c = t.step, d = void 0 === c ? 1 : c;
       if (s <= o || d <= 0) throw new Error('options is not valid');
-      this.isRange = n, this.maxValue = s, this.maxValue = s, this.minValue = o, this.step = d, this.lowValue = this.minValue, this.highValue = this.maxValue, this.setLowValue(u), this.setHighValue(h);
+      this.isRange = n, this.maxValue = s, this.minValue = o, this.step = d, this.lowValue = this.minValue, this.highValue = this.maxValue, this.setLowValue(u), this.setHighValue(h);
     }, e.prototype.getRangeStatus = function() {
       return this.isRange;
     }, e.prototype.setRangeMode = function(t) {
@@ -876,11 +739,8 @@
     }, e.prototype.convertValueToPercent = function(t) {
       var e = s.default(this.maxValue).minus(this.minValue), n = s.default(t).minus(this.minValue).div(e).times(100);
       return Number(n);
-    }, e.prototype.validateRangeDivisionsAmount = function(t) {
-      var e = s.default(this.getMaxValue()).minus(this.getMinValue()), n = Number(e.div(this.getStep())) + 1;
-      return n >= t ? t : n;
     }, e;
-  }(r(n(4)).default);
+  }(r(n(3)).default);
   e.default = a;
 }, function(t, e, n) {
   var i;
@@ -930,8 +790,8 @@
       if (!o[0]) throw Error('[big.js] Division by zero');
       if (!i[0]) return new n(0 * r);
       var a, l, h, d, f, p = o.slice(), v = a = o.length, g = i.length, m = i.slice(0, a), y = m.length, _ = t,
-        w = _.c = [], M = 0, b = s + (_.e = e.e - t.e) + 1;
-      for (_.s = r, r = b < 0 ? 0 : b, p.unshift(0); y++ < a;) m.push(0);
+        w = _.c = [], M = 0, O = s + (_.e = e.e - t.e) + 1;
+      for (_.s = r, r = O < 0 ? 0 : O, p.unshift(0); y++ < a;) m.push(0);
       do {
         for (h = 0; h < 10; h++) {
           if (a != (y = m.length)) d = a > y ? 1 : -1; else for (f = -1, d = 0; ++f < a;) if (o[f] != m[f]) {
@@ -950,7 +810,7 @@
         }
         w[M++] = d ? h : ++h, m[0] && d ? m[y] = i[v] || 0 : m = [i[v]];
       } while ((v++ < g || void 0 !== m[0]) && r--);
-      return w[0] || 1 == M || (w.shift(), _.e--), M > b && c(_, s, n.RM, void 0 !== m[0]), _;
+      return w[0] || 1 == M || (w.shift(), _.e--), M > O && c(_, s, n.RM, void 0 !== m[0]), _;
     }, l.eq = function(t) {
       return !this.cmp(t);
     }, l.gt = function(t) {
@@ -1097,4 +957,140 @@
     },
   };
   e.default = i;
+}, function(t, e, n) {
+  'use strict';
+  Object.defineProperty(e, '__esModule', { value: !0 });
+  e.default = {
+    isRange: !1,
+    isTipsHidden: !1,
+    maxValue: 100,
+    minValue: 0,
+    orientation: 'horizontal',
+    startValueHigh: 100,
+    startValueLow: 0,
+    step: 1,
+  };
+}, function(t, e, n) {
+  var i = n(20), o = n(21);
+  'string' == typeof (o = o.__esModule ? o.default : o) && (o = [[t.i, o, '']]);
+  var r = { insert: 'head', singleton: !1 };
+  i(o, r);
+  t.exports = o.locals || {};
+}, function(t, e, n) {
+  'use strict';
+  var i, o = function() {
+    return void 0 === i && (i = Boolean(window && document && document.all && !window.atob)), i;
+  }, r = function() {
+    var t = {};
+    return function(e) {
+      if (void 0 === t[e]) {
+        var n = document.querySelector(e);
+        if (window.HTMLIFrameElement && n instanceof window.HTMLIFrameElement) try {
+          n = n.contentDocument.head;
+        } catch (t) {
+          n = null;
+        }
+        t[e] = n;
+      }
+      return t[e];
+    };
+  }(), s = [];
+
+  function a(t) {
+    for (var e = -1, n = 0; n < s.length; n++) if (s[n].identifier === t) {
+      e = n;
+      break;
+    }
+    return e;
+  }
+
+  function u(t, e) {
+    for (var n = {}, i = [], o = 0; o < t.length; o++) {
+      var r = t[o], u = e.base ? r[0] + e.base : r[0], l = n[u] || 0, h = ''.concat(u, ' ').concat(l);
+      n[u] = l + 1;
+      var c = a(h), d = { css: r[1], media: r[2], sourceMap: r[3] };
+      -1 !== c ? (s[c].references++, s[c].updater(d)) : s.push({
+        identifier: h,
+        updater: g(d, e),
+        references: 1,
+      }), i.push(h);
+    }
+    return i;
+  }
+
+  function l(t) {
+    var e = document.createElement('style'), i = t.attributes || {};
+    if (void 0 === i.nonce) {
+      var o = n.nc;
+      o && (i.nonce = o);
+    }
+    if (Object.keys(i).forEach((function(t) {
+      e.setAttribute(t, i[t]);
+    })), 'function' == typeof t.insert) t.insert(e); else {
+      var s = r(t.insert || 'head');
+      if (!s) throw new Error('Couldn\'t find a style target. This probably means that the value for the \'insert\' parameter is invalid.');
+      s.appendChild(e);
+    }
+    return e;
+  }
+
+  var h, c = (h = [], function(t, e) {
+    return h[t] = e, h.filter(Boolean).join('\n');
+  });
+
+  function d(t, e, n, i) {
+    var o = n ? '' : i.media ? '@media '.concat(i.media, ' {').concat(i.css, '}') : i.css;
+    if (t.styleSheet) t.styleSheet.cssText = c(e, o); else {
+      var r = document.createTextNode(o), s = t.childNodes;
+      s[e] && t.removeChild(s[e]), s.length ? t.insertBefore(r, s[e]) : t.appendChild(r);
+    }
+  }
+
+  function f(t, e, n) {
+    var i = n.css, o = n.media, r = n.sourceMap;
+    if (o ? t.setAttribute('media', o) : t.removeAttribute('media'), r && btoa && (i += '\n/*# sourceMappingURL=data:application/json;base64,'.concat(btoa(unescape(encodeURIComponent(JSON.stringify(r)))), ' */')), t.styleSheet) t.styleSheet.cssText = i; else {
+      for (; t.firstChild;) t.removeChild(t.firstChild);
+      t.appendChild(document.createTextNode(i));
+    }
+  }
+
+  var p = null, v = 0;
+
+  function g(t, e) {
+    var n, i, o;
+    if (e.singleton) {
+      var r = v++;
+      n = p || (p = l(e)), i = d.bind(null, n, r, !1), o = d.bind(null, n, r, !0);
+    } else n = l(e), i = f.bind(null, n, e), o = function() {
+      !function(t) {
+        if (null === t.parentNode) return !1;
+        t.parentNode.removeChild(t);
+      }(n);
+    };
+    return i(t), function(e) {
+      if (e) {
+        if (e.css === t.css && e.media === t.media && e.sourceMap === t.sourceMap) return;
+        i(t = e);
+      } else o();
+    };
+  }
+
+  t.exports = function(t, e) {
+    (e = e || {}).singleton || 'boolean' == typeof e.singleton || (e.singleton = o());
+    var n = u(t = t || [], e);
+    return function(t) {
+      if (t = t || [], '[object Array]' === Object.prototype.toString.call(t)) {
+        for (var i = 0; i < n.length; i++) {
+          var o = a(n[i]);
+          s[o].references--;
+        }
+        for (var r = u(t, e), l = 0; l < n.length; l++) {
+          var h = a(n[l]);
+          0 === s[h].references && (s[h].updater(), s.splice(h, 1));
+        }
+        n = r;
+      }
+    };
+  };
+}, function(t, e, n) {
 }]);

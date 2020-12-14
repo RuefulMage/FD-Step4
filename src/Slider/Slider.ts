@@ -17,8 +17,20 @@ class Slider {
 
   constructor(rootElement: HTMLElement, options: SliderOptions) {
     this.rootElement = rootElement;
-    this.model = new Model(options);
+    try{
+      this.model = new Model(options);
+    } catch (error) {
+      options.step = DefaultSliderOptions.step;
+      options.maxValue = DefaultSliderOptions.maxValue;
+      options.minValue = DefaultSliderOptions.minValue;
+      this.model = new Model(options);
+    }
     this.model.attach(this.update.bind(this));
+
+    const isOrientationValueIsValid = (options.orientation === 'horizontal') || (options.orientation === 'vertical');
+    if( !isOrientationValueIsValid ){
+      options.orientation = DefaultSliderOptions.orientation;
+    }
 
     const viewOptions: {
       orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
@@ -122,12 +134,16 @@ class Slider {
     const changeEvent = new CustomEvent('slider-change', { bubbles: true, cancelable: true });
     this.rootElement.dispatchEvent(changeEvent);
   }
+
+  private validateInputOptions() {
+
+  }
 }
 
 (function ($) {
   // eslint-disable-next-line no-param-reassign
   $.fn.slider = function (userOptions: SliderOptions) {
-    const options = $.extend(true, DefaultSliderOptions, userOptions);
+    const options = $.extend(true, {}, DefaultSliderOptions, userOptions);
 
     return this.each(function () {
       if (!$(this).data('slider')) {
