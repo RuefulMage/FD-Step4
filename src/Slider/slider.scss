@@ -1,8 +1,7 @@
-body {
-  padding: 40px;
-}
-
 .slider {
+  padding: 40px;
+  box-sizing: border-box;
+
   &_vertical {
     display: flex;
     justify-content: center;
@@ -61,7 +60,7 @@ body {
     border-radius: 100%;
     border: 5px solid red;
 
-    &_current{
+    &_current {
       z-index: 2;
     }
   }
