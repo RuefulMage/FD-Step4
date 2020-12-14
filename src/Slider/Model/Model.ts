@@ -40,7 +40,6 @@ class Model extends Publisher {
     }
     this.isRange = isRange;
     this.maxValue = maxValue;
-    this.maxValue = maxValue;
     this.minValue = minValue;
     this.step = step;
     this.lowValue = this.minValue;
