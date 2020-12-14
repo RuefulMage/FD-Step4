@@ -9,6 +9,6 @@ const DefaultSliderOptions: SliderOptions = {
   startValueHigh: 100,
   startValueLow: 0,
   step: 1,
-}
+};
 
 export default DefaultSliderOptions;

@@ -17,7 +17,7 @@ class Slider {
 
   constructor(rootElement: HTMLElement, options: SliderOptions) {
     this.rootElement = rootElement;
-    try{
+    try {
       this.model = new Model(options);
     } catch (error) {
       options.step = DefaultSliderOptions.step;
@@ -28,7 +28,7 @@ class Slider {
     this.model.attach(this.update.bind(this));
 
     const isOrientationValueIsValid = (options.orientation === 'horizontal') || (options.orientation === 'vertical');
-    if( !isOrientationValueIsValid ){
+    if (!isOrientationValueIsValid) {
       options.orientation = DefaultSliderOptions.orientation;
     }
 
@@ -133,10 +133,6 @@ class Slider {
   public update(): void {
     const changeEvent = new CustomEvent('slider-change', { bubbles: true, cancelable: true });
     this.rootElement.dispatchEvent(changeEvent);
-  }
-
-  private validateInputOptions() {
-
   }
 }
 
