@@ -20,26 +20,27 @@ class Slider {
     try {
       this.model = new Model(options);
     } catch (error) {
-      // eslint-disable-next-line no-param-reassign
-      options.step = DefaultSliderOptions.step;
-      // eslint-disable-next-line no-param-reassign
-      options.maxValue = DefaultSliderOptions.maxValue;
-      // eslint-disable-next-line no-param-reassign
-      options.minValue = DefaultSliderOptions.minValue;
-      this.model = new Model(options);
+      const validOptions = {
+        isRange: options.isRange,
+        isTipsHidden: options.isTipsHidden,
+        maxValue: DefaultSliderOptions.maxValue,
+        minValue: DefaultSliderOptions.minValue,
+        startValueHigh: options.startValueHigh,
+        startValueLow: options.startValueLow,
+        step: DefaultSliderOptions.step,
+      };
+      this.model = new Model(validOptions);
     }
     this.model.attach(this.update.bind(this));
 
     const isOrientationValueIsValid = (options.orientation === 'horizontal') || (options.orientation === 'vertical');
-    if (!isOrientationValueIsValid) {
-      // eslint-disable-next-line no-param-reassign
-      options.orientation = DefaultSliderOptions.orientation;
-    }
+    const validOrientation: string = isOrientationValueIsValid ? options.orientation
+      : DefaultSliderOptions.orientation;
 
     const viewOptions: {
       orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
     } = {
-      orientation: options.orientation as Orientation,
+      orientation: validOrientation as Orientation,
       isRange: options.isRange,
       isTipsHidden: options.isTipsHidden,
     };
