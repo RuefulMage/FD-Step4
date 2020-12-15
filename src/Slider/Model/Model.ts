@@ -61,6 +61,7 @@ class Model extends Publisher {
     this.isRange = isRange;
     this.notify('range-mode-change', { isRange });
     if (isRange) {
+      this.setHighValue(this.highValue);
       this.setLowValue(this.lowValue);
     }
   }
@@ -154,8 +155,14 @@ class Model extends Publisher {
 
   public setHighValue(value: number): void {
     let newValue = this.validateValue(value);
-    if (newValue <= (this.lowValue + this.step)) {
+    const isValuesTooClose = newValue <= (this.lowValue + this.step);
+    const isHighValueOnMax = newValue === this.maxValue;
+    const isHighValueShouldBeBigger = isValuesTooClose && !isHighValueOnMax;
+    const isLowValueShouldBeSmaller = isValuesTooClose && isHighValueOnMax;
+    if (isHighValueShouldBeBigger && this.isRange) {
       newValue = Number(Big(this.lowValue).plus(this.step));
+    } else if (isLowValueShouldBeSmaller && this.isRange) {
+      this.setLowValue(Number(Big(this.highValue).minus(this.step)));
     }
 
     this.highValue = newValue;
