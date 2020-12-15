@@ -8,6 +8,7 @@ import Scale from './Scale';
 import Range from './Range';
 import Tip from './Tip';
 import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
+import DefaultSliderOptions from '../../Utils/DefaultSliderOptions';
 
 class View extends ViewComponent {
   private strip: Strip;
@@ -36,7 +37,9 @@ class View extends ViewComponent {
     orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
   }): void {
     const {
-      orientation = Orientation.HORIZONTAL, isRange = false, isTipsHidden = true,
+      orientation = DefaultSliderOptions.orientation as Orientation,
+      isRange = DefaultSliderOptions.isRange,
+      isTipsHidden = DefaultSliderOptions.isTipsHidden,
     } = options;
 
     this.orientation = orientation;

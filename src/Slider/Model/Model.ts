@@ -1,5 +1,6 @@
 import Big from 'big.js';
 import Publisher from '../Publisher/Publisher';
+import DefaultSliderOptions from '../Utils/DefaultSliderOptions';
 
 class Model extends Publisher {
   private isRange: boolean;
@@ -29,8 +30,12 @@ class Model extends Publisher {
     startValueHigh?: number, step?: number,
   }): void {
     const {
-      isRange = false, minValue = 0, maxValue = 100,
-      startValueLow = 0, startValueHigh = 100, step = 1,
+      isRange = DefaultSliderOptions.isRange,
+      minValue = DefaultSliderOptions.minValue,
+      maxValue = DefaultSliderOptions.maxValue,
+      startValueLow = DefaultSliderOptions.startValueLow,
+      startValueHigh = DefaultSliderOptions.startValueHigh,
+      step = DefaultSliderOptions.step,
     } = options;
 
     const isOptionsNotValid = (maxValue <= minValue) || (step <= 0);
@@ -116,7 +121,7 @@ class Model extends Publisher {
   public setLowValue(value: number): void {
     let newLowValue = this.validateValue(value);
     const isValueTooCloseToHighValue = newLowValue >= (this.highValue - this.step)
-            && this.isRange;
+      && this.isRange;
 
     if (isValueTooCloseToHighValue) {
       newLowValue = Number(Big(this.highValue).minus(this.step));
