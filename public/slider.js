@@ -183,7 +183,6 @@
     }, t.prototype.update = function() {
       var t = new CustomEvent('slider-change', { bubbles: !0, cancelable: !0 });
       this.rootElement.dispatchEvent(t);
-    }, t.prototype.validateInputOptions = function() {
     }, t;
   }();
   (o = jQuery).fn.slider = function(t) {
@@ -790,8 +789,8 @@
       if (!o[0]) throw Error('[big.js] Division by zero');
       if (!i[0]) return new n(0 * r);
       var a, l, h, d, f, p = o.slice(), v = a = o.length, g = i.length, m = i.slice(0, a), y = m.length, _ = t,
-        w = _.c = [], M = 0, O = s + (_.e = e.e - t.e) + 1;
-      for (_.s = r, r = O < 0 ? 0 : O, p.unshift(0); y++ < a;) m.push(0);
+        w = _.c = [], M = 0, b = s + (_.e = e.e - t.e) + 1;
+      for (_.s = r, r = b < 0 ? 0 : b, p.unshift(0); y++ < a;) m.push(0);
       do {
         for (h = 0; h < 10; h++) {
           if (a != (y = m.length)) d = a > y ? 1 : -1; else for (f = -1, d = 0; ++f < a;) if (o[f] != m[f]) {
@@ -810,7 +809,7 @@
         }
         w[M++] = d ? h : ++h, m[0] && d ? m[y] = i[v] || 0 : m = [i[v]];
       } while ((v++ < g || void 0 !== m[0]) && r--);
-      return w[0] || 1 == M || (w.shift(), _.e--), M > O && c(_, s, n.RM, void 0 !== m[0]), _;
+      return w[0] || 1 == M || (w.shift(), _.e--), M > b && c(_, s, n.RM, void 0 !== m[0]), _;
     }, l.eq = function(t) {
       return !this.cmp(t);
     }, l.gt = function(t) {
