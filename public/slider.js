@@ -31,7 +31,7 @@
     return n.d(e, 'a', e), e;
   }, n.o = function(t, e) {
     return Object.prototype.hasOwnProperty.call(t, e);
-  }, n.p = '/', n(n.s = 4);
+  }, n.p = '/', n(n.s = 5);
 }([function(t, e, n) {
   'use strict';
   var i = this && this.__importDefault || function(t) {
@@ -83,7 +83,7 @@
     }, e.prototype.destroy = function() {
       this.DOMNode.remove();
     }, e;
-  }(r(n(3)).default);
+  }(r(n(4)).default);
   e.default = s;
 }, function(t, e, n) {
   'use strict';
@@ -91,6 +91,19 @@
   Object.defineProperty(e, '__esModule', { value: !0 }), function(t) {
     t.HORIZONTAL = 'horizontal', t.VERTICAL = 'vertical';
   }(i || (i = {})), e.default = i;
+}, function(t, e, n) {
+  'use strict';
+  Object.defineProperty(e, '__esModule', { value: !0 });
+  e.default = {
+    isRange: !1,
+    isTipsHidden: !1,
+    maxValue: 100,
+    minValue: 0,
+    orientation: 'horizontal',
+    startValueHigh: 100,
+    startValueLow: 0,
+    step: 1,
+  };
 }, function(t, e, n) {
   'use strict';
   Object.defineProperty(e, '__esModule', { value: !0 });
@@ -114,24 +127,37 @@
   e.default = i;
 }, function(t, e, n) {
   'use strict';
-  Object.defineProperty(e, '__esModule', { value: !0 }), n(5), n(19);
+  Object.defineProperty(e, '__esModule', { value: !0 }), n(6), n(19);
 }, function(t, e, n) {
   'use strict';
   var i = this && this.__importDefault || function(t) {
     return t && t.__esModule ? t : { default: t };
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
-  var o, r = i(n(6)), s = i(n(14)), a = i(n(16)), u = i(n(17)), l = i(n(18)), h = function() {
+  var o, r = i(n(7)), s = i(n(15)), a = i(n(17)), u = i(n(18)), l = i(n(3)), h = function() {
     function t(t, e) {
       this.rootElement = t;
       try {
         this.model = new s.default(e);
       } catch (t) {
-        e.step = l.default.step, e.maxValue = l.default.maxValue, e.minValue = l.default.minValue, this.model = new s.default(e);
+        var n = {
+          isRange: e.isRange,
+          isTipsHidden: e.isTipsHidden,
+          maxValue: l.default.maxValue,
+          minValue: l.default.minValue,
+          startValueHigh: e.startValueHigh,
+          startValueLow: e.startValueLow,
+          step: l.default.step,
+        };
+        this.model = new s.default(n);
       }
-      this.model.attach(this.update.bind(this)), 'horizontal' === e.orientation || 'vertical' === e.orientation || (e.orientation = l.default.orientation);
-      var n = { orientation: e.orientation, isRange: e.isRange, isTipsHidden: e.isTipsHidden };
-      this.view = new r.default(t, n), this.view.attach(this.update.bind(this)), this.controller = new a.default(this.view, this.model);
+      this.model.attach(this.update.bind(this));
+      var i = {
+        orientation: 'horizontal' === e.orientation || 'vertical' === e.orientation ? e.orientation : l.default.orientation,
+        isRange: e.isRange,
+        isTipsHidden: e.isTipsHidden,
+      };
+      this.view = new r.default(t, i), this.view.attach(this.update.bind(this)), this.controller = new a.default(this.view, this.model);
     }
 
     return t.prototype.isRange = function() {
@@ -212,8 +238,8 @@
     return t && t.__esModule ? t : { default: t };
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
-  var s = r(n(2)), a = r(n(0)), u = r(n(1)), l = r(n(7)), h = r(n(8)), c = r(n(9)), d = r(n(11)), f = r(n(12)),
-    p = r(n(13)), v = function(t) {
+  var s = r(n(2)), a = r(n(0)), u = r(n(1)), l = r(n(8)), h = r(n(9)), c = r(n(10)), d = r(n(12)), f = r(n(13)),
+    p = r(n(14)), v = r(n(3)), g = function(t) {
       function e(e, n) {
         var i = t.call(this, e, a.default.viewWrapperClassName) || this;
         return i.setRunnerToCurrent = function(t) {
@@ -242,17 +268,17 @@
       }
 
       return o(e, t), e.prototype.init = function(t) {
-        var e = t.orientation, n = void 0 === e ? s.default.HORIZONTAL : e, i = t.isRange, o = void 0 !== i && i,
-          r = t.isTipsHidden, u = void 0 === r || r;
-        if (this.orientation = n, this.orientationBehavior = new p.default(n), this.DOMNode.classList.add(a.default.orientationClassNames.get(n)), this.strip = new l.default(this.DOMNode, this.orientationBehavior), this.isTipsHidden = u, o) {
-          var c = new h.default(this.strip.getDOMNode(), this.orientationBehavior),
-            v = new f.default(this.strip.getDOMNode(), u, this.orientationBehavior),
+        var e = t.orientation, n = void 0 === e ? v.default.orientation : e, i = t.isRange,
+          o = void 0 === i ? v.default.isRange : i, r = t.isTipsHidden, s = void 0 === r ? v.default.isTipsHidden : r;
+        if (this.orientation = n, this.orientationBehavior = new p.default(n), this.DOMNode.classList.add(a.default.orientationClassNames.get(n)), this.strip = new l.default(this.DOMNode, this.orientationBehavior), this.isTipsHidden = s, o) {
+          var u = new h.default(this.strip.getDOMNode(), this.orientationBehavior),
+            c = new f.default(this.strip.getDOMNode(), s, this.orientationBehavior),
             g = new h.default(this.strip.getDOMNode(), this.orientationBehavior),
-            m = new f.default(this.strip.getDOMNode(), u, this.orientationBehavior);
-          this.runnersAndTips = new Map([[0, { runner: c, tip: v }], [1, { runner: g, tip: m }]]);
+            m = new f.default(this.strip.getDOMNode(), s, this.orientationBehavior);
+          this.runnersAndTips = new Map([[0, { runner: u, tip: c }], [1, { runner: g, tip: m }]]);
         } else {
-          c = new h.default(this.strip.getDOMNode(), this.orientationBehavior), v = new f.default(this.strip.getDOMNode(), u, this.orientationBehavior);
-          this.runnersAndTips = new Map([[0, { runner: c, tip: v }]]);
+          u = new h.default(this.strip.getDOMNode(), this.orientationBehavior), c = new f.default(this.strip.getDOMNode(), s, this.orientationBehavior);
+          this.runnersAndTips = new Map([[0, { runner: u, tip: c }]]);
         }
         this.range = new d.default(this.strip.getDOMNode(), this.orientationBehavior), this.addHandlers();
       }, e.prototype.hideTips = function() {
@@ -335,7 +361,7 @@
         this.setTipPosition(0, i);
       }, e;
     }(u.default);
-  e.default = v;
+  e.default = g;
 }, function(t, e, n) {
   'use strict';
   var i, o = this && this.__extends || (i = function(t, e) {
@@ -464,7 +490,7 @@
     return t && t.__esModule ? t : { default: t };
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
-  var s = r(n(0)), a = r(n(1)), u = r(n(10)), l = function(t) {
+  var s = r(n(0)), a = r(n(1)), u = r(n(11)), l = function(t) {
     function e(e, n, i) {
       var o = t.call(this, e, s.default.scaleClassName) || this;
       return o.subElements = [], o.handleRangeCLick = function(t) {
@@ -653,22 +679,23 @@
     return t && t.__esModule ? t : { default: t };
   };
   Object.defineProperty(e, '__esModule', { value: !0 });
-  var s = r(n(15)), a = function(t) {
+  var s = r(n(16)), a = r(n(4)), u = r(n(3)), l = function(t) {
     function e(e) {
       var n = t.call(this) || this;
       return n.init(e), n;
     }
 
     return o(e, t), e.prototype.init = function(t) {
-      var e = t.isRange, n = void 0 !== e && e, i = t.minValue, o = void 0 === i ? 0 : i, r = t.maxValue,
-        s = void 0 === r ? 100 : r, a = t.startValueLow, u = void 0 === a ? 0 : a, l = t.startValueHigh,
-        h = void 0 === l ? 100 : l, c = t.step, d = void 0 === c ? 1 : c;
-      if (s <= o || d <= 0) throw new Error('options is not valid');
-      this.isRange = n, this.maxValue = s, this.minValue = o, this.step = d, this.lowValue = this.minValue, this.highValue = this.maxValue, this.setLowValue(u), this.setHighValue(h);
+      var e = t.isRange, n = void 0 === e ? u.default.isRange : e, i = t.minValue,
+        o = void 0 === i ? u.default.minValue : i, r = t.maxValue, s = void 0 === r ? u.default.maxValue : r,
+        a = t.startValueLow, l = void 0 === a ? u.default.startValueLow : a, h = t.startValueHigh,
+        c = void 0 === h ? u.default.startValueHigh : h, d = t.step, f = void 0 === d ? u.default.step : d;
+      if (s <= o || f <= 0) throw new Error('options is not valid');
+      this.isRange = n, this.maxValue = s, this.minValue = o, this.step = f, this.lowValue = this.minValue, this.highValue = this.maxValue, this.setLowValue(l), this.setHighValue(c);
     }, e.prototype.getRangeStatus = function() {
       return this.isRange;
     }, e.prototype.setRangeMode = function(t) {
-      this.isRange = t, this.notify('range-mode-change', { isRange: t }), t && this.setLowValue(this.lowValue);
+      this.isRange = t, this.notify('range-mode-change', { isRange: t }), t && (this.setHighValue(this.highValue), this.setLowValue(this.lowValue));
     }, e.prototype.getMaxValue = function() {
       return this.maxValue;
     }, e.prototype.setMaxValue = function(t) {
@@ -697,8 +724,8 @@
       var e = this.validateValueInPercent(t), n = this.convertPercentToValue(e);
       this.setHighValue(n);
     }, e.prototype.setHighValue = function(t) {
-      var e = this.validateValue(t);
-      e <= this.lowValue + this.step && (e = Number(s.default(this.lowValue).plus(this.step))), this.highValue = e, this.notify('value-change', {});
+      var e = this.validateValue(t), n = e <= this.lowValue + this.step, i = e === this.maxValue, o = n && i;
+      n && !i && this.isRange ? e = Number(s.default(this.lowValue).plus(this.step)) : o && this.isRange && this.setLowValue(Number(s.default(this.highValue).minus(this.step))), this.highValue = e, this.notify('value-change', {});
     }, e.prototype.getStep = function() {
       return this.step;
     }, e.prototype.setStep = function(t) {
@@ -739,8 +766,8 @@
       var e = s.default(this.maxValue).minus(this.minValue), n = s.default(t).minus(this.minValue).div(e).times(100);
       return Number(n);
     }, e;
-  }(r(n(3)).default);
-  e.default = a;
+  }(a.default);
+  e.default = l;
 }, function(t, e, n) {
   var i;
   !function(o) {
@@ -956,19 +983,6 @@
     },
   };
   e.default = i;
-}, function(t, e, n) {
-  'use strict';
-  Object.defineProperty(e, '__esModule', { value: !0 });
-  e.default = {
-    isRange: !1,
-    isTipsHidden: !1,
-    maxValue: 100,
-    minValue: 0,
-    orientation: 'horizontal',
-    startValueHigh: 100,
-    startValueLow: 0,
-    step: 1,
-  };
 }, function(t, e, n) {
   var i = n(20), o = n(21);
   'string' == typeof (o = o.__esModule ? o.default : o) && (o = [[t.i, o, '']]);

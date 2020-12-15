@@ -1,9 +1,3 @@
-.slider {
-    padding: 40px;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box
-}
-
 .slider_vertical {
     display: -webkit-box;
     display: -ms-flexbox;
