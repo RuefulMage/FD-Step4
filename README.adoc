@@ -248,4 +248,4 @@ OrientationBehavior c нужной ориентацией и передает э
 
 == UML-диаграма
 
-image::https://github.com/RuefulMage/FD-Step4/blob/master/Slider-diagram.png[UML-diagram]
+image::https://github.com/RuefulMage/FD-Step4/blob/master/Slider-diagram v.2.png[UML-diagram]
