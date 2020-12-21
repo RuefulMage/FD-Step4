@@ -325,7 +325,7 @@ describe('Class Model', () => {
     });
 
     test('When given value is closer to low value less than one step or less than low value, '
-            + 'should set high value to nearest to low value valid value', () => {
+            + 'should set high value to nearest to low value valid value and move low value', () => {
       options.step = 5;
       options.startValueLow = 15;
       let model = new Model(options);
@@ -338,7 +338,7 @@ describe('Class Model', () => {
       model = new Model(options);
       model.setHighValue(10);
 
-      expect(model.getHighValue()).toBe(21);
+      expect(model.getHighValue()).toBe(7);
     });
 
     test('When given value is bigger than max value, should set high value to max value', () => {
