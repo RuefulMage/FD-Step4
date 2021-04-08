@@ -44,7 +44,7 @@ module.exports = {
           'css-loader',
           {
             loader: 'postcss-loader',
-            options: { config: { path: 'webpack-config/postcss.config.js' } },
+            options: { config: { path: './postcss.config.js' } },
           },
         ],
       },
