@@ -17,7 +17,6 @@
       "node",
       "webpack-env"
     ],
-    "typeRoots": [ "../node_modules/@types" ],
   },
   "exclude": [
     "./node_modules"
