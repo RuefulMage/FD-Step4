@@ -34,16 +34,6 @@ describe('publisher class', () => {
     });
   });
 
-  describe('detach method', () => {
-    test('Should remove observerCallback from observerCallback list', () => {
-      const callback = () => { };
-      publisher.attach(callback);
-      publisher.detach(callback);
-
-      expect(publisher.getObserversCallbacks()).toEqual(new Set());
-    });
-  });
-
   describe('notify method', () => {
     test('Should call all observers methods', () => {
       const callback = jest.fn();

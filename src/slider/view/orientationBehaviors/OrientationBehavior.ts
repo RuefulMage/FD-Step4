@@ -4,7 +4,7 @@ import { Orientation } from '../../utils/types';
 class OrientationBehavior {
 
   constructor(private orientation: Orientation) {}
-
+  //for tests only
   public getOrientation(): Orientation {
     return this.orientation;
   }

@@ -12,7 +12,7 @@ class Range extends ViewComponent {
     this.lowEdge = 0;
     this.highEdge = 100;
   }
-
+  //for tests only
   public getLowEdge(): number {
     return this.lowEdge;
   }
@@ -21,7 +21,7 @@ class Range extends ViewComponent {
     this.lowEdge = value;
     this.orientationBehavior.setRangePositions(this.lowEdge, this.highEdge, this.DOMNode);
   }
-
+  //for tests only
   public getHighEdge(): number {
     return this.highEdge;
   }
