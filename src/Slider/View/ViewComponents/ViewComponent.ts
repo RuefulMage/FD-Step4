@@ -6,7 +6,7 @@ class ViewComponent extends Publisher {
   constructor(parentNode: HTMLElement, classList: string) {
     super();
     this.DOMNode = document.createElement('div');
-    this.DOMNode.classList.add(classList);
+    this.DOMNode.classList.add(...classList.split(' '));
     parentNode.append(this.DOMNode);
   }
 
