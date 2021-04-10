@@ -1,10 +1,10 @@
-import CONSTANTS from '../../Utils/Constants';
-import Orientation from '../../Utils/Orientation';
+import Constants from '../../utils/constants';
+import { Orientation } from '../../utils/types';
 import View from './View';
 
 const mockUpdate = jest.fn();
 
-describe('View class', () => {
+describe('view class', () => {
   let parentElement: HTMLElement;
   let options: {
     isRange: boolean,
@@ -31,7 +31,7 @@ describe('View class', () => {
     test('Should create view with range', () => {
       options.isRange = true;
       const view = new View(parentElement, options);
-      const runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
+      const runnersAmount = parentElement.getElementsByClassName(Constants.runnerClassName).length;
 
       expect(runnersAmount).toBe(2);
     });
@@ -39,7 +39,7 @@ describe('View class', () => {
     test('Should create view with one runner', () => {
       options.isRange = false;
       const view = new View(parentElement, options);
-      const runnersAmount = parentElement.getElementsByClassName(CONSTANTS.runnerClassName).length;
+      const runnersAmount = parentElement.getElementsByClassName(Constants.runnerClassName).length;
 
       expect(runnersAmount).toBe(1);
     });
@@ -57,16 +57,16 @@ describe('View class', () => {
       options.isTipsHidden = true;
       let view = new View(parentElement, options);
       let realResult = view.getHideStatus();
-      let tip = view.getDOMNode().querySelector(`.${CONSTANTS.tipClassName}`);
-      let expectedResult = tip.classList.contains(CONSTANTS.tipHiddenClassName);
+      let tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
+      let expectedResult = tip.classList.contains(Constants.tipHiddenClassName);
 
       expect(realResult).toBe(expectedResult);
 
       options.isTipsHidden = false;
       view = new View(parentElement, options);
       realResult = view.getHideStatus();
-      tip = view.getDOMNode().querySelector(`.${CONSTANTS.tipClassName}`);
-      expectedResult = tip.classList.contains(CONSTANTS.tipHiddenClassName);
+      tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
+      expectedResult = tip.classList.contains(Constants.tipHiddenClassName);
 
       expect(realResult).toBe(expectedResult);
     });
@@ -77,9 +77,9 @@ describe('View class', () => {
       options.isTipsHidden = false;
       const view = new View(parentElement, options);
       view.hideTips();
-      const tipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0];
+      const tipElement = parentElement.getElementsByClassName(Constants.tipClassName)[0];
 
-      expect(tipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(true);
+      expect(tipElement.classList.contains(Constants.tipHiddenClassName)).toBe(true);
     });
   });
 
@@ -88,9 +88,9 @@ describe('View class', () => {
       options.isTipsHidden = true;
       const view = new View(parentElement, options);
       view.showTips();
-      const tipElement = parentElement.getElementsByClassName(CONSTANTS.tipClassName)[0];
+      const tipElement = parentElement.getElementsByClassName(Constants.tipClassName)[0];
 
-      expect(tipElement.classList.contains(CONSTANTS.tipHiddenClassName)).toBe(false);
+      expect(tipElement.classList.contains(Constants.tipHiddenClassName)).toBe(false);
     });
   });
 
@@ -201,7 +201,7 @@ describe('View class', () => {
       options.orientation = Orientation.HORIZONTAL;
       const view = new View(parentElement, options);
       view.setOrientation(Orientation.VERTICAL);
-      const orientationStyleClass = CONSTANTS.orientationClassNames.get(Orientation.VERTICAL);
+      const orientationStyleClass = Constants.orientationClassNames.get(Orientation.VERTICAL);
 
       expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
       expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
@@ -214,7 +214,7 @@ describe('View class', () => {
         const view = new View(parentElement, options);
         view.attach(mockUpdate);
         const runnerDOMElement = view.getDOMNode()
-          .getElementsByClassName(CONSTANTS.runnerClassName)[0];
+          .getElementsByClassName(Constants.runnerClassName)[0];
         const runnerChangeEvent = new CustomEvent('slider-drag',
           { bubbles: true, cancelable: true, detail: { position: 40, target: runnerDOMElement } });
 
@@ -229,7 +229,7 @@ describe('View class', () => {
     test('When slider-click happens, should notify all observers', () => {
       const view = new View(parentElement, options);
       view.attach(mockUpdate);
-      const runnerDOMElement = parentElement.getElementsByClassName(CONSTANTS.runnerClassName)[0];
+      const runnerDOMElement = parentElement.getElementsByClassName(Constants.runnerClassName)[0];
       const runnerChangeEvent = new CustomEvent('slider-click',
         { bubbles: true, cancelable: true, detail: { position: 40 } });
       runnerDOMElement.dispatchEvent(runnerChangeEvent);
@@ -261,9 +261,9 @@ describe('View class', () => {
       const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView(runnersPositions, tipsValues, scaleValues, true);
 
-      const tips = view.getDOMNode().querySelectorAll(`.${CONSTANTS.tipClassName}`);
+      const tips = view.getDOMNode().querySelectorAll(`.${Constants.tipClassName}`);
       const realTipsValues = [Number(tips[0].innerHTML), Number(tips[1].innerHTML)];
-      const scaleSubItems = view.getDOMNode().querySelectorAll(`.${CONSTANTS.scaleSubElementClassName}`);
+      const scaleSubItems = view.getDOMNode().querySelectorAll(`.${Constants.scaleSubElementClassName}`);
       const realScaleValues: number[] = [];
       scaleSubItems.forEach((value) => {
         realScaleValues.push(Number((value as HTMLElement).innerText));
@@ -282,7 +282,7 @@ describe('View class', () => {
       const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView(runnersPositions, tipsValues, scaleValues, true);
 
-      const tips = view.getDOMNode().querySelector(`.${CONSTANTS.tipClassName}`);
+      const tips = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       const realTipValue = tips.innerHTML;
 
       expect(realTipValue).toEqual('88&nbsp;—&nbsp;90');
@@ -296,7 +296,7 @@ describe('View class', () => {
       const tipsValues = [20, 80];
       const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView(runnersPositions, tipsValues, scaleValues, true);
-      const runners = view.getDOMNode().querySelectorAll(`.${CONSTANTS.runnerClassName}`);
+      const runners = view.getDOMNode().querySelectorAll(`.${Constants.runnerClassName}`);
 
       expect(runners.length).toBe(2);
     });
@@ -310,9 +310,9 @@ describe('View class', () => {
       const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView(runnerPosition, tipValue, scaleValues, false);
 
-      const tip = view.getDOMNode().querySelector(`.${CONSTANTS.tipClassName}`);
+      const tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       const realTipValue = [Number(tip.innerHTML)];
-      const scaleSubItems = view.getDOMNode().querySelectorAll(`.${CONSTANTS.scaleSubElementClassName}`);
+      const scaleSubItems = view.getDOMNode().querySelectorAll(`.${Constants.scaleSubElementClassName}`);
       const realScaleValues: number[] = [];
       scaleSubItems.forEach((value) => {
         realScaleValues.push(Number((value as HTMLElement).innerText));
@@ -330,7 +330,7 @@ describe('View class', () => {
       const tipValue = [20, 21];
       const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView(runnerPosition, tipValue, scaleValues, false);
-      const runners = view.getDOMNode().querySelectorAll(`.${CONSTANTS.runnerClassName}`);
+      const runners = view.getDOMNode().querySelectorAll(`.${Constants.runnerClassName}`);
 
       expect(runners.length).toBe(1);
     });

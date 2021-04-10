@@ -1,7 +1,7 @@
-import CONSTANTS from '../../Utils/Constants';
+import Constants from '../../utils/constants';
 import Strip from './Strip';
-import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
-import Orientation from '../../Utils/Orientation';
+import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import { Orientation } from '../../utils/types';
 
 const mockGetPositionFromCoordinates = jest.fn();
 OrientationBehavior.prototype.getPositionFromCoordinates = mockGetPositionFromCoordinates;
@@ -38,7 +38,7 @@ describe('Strip class', () => {
 
     test('When click on runner happens, should not react to event ', () => {
       const runner = document.createElement('div');
-      runner.classList.add(CONSTANTS.runnerClassName);
+      runner.classList.add(Constants.runnerClassName);
       strip.getDOMNode().appendChild(runner);
 
       const click = new MouseEvent('mousedown', {

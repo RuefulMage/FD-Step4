@@ -1,5 +1,5 @@
 import OrientationBehavior from './OrientationBehavior';
-import Orientation from '../../Utils/Orientation';
+import { Orientation } from '../../utils/types';
 
 describe('OrientationBehavior class', () => {
   let orientationBehavior: OrientationBehavior;

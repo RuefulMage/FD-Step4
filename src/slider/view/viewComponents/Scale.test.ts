@@ -1,6 +1,6 @@
 import Scale from './Scale';
-import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
-import Orientation from '../../Utils/Orientation';
+import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import { Orientation } from '../../utils/types';
 
 describe('Scale class', () => {
   let scale: Scale;

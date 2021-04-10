@@ -1,6 +1,6 @@
-import CONSTANTS from '../../Utils/Constants';
+import Constants from '../../utils/constants';
 import ViewComponent from './ViewComponent';
-import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
+import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
 
 class Tip extends ViewComponent {
   private isHidden: boolean;
@@ -9,10 +9,10 @@ class Tip extends ViewComponent {
 
   constructor(parentNode: HTMLElement,
     isHidden: boolean = true, orientationBehavior: OrientationBehavior) {
-    super(parentNode, CONSTANTS.tipClassName);
+    super(parentNode, Constants.tipClassName);
     this.orientationBehavior = orientationBehavior;
     if (isHidden) {
-      this.DOMNode.classList.add(CONSTANTS.tipHiddenClassName);
+      this.DOMNode.classList.add(Constants.tipHiddenClassName);
     }
     this.isHidden = isHidden;
   }
@@ -31,14 +31,14 @@ class Tip extends ViewComponent {
 
   public hide(): void {
     if (!this.isHidden) {
-      this.DOMNode.classList.add(CONSTANTS.tipHiddenClassName);
+      this.DOMNode.classList.add(Constants.tipHiddenClassName);
     }
     this.isHidden = true;
   }
 
   public show(): void {
     if (this.isHidden) {
-      this.DOMNode.classList.remove(CONSTANTS.tipHiddenClassName);
+      this.DOMNode.classList.remove(Constants.tipHiddenClassName);
     }
     this.isHidden = false;
   }

@@ -1,6 +1,6 @@
 import Big from 'big.js';
-import Publisher from '../Publisher/Publisher';
-import DefaultSliderOptions from '../Utils/DefaultSliderOptions';
+import Publisher from '../publisher/Publisher';
+import { DefaultSliderOptions } from '../utils/types';
 
 class Model extends Publisher {
   private isRange: boolean;

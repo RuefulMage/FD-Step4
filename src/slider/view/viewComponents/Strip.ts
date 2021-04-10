@@ -1,12 +1,12 @@
-import CONSTANTS from '../../Utils/Constants';
+import Constants from '../../utils/constants';
 import ViewComponent from './ViewComponent';
-import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
+import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
 
 class Strip extends ViewComponent {
   private orientationBehavior: OrientationBehavior;
 
   constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior) {
-    super(parentNode, CONSTANTS.stripClassName);
+    super(parentNode, Constants.stripClassName);
     this.orientationBehavior = orientationBehavior;
     this.addHandlers();
   }
@@ -18,7 +18,7 @@ class Strip extends ViewComponent {
   // Если клик был не по бегунку, то вычисляется позиция клика относительно род. элемента
   // и создается пользовательское событие 'slider-click', содержащее вычисленную позицию
   private handleMouseDown = (event: MouseEvent): void => {
-    const runners = this.getDOMNode().getElementsByClassName(CONSTANTS.runnerPrefixedClassName);
+    const runners = this.getDOMNode().getElementsByClassName(Constants.runnerPrefixedClassName);
     let isTargetRunner = false;
 
     Object.entries(runners).forEach((key, index) => {

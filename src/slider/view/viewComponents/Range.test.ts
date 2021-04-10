@@ -1,7 +1,7 @@
-import CONSTANTS from '../../Utils/Constants';
+import Constants from '../../utils/constants';
 import Range from './Range';
-import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
-import Orientation from '../../Utils/Orientation';
+import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import { Orientation } from '../../utils/types';
 
 describe('Range class', () => {
   let parentElement: HTMLElement;
@@ -75,7 +75,7 @@ describe('Range class', () => {
   describe('Destroy dom element', () => {
     test('Should destroy dom element', () => {
       range.destroy();
-      const rangeElement = parentElement.getElementsByClassName(CONSTANTS.rangeClassName)[0];
+      const rangeElement = parentElement.getElementsByClassName(Constants.rangeClassName)[0];
       expect(rangeElement).toBeUndefined();
     });
   });

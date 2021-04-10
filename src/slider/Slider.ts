@@ -1,10 +1,7 @@
-import View from './View/ViewComponents/View';
-import Model from './Model/Model';
-import Controller from './Controller/Controller';
-import SliderOptions from './Utils/SliderOptions';
-import Orientation from './Utils/Orientation';
-import Logger from './Utils/Logger';
-import DefaultSliderOptions from './Utils/DefaultSliderOptions';
+import View from './view/viewComponents/View';
+import Model from './model/Model';
+import Controller from './controller/Controller';
+import { Logger, DefaultSliderOptions, Orientation, SliderOptions } from './utils/types';
 
 class Slider {
   private view: View;

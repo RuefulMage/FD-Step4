@@ -1,4 +1,4 @@
-import Orientation from '../../Utils/Orientation';
+import { Orientation } from '../../utils/types';
 
 /* eslint class-methods-use-this: ["error", { "exceptMethods": ["resetStyles"] }] */
 class OrientationBehavior {

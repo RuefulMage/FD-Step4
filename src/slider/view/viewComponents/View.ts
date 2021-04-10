@@ -1,5 +1,5 @@
-import Orientation from '../../Utils/Orientation';
-import CONSTANTS from '../../Utils/Constants';
+import { Orientation, DefaultSliderOptions } from '../../utils/types';
+import Constants from '../../utils/constants';
 
 import ViewComponent from './ViewComponent';
 import Strip from './Strip';
@@ -7,8 +7,7 @@ import Runner from './Runner';
 import Scale from './Scale';
 import Range from './Range';
 import Tip from './Tip';
-import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
-import DefaultSliderOptions from '../../Utils/DefaultSliderOptions';
+import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
 
 class View extends ViewComponent {
   private strip: Strip;
@@ -28,7 +27,7 @@ class View extends ViewComponent {
   constructor(parentNode: HTMLElement, options: {
     orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
   }) {
-    super(parentNode, CONSTANTS.viewWrapperClassName);
+    super(parentNode, Constants.viewWrapperClassName);
 
     this.init(options);
   }
@@ -46,7 +45,7 @@ class View extends ViewComponent {
 
     this.orientationBehavior = new OrientationBehavior(orientation);
 
-    this.DOMNode.classList.add(CONSTANTS.orientationClassNames.get(orientation));
+    this.DOMNode.classList.add(Constants.orientationClassNames.get(orientation));
 
     this.strip = new Strip(this.DOMNode, this.orientationBehavior);
     this.isTipsHidden = isTipsHidden;
@@ -83,7 +82,7 @@ class View extends ViewComponent {
 
     if (this.runnersAndTips.size === 2) {
       const isRunnersTooClose = Math.abs(this.getRunnerPosition(0)
-        - this.getRunnerPosition(1)) <= CONSTANTS.tipsJoinDistance;
+        - this.getRunnerPosition(1)) <= Constants.tipsJoinDistance;
 
       if (isRunnersTooClose) {
         this.hideTip(1);
@@ -103,8 +102,8 @@ class View extends ViewComponent {
   }
 
   public setOrientation(orientation: Orientation): void {
-    this.DOMNode.classList.remove(<string>CONSTANTS.orientationClassNames.get(this.orientation));
-    this.DOMNode.classList.add(<string>CONSTANTS.orientationClassNames.get(orientation));
+    this.DOMNode.classList.remove(<string>Constants.orientationClassNames.get(this.orientation));
+    this.DOMNode.classList.add(<string>Constants.orientationClassNames.get(orientation));
 
     this.orientationBehavior.setOrientation(orientation);
     this.orientation = orientation;
@@ -288,7 +287,7 @@ class View extends ViewComponent {
 
   private updateAllTipsPositionAndText(runnersPositions: number[], tipsValues: number[]) {
     const isRunnersTooClose = Math.abs(runnersPositions[0]
-      - runnersPositions[1]) <= CONSTANTS.tipsJoinDistance;
+      - runnersPositions[1]) <= Constants.tipsJoinDistance;
 
     if (isRunnersTooClose) {
       this.joinTips(tipsValues, runnersPositions);

@@ -1,6 +1,6 @@
 import Model from './Model';
 
-describe('Class Model', () => {
+describe('Class model', () => {
   let options: {
     isRange: boolean,
     maxValue: number,

@@ -1,5 +1,5 @@
-import SliderOptions from '../Slider/Utils/SliderOptions';
-import Slider from '../Slider/Slider';
+import { SliderOptions } from '../slider/utils/types';
+import Slider from '../slider/Slider';
 
 class Demo {
   private sliderElement: JQuery<HTMLElement>;

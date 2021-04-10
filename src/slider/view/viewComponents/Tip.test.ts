@@ -1,7 +1,7 @@
-import CONSTANTS from '../../Utils/Constants';
+import Constants from '../../utils/constants';
 import Tip from './Tip';
-import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
-import Orientation from '../../Utils/Orientation';
+import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import { Orientation } from '../../utils/types';
 
 const mockSetPosition = jest.fn();
 const mockFunctionForResetStyles = jest.fn();
@@ -60,35 +60,35 @@ describe('Tip class', () => {
     });
   });
   describe('Show tip', () => {
-    test('Should show tip by adding css class for hiding from CONSTANTS object and set isHidden flag to false',
+    test('Should show tip by adding css class for hiding from Constants object and set isHidden flag to false',
       () => {
         const showedTip = new Tip(parentElement, false, orientationBehavior);
         showedTip.show();
 
-        expect(showedTip.getDOMNode().classList.contains(CONSTANTS.tipHiddenClassName)).toBe(false);
+        expect(showedTip.getDOMNode().classList.contains(Constants.tipHiddenClassName)).toBe(false);
         expect(showedTip.getHideStatus()).toBe(false);
 
         const hiddenTip = new Tip(parentElement, true, orientationBehavior);
         hiddenTip.show();
 
-        expect(hiddenTip.getDOMNode().classList.contains(CONSTANTS.tipHiddenClassName)).toBe(false);
+        expect(hiddenTip.getDOMNode().classList.contains(Constants.tipHiddenClassName)).toBe(false);
         expect(hiddenTip.getHideStatus()).toBe(false);
       });
   });
 
   describe('Hide tip', () => {
-    test('Should hide tip by adding css class for hiding from CONSTANTS object and set isHidden flag to true',
+    test('Should hide tip by adding css class for hiding from Constants object and set isHidden flag to true',
       () => {
         const showedTip = new Tip(parentElement, false, orientationBehavior);
         showedTip.hide();
 
-        expect(showedTip.getDOMNode().classList.contains(CONSTANTS.tipHiddenClassName)).toBe(true);
+        expect(showedTip.getDOMNode().classList.contains(Constants.tipHiddenClassName)).toBe(true);
         expect(showedTip.getHideStatus()).toBe(true);
 
         const hiddenTip = new Tip(parentElement, true, orientationBehavior);
         hiddenTip.hide();
 
-        expect(hiddenTip.getDOMNode().classList.contains(CONSTANTS.tipHiddenClassName)).toBe(true);
+        expect(hiddenTip.getDOMNode().classList.contains(Constants.tipHiddenClassName)).toBe(true);
         expect(hiddenTip.getHideStatus()).toBe(true);
       });
   });

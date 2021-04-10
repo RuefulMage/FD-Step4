@@ -1,4 +1,4 @@
-import Publisher from '../../Publisher/Publisher';
+import Publisher from '../../publisher/Publisher';
 
 class ViewComponent extends Publisher {
   protected DOMNode: HTMLElement;

@@ -1,9 +1,9 @@
-import View from '../View/ViewComponents/View';
-import Model from '../Model/Model';
-import Orientation from '../Utils/Orientation';
+import View from '../view/viewComponents/View';
+import Model from '../model/Model';
+import { Orientation } from '../utils/types';
 import Controller from './Controller';
 
-describe('Controller class', () => {
+describe('controller class', () => {
   let parentElement: HTMLElement;
   let viewOptions;
   let modelOptions;

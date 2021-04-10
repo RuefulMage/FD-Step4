@@ -1,6 +1,6 @@
-import CONSTANTS from '../../Utils/Constants';
+import Constants from '../../utils/constants';
 import ViewComponent from './ViewComponent';
-import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
+import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
 
 class Runner extends ViewComponent {
   private position: number;
@@ -8,7 +8,7 @@ class Runner extends ViewComponent {
   private orientationBehavior: OrientationBehavior;
 
   constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior) {
-    super(parentNode, `${CONSTANTS.runnerClassName} ${CONSTANTS.runnerPrefixedClassName}`);
+    super(parentNode, `${Constants.runnerClassName} ${Constants.runnerPrefixedClassName}`);
     this.orientationBehavior = orientationBehavior;
     this.setPosition(0);
     this.addMouseEventsHandlers();
@@ -26,9 +26,9 @@ class Runner extends ViewComponent {
 
   public setCurrentStatus(newStatus: boolean): void {
     if (newStatus) {
-      this.getDOMNode().classList.add(CONSTANTS.runnerCurrentModifier);
+      this.getDOMNode().classList.add(Constants.runnerCurrentModifier);
     } else {
-      this.getDOMNode().classList.remove(CONSTANTS.runnerCurrentModifier);
+      this.getDOMNode().classList.remove(Constants.runnerCurrentModifier);
     }
   }
 

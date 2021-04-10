@@ -1,6 +1,6 @@
-import Orientation from './Orientation';
+import { Orientation } from './types';
 
-const CONSTANTS = {
+const Constants = {
   viewWrapperClassName: 'slider',
   orientationClassNames: new Map<Orientation, string>(
     [[Orientation.HORIZONTAL, 'slider_horizontal'], [Orientation.VERTICAL, 'slider_vertical']],
@@ -19,4 +19,4 @@ const CONSTANTS = {
   tipsJoinDistance: 15,
 };
 
-export default CONSTANTS;
+export default Constants;

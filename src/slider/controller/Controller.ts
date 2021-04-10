@@ -1,6 +1,6 @@
-import View from '../View/ViewComponents/View';
-import Model from '../Model/Model';
-import ViewEventName from '../Utils/ViewEventName';
+import View from '../view/viewComponents/View';
+import Model from '../model/Model';
+import { ViewEventName } from '../utils/types';
 
 class Controller {
   private model: Model;

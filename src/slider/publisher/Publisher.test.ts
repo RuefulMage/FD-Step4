@@ -1,6 +1,6 @@
 import Publisher from './Publisher';
 
-describe('Publisher class', () => {
+describe('publisher class', () => {
   let publisher: Publisher;
 
   beforeEach(() => {

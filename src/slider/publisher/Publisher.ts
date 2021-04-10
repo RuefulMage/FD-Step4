@@ -1,5 +1,5 @@
-import ModelEventName from '../Utils/ModelEventName';
-import ViewEventName from '../Utils/ViewEventName';
+import { ModelEventName } from '../utils/types';
+import { ViewEventName } from '../utils/types';
 
 class Publisher {
   private observersCallbacks: Set<Function> = new Set<Function>();

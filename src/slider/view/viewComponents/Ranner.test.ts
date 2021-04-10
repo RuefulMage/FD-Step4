@@ -1,7 +1,7 @@
-import CONSTANTS from '../../Utils/Constants';
+import Constants from '../../utils/constants';
 import Runner from './Runner';
-import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
-import Orientation from '../../Utils/Orientation';
+import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import { Orientation } from '../../utils/types';
 
 describe('Runner class', () => {
   let parentElement: HTMLElement;
@@ -60,14 +60,14 @@ describe('Runner class', () => {
   describe('Set current status', () => {
     test('Should add curren-modifier to element classList, if input value is true', () => {
       runner.setCurrentStatus(true);
-      const realResult = runner.getDOMNode().classList.contains(CONSTANTS.runnerCurrentModifier);
+      const realResult = runner.getDOMNode().classList.contains(Constants.runnerCurrentModifier);
 
       expect(realResult).toBe(true);
     });
 
     test('Should remove curren-modifier from element classList, if input value is false', () => {
       runner.setCurrentStatus(false);
-      const realResult = runner.getDOMNode().classList.contains(CONSTANTS.runnerCurrentModifier);
+      const realResult = runner.getDOMNode().classList.contains(Constants.runnerCurrentModifier);
 
       expect(realResult).toBe(false);
     });
@@ -76,7 +76,7 @@ describe('Runner class', () => {
   describe('Destroy dom element', () => {
     test('Should destroy dom element', () => {
       runner.destroy();
-      const runnerElement = parentElement.getElementsByClassName(CONSTANTS.runnerClassName)[0];
+      const runnerElement = parentElement.getElementsByClassName(Constants.runnerClassName)[0];
 
       expect(runnerElement).toBeUndefined();
     });
