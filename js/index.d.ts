@@ -1,5 +1,2 @@
-import './Slider/Slider';
-import './Slider/slider.scss';
-import './demo/demo.scss';
-import './index.scss';
-import './demo/init';
+/// <reference types="webpack-env" />
+declare function importAll(context: __WebpackModuleApi.RequireContext): void;
