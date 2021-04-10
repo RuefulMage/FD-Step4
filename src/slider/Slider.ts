@@ -4,16 +4,13 @@ import Controller from './controller/Controller';
 import { Logger, DefaultSliderOptions, Orientation, SliderOptions } from './utils/types';
 
 class Slider {
-  private view: View;
+  private readonly view: View;
 
-  private model: Model;
+  private readonly model: Model;
 
   private controller: Controller;
 
-  private rootElement: HTMLElement;
-
-  constructor(rootElement: HTMLElement, options: SliderOptions) {
-    this.rootElement = rootElement;
+  constructor(private rootElement: HTMLElement, options: SliderOptions) {
     try {
       this.model = new Model(options);
     } catch (error) {
@@ -43,7 +40,7 @@ class Slider {
     };
     this.view = new View(rootElement, viewOptions);
     this.view.attach(this.update.bind(this));
-    this.controller = new Controller(this.view, this.model);
+    new Controller(this.view, this.model);
   }
 
   public isRange(): boolean {

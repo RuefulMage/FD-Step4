@@ -2,9 +2,6 @@ import { SliderOptions } from '../slider/utils/types';
 import Slider from '../slider/Slider';
 
 class Demo {
-  private sliderElement: JQuery<HTMLElement>;
-
-  private panelElement: HTMLElement;
 
   private slider: Slider;
 
@@ -24,9 +21,7 @@ class Demo {
 
   private isVerticalInput: HTMLInputElement;
 
-  constructor(sliderElement: JQuery, panelElement: HTMLElement, sliderOptions: SliderOptions) {
-    this.panelElement = panelElement;
-    this.sliderElement = sliderElement;
+  constructor(private sliderElement: JQuery, private panelElement: HTMLElement, sliderOptions: SliderOptions) {
     this.slider = sliderElement.slider(sliderOptions).data('slider');
     this.init();
   }

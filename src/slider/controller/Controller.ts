@@ -3,17 +3,11 @@ import Model from '../model/Model';
 import { ViewEventName } from '../utils/types';
 
 class Controller {
-  private model: Model;
-
-  private view: View;
-
-  constructor(view: View, model: Model) {
-    this.init(view, model);
+  constructor(private view: View, private model: Model) {
+    this.init();
   }
 
-  private init(view: View, model: Model): void {
-    this.view = view;
-    this.model = model;
+  private init(): void {
     this.view.attach(this.handleViewEvents.bind(this));
     this.model.attach(this.handleModelEvents.bind(this));
     this.updateView();

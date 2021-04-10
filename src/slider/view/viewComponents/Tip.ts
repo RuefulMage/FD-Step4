@@ -3,18 +3,14 @@ import ViewComponent from './ViewComponent';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
 
 class Tip extends ViewComponent {
-  private isHidden: boolean;
-
-  private orientationBehavior: OrientationBehavior;
 
   constructor(parentNode: HTMLElement,
-    isHidden: boolean = true, orientationBehavior: OrientationBehavior) {
+    private isHidden: boolean = true, private orientationBehavior: OrientationBehavior) {
     super(parentNode, Constants.tipClassName);
     this.orientationBehavior = orientationBehavior;
     if (isHidden) {
       this.DOMNode.classList.add(Constants.tipHiddenClassName);
     }
-    this.isHidden = isHidden;
   }
 
   public setPosition(newPosition: number): void {

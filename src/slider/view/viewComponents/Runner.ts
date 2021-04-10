@@ -5,11 +5,8 @@ import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
 class Runner extends ViewComponent {
   private position: number;
 
-  private orientationBehavior: OrientationBehavior;
-
-  constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior) {
+  constructor(parentNode: HTMLElement, private orientationBehavior: OrientationBehavior) {
     super(parentNode, `${Constants.runnerClassName} ${Constants.runnerPrefixedClassName}`);
-    this.orientationBehavior = orientationBehavior;
     this.setPosition(0);
     this.addMouseEventsHandlers();
     this.addTouchEventsHandler();

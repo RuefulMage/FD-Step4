@@ -6,12 +6,9 @@ import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
 class Scale extends ViewComponent {
   private subElements: ScaleSubElement[] = [];
 
-  private orientationBehavior: OrientationBehavior;
-
   constructor(parentNode: HTMLElement, valuesAndPositions: Map<number, number>,
-    orientationBehavior: OrientationBehavior) {
+    private orientationBehavior: OrientationBehavior) {
     super(parentNode, Constants.scaleClassName);
-    this.orientationBehavior = orientationBehavior;
     this.setScale(valuesAndPositions);
     this.addHandler();
   }
