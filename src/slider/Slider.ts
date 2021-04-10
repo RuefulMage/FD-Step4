@@ -8,8 +8,6 @@ class Slider {
 
   private readonly model: Model;
 
-  private controller: Controller;
-
   constructor(private rootElement: HTMLElement, options: SliderOptions) {
     try {
       this.model = new Model(options);
