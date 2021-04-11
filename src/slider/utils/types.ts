@@ -1,3 +1,5 @@
+import OrientationBehavior from '../view/orientationBehaviors/OrientationBehavior';
+
 const Logger = {
 
   logWarning(moduleName: string, message: string) {
@@ -40,11 +42,17 @@ const DefaultSliderOptions: SliderOptions = {
   step: 1,
 };
 
+interface basicViewOptions{
+  parentNode: HTMLElement,
+  orientationBehavior: OrientationBehavior
+}
+
 export {
   Logger,
   ModelEventName,
   ViewEventName,
   Orientation,
   SliderOptions,
-  DefaultSliderOptions
+  DefaultSliderOptions,
+  basicViewOptions
 };

@@ -1,11 +1,13 @@
 import Constants from '../../utils/constants';
 import ViewComponent from './ViewComponent';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import { basicViewOptions } from '../../utils/types';
 
 class Tip extends ViewComponent {
+  private orientationBehavior: OrientationBehavior;
 
-  constructor(parentNode: HTMLElement,
-    private isHidden: boolean = true, private orientationBehavior: OrientationBehavior) {
+  constructor({ parentNode, orientationBehavior }: basicViewOptions,
+    private isHidden: boolean = true) {
     super(parentNode, Constants.tipClassName);
     this.orientationBehavior = orientationBehavior;
     if (isHidden) {

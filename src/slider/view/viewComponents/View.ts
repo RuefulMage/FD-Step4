@@ -47,27 +47,27 @@ class View extends ViewComponent {
 
     this.DOMNode.classList.add(Constants.orientationClassNames.get(orientation));
 
-    this.strip = new Strip(this.DOMNode, this.orientationBehavior);
+    this.strip = new Strip({ parentNode: this.DOMNode, orientationBehavior: this.orientationBehavior });
     this.isTipsHidden = isTipsHidden;
 
     if (isRange) {
-      const lowValueRunner = new Runner(this.strip.getDOMNode(), this.orientationBehavior);
-      const lowValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden, this.orientationBehavior);
+      const lowValueRunner = new Runner({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
+      const lowValueTip = new Tip({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior }, isTipsHidden);
 
-      const highValueRunner = new Runner(this.strip.getDOMNode(), this.orientationBehavior);
-      const highValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden, this.orientationBehavior);
+      const highValueRunner = new Runner({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
+      const highValueTip = new Tip({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior }, isTipsHidden);
 
       this.runnersAndTips = new Map([
         [0, { runner: lowValueRunner, tip: lowValueTip }],
         [1, { runner: highValueRunner, tip: highValueTip }]]);
     } else {
-      const lowValueRunner = new Runner(this.strip.getDOMNode(), this.orientationBehavior);
-      const lowValueTip = new Tip(this.strip.getDOMNode(), isTipsHidden, this.orientationBehavior);
+      const lowValueRunner = new Runner({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
+      const lowValueTip = new Tip({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior }, isTipsHidden);
 
       this.runnersAndTips = new Map([[0, { runner: lowValueRunner, tip: lowValueTip }]]);
     }
 
-    this.range = new Range(this.strip.getDOMNode(), this.orientationBehavior);
+    this.range = new Range({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
     this.addHandlers();
   }
 
@@ -169,10 +169,10 @@ class View extends ViewComponent {
       return;
     }
 
-    const runner = new Runner(this.strip.getDOMNode(), this.orientationBehavior);
+    const runner = new Runner({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
     runner.setPosition(highRunnerPosition);
 
-    const tip = new Tip(this.strip.getDOMNode(), this.isTipsHidden, this.orientationBehavior);
+    const tip = new Tip({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior }, this.isTipsHidden);
     tip.setInnerText(highValue.toString());
     tip.setPosition(highRunnerPosition);
 
@@ -198,7 +198,7 @@ class View extends ViewComponent {
 
   private setScale(valuesAndPositions: Map<number, number>): void {
     if (this.scale === undefined) {
-      this.scale = new Scale(this.getDOMNode(), valuesAndPositions, this.orientationBehavior);
+      this.scale = new Scale({ parentNode: this.getDOMNode(), orientationBehavior: this.orientationBehavior }, valuesAndPositions);
     } else {
       this.scale.setScale(valuesAndPositions);
     }

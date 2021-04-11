@@ -7,14 +7,14 @@ const mockGetPositionFromCoordinates = jest.fn();
 OrientationBehavior.prototype.getPositionFromCoordinates = mockGetPositionFromCoordinates;
 
 describe('Strip class', () => {
-  let parentElement: HTMLElement;
+  let parentNode: HTMLElement;
   let strip: Strip;
 
   beforeEach(() => {
-    parentElement = document.createElement('div');
-    document.body.append(parentElement);
+    parentNode = document.createElement('div');
+    document.body.append(parentNode);
     const orientationBehavior = new OrientationBehavior('horizontal');
-    strip = new Strip(parentElement, orientationBehavior);
+    strip = new Strip({ parentNode, orientationBehavior });
   });
 
   describe('Add handler', () => {
@@ -26,7 +26,7 @@ describe('Strip class', () => {
       });
       const mockClickHandler = jest.fn();
 
-      parentElement.addEventListener('slider-click', mockClickHandler);
+      parentNode.addEventListener('slider-click', mockClickHandler);
       strip.getDOMNode().dispatchEvent(click);
 
       expect(mockClickHandler.mock.calls.length).toBe(1);
@@ -47,7 +47,7 @@ describe('Strip class', () => {
       });
       const mockClickHandler = jest.fn();
 
-      parentElement.addEventListener('slider-click', mockClickHandler);
+      parentNode.addEventListener('slider-click', mockClickHandler);
       runner.dispatchEvent(click);
 
       expect(mockClickHandler.mock.calls.length).toBe(0);

@@ -1,10 +1,9 @@
 import Constants from '../../utils/constants';
 import Runner from './Runner';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
-import { Orientation } from '../../utils/types';
 
 describe('Runner class', () => {
-  let parentElement: HTMLElement;
+  let parentNode: HTMLElement;
   let runner: Runner;
   const mockGetPositionFromCoordinates = jest.fn();
   const mockSetPosition = jest.fn();
@@ -15,10 +14,10 @@ describe('Runner class', () => {
   let orientationBehavior: OrientationBehavior;
 
   beforeEach(() => {
-    parentElement = document.createElement('div');
-    document.body.appendChild(parentElement);
+    parentNode = document.createElement('div');
+    document.body.appendChild(parentNode);
     orientationBehavior = new OrientationBehavior('horizontal');
-    runner = new Runner(parentElement, orientationBehavior);
+    runner = new Runner({ parentNode, orientationBehavior });
     mockSetPosition.mock.calls.length = 0;
   });
 
@@ -28,13 +27,13 @@ describe('Runner class', () => {
 
   describe('Create range object', () => {
     test('Should be created an instance of range and not to be undefined', () => {
-      runner = new Runner(parentElement, orientationBehavior);
+      runner = new Runner({ parentNode, orientationBehavior });
 
       expect(runner).toBeDefined();
     });
 
     test('When arguments only 2, should be created with default options', () => {
-      runner = new Runner(parentElement, orientationBehavior);
+      runner = new Runner({ parentNode, orientationBehavior });
 
       expect(runner).toBeDefined();
     });
@@ -76,7 +75,7 @@ describe('Runner class', () => {
   describe('Destroy dom element', () => {
     test('Should destroy dom element', () => {
       runner.destroy();
-      const runnerElement = parentElement.getElementsByClassName(Constants.runnerClassName)[0];
+      const runnerElement = parentNode.getElementsByClassName(Constants.runnerClassName)[0];
 
       expect(runnerElement).toBeUndefined();
     });
@@ -95,7 +94,7 @@ describe('Runner class', () => {
         clientY: 100,
       });
       const mockEventHandler = jest.fn();
-      parentElement.addEventListener('slider-drag', mockEventHandler);
+      parentNode.addEventListener('slider-drag', mockEventHandler);
       runner.getDOMNode().dispatchEvent(mousedown);
       runner.getDOMNode().dispatchEvent(dragstart);
       runner.getDOMNode().dispatchEvent(mousemove);
@@ -131,7 +130,7 @@ describe('Runner class', () => {
         clientY: 100,
       });
       const mockEventHandler = jest.fn();
-      parentElement.addEventListener('slider-drag', mockEventHandler);
+      parentNode.addEventListener('slider-drag', mockEventHandler);
 
       expect(() => {
         runner.getDOMNode().dispatchEvent(mousedown);
@@ -156,7 +155,7 @@ describe('Runner class', () => {
       });
 
       const mockTouchEventHandler = jest.fn();
-      parentElement.addEventListener('slider-drag', mockTouchEventHandler);
+      parentNode.addEventListener('slider-drag', mockTouchEventHandler);
       runner.getDOMNode().dispatchEvent(touchStart);
       runner.getDOMNode().dispatchEvent(dragstart);
       runner.getDOMNode().dispatchEvent(touchMove);
@@ -196,7 +195,7 @@ describe('Runner class', () => {
       });
 
       const mockTouchEventHandler = jest.fn();
-      parentElement.addEventListener('slider-drag', mockTouchEventHandler);
+      parentNode.addEventListener('slider-drag', mockTouchEventHandler);
 
       expect(() => {
         runner.getDOMNode().dispatchEvent(touchStart);

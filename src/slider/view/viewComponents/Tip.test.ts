@@ -11,25 +11,25 @@ OrientationBehavior.prototype.resetStyles = mockFunctionForResetStyles;
 
 describe('Tip class', () => {
   let tip: Tip;
-  let parentElement: HTMLElement;
+  let parentNode: HTMLElement;
   let orientationBehavior: OrientationBehavior;
 
   beforeEach(() => {
-    parentElement = document.createElement('div');
-    document.body.append(parentElement);
+    parentNode = document.createElement('div');
+    document.body.append(parentNode);
     orientationBehavior = new OrientationBehavior('horizontal');
-    tip = new Tip(parentElement, true, orientationBehavior);
+    tip = new Tip({ parentNode, orientationBehavior }, true);
   });
 
   describe('Create tip object', () => {
     test('Should be created an instance of tip and not to be undefined', () => {
-      tip = new Tip(parentElement, false, orientationBehavior);
+      tip = new Tip({ parentNode, orientationBehavior }, false);
 
       expect(tip).toBeDefined();
     });
 
     test('When arguments only 2, should be created with default options', () => {
-      tip = new Tip(parentElement, true, orientationBehavior);
+      tip = new Tip({ parentNode, orientationBehavior }, true);
 
       expect(tip).toBeDefined();
       expect(tip.getHideStatus()).toBe(true);
@@ -62,13 +62,13 @@ describe('Tip class', () => {
   describe('Show tip', () => {
     test('Should show tip by adding css class for hiding from Constants object and set isHidden flag to false',
       () => {
-        const showedTip = new Tip(parentElement, false, orientationBehavior);
+        const showedTip = new Tip({ parentNode, orientationBehavior }, false);
         showedTip.show();
 
         expect(showedTip.getDOMNode().classList.contains(Constants.tipHiddenClassName)).toBe(false);
         expect(showedTip.getHideStatus()).toBe(false);
 
-        const hiddenTip = new Tip(parentElement, true, orientationBehavior);
+        const hiddenTip = new Tip({ parentNode, orientationBehavior }, true);
         hiddenTip.show();
 
         expect(hiddenTip.getDOMNode().classList.contains(Constants.tipHiddenClassName)).toBe(false);
@@ -79,13 +79,13 @@ describe('Tip class', () => {
   describe('Hide tip', () => {
     test('Should hide tip by adding css class for hiding from Constants object and set isHidden flag to true',
       () => {
-        const showedTip = new Tip(parentElement, false, orientationBehavior);
+        const showedTip = new Tip({ parentNode, orientationBehavior }, false);
         showedTip.hide();
 
         expect(showedTip.getDOMNode().classList.contains(Constants.tipHiddenClassName)).toBe(true);
         expect(showedTip.getHideStatus()).toBe(true);
 
-        const hiddenTip = new Tip(parentElement, true, orientationBehavior);
+        const hiddenTip = new Tip({ parentNode, orientationBehavior }, true);
         hiddenTip.hide();
 
         expect(hiddenTip.getDOMNode().classList.contains(Constants.tipHiddenClassName)).toBe(true);

@@ -2,13 +2,16 @@ import Constants from '../../utils/constants';
 import ViewComponent from './ViewComponent';
 import ScaleSubElement from './ScaleSubElement';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import { basicViewOptions } from '../../utils/types';
 
 class Scale extends ViewComponent {
   private subElements: ScaleSubElement[] = [];
 
-  constructor(parentNode: HTMLElement, valuesAndPositions: Map<number, number>,
-    private orientationBehavior: OrientationBehavior) {
+  private orientationBehavior: OrientationBehavior;
+
+  constructor({ parentNode, orientationBehavior }: basicViewOptions, valuesAndPositions: Map<number, number>,) {
     super(parentNode, Constants.scaleClassName);
+    this.orientationBehavior = orientationBehavior;
     this.setScale(valuesAndPositions);
     this.addHandler();
   }

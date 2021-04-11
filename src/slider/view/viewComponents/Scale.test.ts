@@ -4,14 +4,14 @@ import { Orientation } from '../../utils/types';
 
 describe('Scale class', () => {
   let scale: Scale;
-  const parentElement: HTMLElement = document.createElement('div');
-  document.body.append(parentElement);
+  const parentNode: HTMLElement = document.createElement('div');
+  document.body.append(parentNode);
 
   beforeEach(() => {
     const orientationBehavior = new OrientationBehavior('horizontal');
     const valuesAndPositions = new Map<number, number>();
     valuesAndPositions.set(0, 0).set(50, 50).set(100, 100);
-    scale = new Scale(parentElement, valuesAndPositions, orientationBehavior);
+    scale = new Scale({ parentNode, orientationBehavior }, valuesAndPositions);
   });
 
   describe('Set scale', () => {

@@ -4,7 +4,7 @@ import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
 import { Orientation } from '../../utils/types';
 
 describe('Range class', () => {
-  let parentElement: HTMLElement;
+  let parentNode: HTMLElement;
   let range: Range;
   const mockFunctionForSetRangePosition = jest.fn();
   const mockFunctionForResetStyles = jest.fn();
@@ -12,24 +12,24 @@ describe('Range class', () => {
   OrientationBehavior.prototype.resetStyles = mockFunctionForResetStyles;
 
   beforeEach(() => {
-    parentElement = document.createElement('div');
-    document.body.append(parentElement);
+    parentNode = document.createElement('div');
+    document.body.append(parentNode);
     const orientationBehavior = new OrientationBehavior('horizontal');
 
-    range = new Range(parentElement, orientationBehavior);
+    range = new Range({ parentNode, orientationBehavior });
   });
 
   describe('Create range object', () => {
     test('Should be created an instance of range and not to be undefined', () => {
       const orientationBehavior = new OrientationBehavior('horizontal');
-      range = new Range(parentElement, orientationBehavior);
+      range = new Range({ parentNode, orientationBehavior });
 
       expect(range).toBeDefined();
     });
 
     test('When arguments only 2, should be created with default options', () => {
       const orientationBehavior = new OrientationBehavior('horizontal');
-      range = new Range(parentElement, orientationBehavior);
+      range = new Range({ parentNode, orientationBehavior });
 
       expect(range).toBeDefined();
       expect(range.getLowEdge()).toBe(0);
@@ -75,7 +75,7 @@ describe('Range class', () => {
   describe('Destroy dom element', () => {
     test('Should destroy dom element', () => {
       range.destroy();
-      const rangeElement = parentElement.getElementsByClassName(Constants.rangeClassName)[0];
+      const rangeElement = parentNode.getElementsByClassName(Constants.rangeClassName)[0];
       expect(rangeElement).toBeUndefined();
     });
   });

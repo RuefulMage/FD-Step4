@@ -1,12 +1,16 @@
 import Constants from '../../utils/constants';
 import ViewComponent from './ViewComponent';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import { basicViewOptions } from '../../utils/types';
 
 class Runner extends ViewComponent {
   private position: number;
 
-  constructor(parentNode: HTMLElement, private orientationBehavior: OrientationBehavior) {
+  private orientationBehavior: OrientationBehavior;
+
+  constructor({ parentNode, orientationBehavior }: basicViewOptions ) {
     super(parentNode, `${Constants.runnerClassName} ${Constants.runnerPrefixedClassName}`);
+    this.orientationBehavior = orientationBehavior;
     this.setPosition(0);
     this.addMouseEventsHandlers();
     this.addTouchEventsHandler();
