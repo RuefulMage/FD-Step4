@@ -3,7 +3,7 @@ import { Orientation } from './types';
 const Constants = {
   viewWrapperClassName: 'slider',
   orientationClassNames: new Map<Orientation, string>(
-    [[Orientation.HORIZONTAL, 'slider_horizontal'], [Orientation.VERTICAL, 'slider_vertical']],
+    [['horizontal', 'slider_horizontal'], ['vertical', 'slider_vertical']],
   ),
   rangeClassName: 'slider__range',
   scaleClassName: 'slider__scale',

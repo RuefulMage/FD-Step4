@@ -16,17 +16,14 @@ const Logger = {
 type ModelEventName = 'edge-value-change' | 'value-change'|'range-mode-change' | 'step-change';
 type ViewEventName = 'position-change-by-drag' | 'position-change-by-click' | 'resize' | 'orientation-change';
 
-enum Orientation {
-  HORIZONTAL = 'horizontal',
-  VERTICAL = 'vertical'
-}
+type Orientation = 'horizontal' | 'vertical';
 
 type SliderOptions = {
   isRange: boolean,
   isTipsHidden: boolean,
   maxValue: number,
   minValue: number,
-  orientation: 'horizontal' | 'vertical',
+  orientation: Orientation,
   startValueHigh: number,
   startValueLow: number,
   step: number

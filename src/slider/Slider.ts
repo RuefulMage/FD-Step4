@@ -26,13 +26,13 @@ class Slider {
     this.model.attach(this.update.bind(this));
 
     const isOrientationValueIsValid = (options.orientation === 'horizontal') || (options.orientation === 'vertical');
-    const validOrientation: string = isOrientationValueIsValid ? options.orientation
+    const validOrientation: Orientation = isOrientationValueIsValid ? options.orientation
       : DefaultSliderOptions.orientation;
 
     const viewOptions: {
       orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
     } = {
-      orientation: validOrientation as Orientation,
+      orientation: validOrientation,
       isRange: options.isRange,
       isTipsHidden: options.isTipsHidden,
     };
@@ -111,8 +111,8 @@ class Slider {
     return this.view.getOrientation();
   }
 
-  public setOrientation(orientation: 'horizontal' | 'vertical'): void {
-    this.view.setOrientation(orientation as Orientation);
+  public setOrientation(orientation: Orientation): void {
+    this.view.setOrientation(orientation);
   }
 
   public hideTips(): void {

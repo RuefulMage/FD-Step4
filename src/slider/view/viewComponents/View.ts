@@ -124,7 +124,7 @@ class View extends ViewComponent {
   // По размерам слайдера, вычисляет кол-во отрезков шкалы
   public computeDivisionsAmountBySize(): number {
     let sliderSize;
-    if (this.orientation === Orientation.HORIZONTAL) {
+    if (this.orientation === 'horizontal') {
       sliderSize = this.getDOMNode().clientWidth;
     } else {
       sliderSize = this.getDOMNode().clientHeight;

@@ -14,21 +14,21 @@ describe('Range class', () => {
   beforeEach(() => {
     parentElement = document.createElement('div');
     document.body.append(parentElement);
-    const orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
+    const orientationBehavior = new OrientationBehavior('horizontal');
 
     range = new Range(parentElement, orientationBehavior);
   });
 
   describe('Create range object', () => {
     test('Should be created an instance of range and not to be undefined', () => {
-      const orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
+      const orientationBehavior = new OrientationBehavior('horizontal');
       range = new Range(parentElement, orientationBehavior);
 
       expect(range).toBeDefined();
     });
 
     test('When arguments only 2, should be created with default options', () => {
-      const orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
+      const orientationBehavior = new OrientationBehavior('horizontal');
       range = new Range(parentElement, orientationBehavior);
 
       expect(range).toBeDefined();

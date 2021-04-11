@@ -20,7 +20,7 @@ describe('view class', () => {
       isTipsHidden: true,
       maxValue: 100,
       minValue: 0,
-      orientation: Orientation.HORIZONTAL,
+      orientation: 'horizontal',
     };
 
     parentElement = document.createElement('div');
@@ -96,11 +96,11 @@ describe('view class', () => {
 
   describe('Get orientation', () => {
     test('Should return current orientation', () => {
-      options.orientation = Orientation.VERTICAL;
+      options.orientation = 'vertical';
       const view = new View(parentElement, options);
       const output = view.getOrientation();
 
-      expect(output).toEqual(Orientation.VERTICAL);
+      expect(output).toEqual('vertical');
     });
   });
 
@@ -150,7 +150,7 @@ describe('view class', () => {
     });
 
     test('Should return correct divisions amount. Orientation is vertical', () => {
-      options.orientation = Orientation.VERTICAL;
+      options.orientation = 'vertical';
       let view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 1400 });
       let output = view.computeDivisionsAmountBySize();
@@ -198,12 +198,12 @@ describe('view class', () => {
   describe('Set orientation', () => {
     test('Should set orientation to input orientation and change classList to needed for this orientaion css-classes'
       + 'When scale is not defined case.', () => {
-      options.orientation = Orientation.HORIZONTAL;
+      options.orientation = 'horizontal';
       const view = new View(parentElement, options);
-      view.setOrientation(Orientation.VERTICAL);
-      const orientationStyleClass = Constants.orientationClassNames.get(Orientation.VERTICAL);
+      view.setOrientation('vertical');
+      const orientationStyleClass = Constants.orientationClassNames.get('vertical');
 
-      expect(view.getOrientation()).toEqual(Orientation.VERTICAL);
+      expect(view.getOrientation()).toEqual('vertical');
       expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
     });
   });

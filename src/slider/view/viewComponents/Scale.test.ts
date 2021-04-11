@@ -8,7 +8,7 @@ describe('Scale class', () => {
   document.body.append(parentElement);
 
   beforeEach(() => {
-    const orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
+    const orientationBehavior = new OrientationBehavior('horizontal');
     const valuesAndPositions = new Map<number, number>();
     valuesAndPositions.set(0, 0).set(50, 50).set(100, 100);
     scale = new Scale(parentElement, valuesAndPositions, orientationBehavior);

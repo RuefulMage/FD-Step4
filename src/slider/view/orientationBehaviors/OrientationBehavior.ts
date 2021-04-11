@@ -14,7 +14,7 @@ class OrientationBehavior {
   }
 
   public setPosition(newPosition: number, domElement: HTMLElement): void {
-    if (this.orientation === Orientation.HORIZONTAL) {
+    if (this.orientation === 'horizontal') {
       const parentWidth = domElement.parentElement.offsetWidth;
       const elementWidth = domElement.offsetWidth;
       const domElementWidthInPercent = (elementWidth / parentWidth) * 100;
@@ -38,7 +38,7 @@ class OrientationBehavior {
       throw new Error('clientX or clientY is too big');
     }
 
-    if (this.orientation === Orientation.HORIZONTAL) {
+    if (this.orientation === 'horizontal') {
       const positionInPixels = clientX - domElement.parentElement.getBoundingClientRect().left;
       const parentSize = domElement.parentElement.offsetWidth;
       const position = (positionInPixels / parentSize) * 100;
@@ -56,7 +56,7 @@ class OrientationBehavior {
 
   public setRangePositions(minEdge: number, maxEdge: number,
     domElement: HTMLElement): void {
-    if (this.orientation === Orientation.HORIZONTAL) {
+    if (this.orientation === 'horizontal') {
       // eslint-disable-next-line no-param-reassign
       domElement.style.left = `${minEdge}%`;
       // eslint-disable-next-line no-param-reassign

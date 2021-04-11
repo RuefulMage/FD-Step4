@@ -49,24 +49,24 @@ describe('OrientationBehavior class', () => {
     });
     parentElement.appendChild(domElement);
 
-    orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
+    orientationBehavior = new OrientationBehavior('horizontal');
   });
 
   describe('Get orientation', () => {
     test('Should get current orientation', () => {
-      expect(orientationBehavior.getOrientation()).toBe(Orientation.HORIZONTAL);
+      expect(orientationBehavior.getOrientation()).toBe('horizontal');
     });
   });
 
   describe('Set orientation', () => {
     test('Should change orientation to input value', () => {
-      orientationBehavior.setOrientation(Orientation.VERTICAL);
+      orientationBehavior.setOrientation('vertical');
 
-      expect(orientationBehavior.getOrientation()).toBe(Orientation.VERTICAL);
+      expect(orientationBehavior.getOrientation()).toBe('vertical');
 
-      orientationBehavior.setOrientation(Orientation.HORIZONTAL);
+      orientationBehavior.setOrientation('horizontal');
 
-      expect(orientationBehavior.getOrientation()).toBe(Orientation.HORIZONTAL);
+      expect(orientationBehavior.getOrientation()).toBe('horizontal');
     });
   });
 
@@ -83,7 +83,7 @@ describe('OrientationBehavior class', () => {
       + 'input DOM element to shifted position, when orientation is vertical', () => {
       const inputPosition = 10;
 
-      orientationBehavior.setOrientation(Orientation.VERTICAL);
+      orientationBehavior.setOrientation('vertical');
       orientationBehavior.setPosition(inputPosition, domElement);
 
       expect(domElement.style.bottom).toBe('-10%');
@@ -105,7 +105,7 @@ describe('OrientationBehavior class', () => {
       const clientX = 30;
       const clientY = 40;
 
-      orientationBehavior.setOrientation(Orientation.VERTICAL);
+      orientationBehavior.setOrientation('vertical');
       const outputPosition = orientationBehavior
         .getPositionFromCoordinates(clientX, clientY, domElement);
 
@@ -158,7 +158,7 @@ describe('OrientationBehavior class', () => {
     test('Should set styles of element to input left and right position, when orientation is vertical', () => {
       const minEdge = 20;
       const maxEdge = 65;
-      orientationBehavior.setOrientation(Orientation.VERTICAL);
+      orientationBehavior.setOrientation('vertical');
       orientationBehavior.setRangePositions(minEdge, maxEdge, domElement);
 
       expect(domElement.style.top).toBe('35%');

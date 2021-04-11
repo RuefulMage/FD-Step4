@@ -13,7 +13,7 @@ describe('Strip class', () => {
   beforeEach(() => {
     parentElement = document.createElement('div');
     document.body.append(parentElement);
-    const orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
+    const orientationBehavior = new OrientationBehavior('horizontal');
     strip = new Strip(parentElement, orientationBehavior);
   });
 

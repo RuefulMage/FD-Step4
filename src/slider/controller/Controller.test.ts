@@ -5,7 +5,9 @@ import Controller from './Controller';
 
 describe('controller class', () => {
   let parentElement: HTMLElement;
-  let viewOptions;
+  let viewOptions: {
+    orientation: Orientation, isRange: boolean, isTipsHidden: boolean
+  };
   let modelOptions;
   let controller: Controller;
 
@@ -17,7 +19,7 @@ describe('controller class', () => {
     viewOptions = {
       isRange: true,
       isTipsHidden: true,
-      orientation: Orientation.HORIZONTAL,
+      orientation: 'horizontal',
     };
 
     modelOptions = {

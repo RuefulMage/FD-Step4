@@ -17,7 +17,7 @@ describe('Runner class', () => {
   beforeEach(() => {
     parentElement = document.createElement('div');
     document.body.appendChild(parentElement);
-    orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
+    orientationBehavior = new OrientationBehavior('horizontal');
     runner = new Runner(parentElement, orientationBehavior);
     mockSetPosition.mock.calls.length = 0;
   });

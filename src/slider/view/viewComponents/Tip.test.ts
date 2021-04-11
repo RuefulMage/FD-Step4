@@ -17,7 +17,7 @@ describe('Tip class', () => {
   beforeEach(() => {
     parentElement = document.createElement('div');
     document.body.append(parentElement);
-    orientationBehavior = new OrientationBehavior(Orientation.HORIZONTAL);
+    orientationBehavior = new OrientationBehavior('horizontal');
     tip = new Tip(parentElement, true, orientationBehavior);
   });
 
