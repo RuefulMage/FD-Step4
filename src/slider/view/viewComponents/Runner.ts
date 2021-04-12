@@ -1,14 +1,14 @@
 import Constants from '../../utils/constants';
 import ViewComponent from './ViewComponent';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
-import { basicViewOptions } from '../../utils/types';
+import { viewComponentOptions } from '../../utils/types';
 
 class Runner extends ViewComponent {
   private position: number;
 
   private orientationBehavior: OrientationBehavior;
 
-  constructor({ parentNode, orientationBehavior }: basicViewOptions ) {
+  constructor({ parentNode, orientationBehavior }: viewComponentOptions ) {
     super(parentNode, `${Constants.runnerClassName} ${Constants.runnerPrefixedClassName}`);
     this.orientationBehavior = orientationBehavior;
     this.setPosition(0);

@@ -1,4 +1,4 @@
-import { Orientation, DefaultSliderOptions } from '../../utils/types';
+import { Orientation, DefaultSliderOptions, updateViewOptions, positionOptions } from '../../utils/types';
 import Constants from '../../utils/constants';
 
 import ViewComponent from './ViewComponent';
@@ -137,14 +137,13 @@ class View extends ViewComponent {
     return 3;
   }
 
-  public updateView(runnersPositions: number[], tipsValues: number[],
-    scalePositions: Map<number, number>, isRange: boolean): void {
+  public updateView({runnersPositions, tipsValues, scalePositions, isRange}: updateViewOptions): void {
     if (isRange) {
-      this.updateViewForInterval(runnersPositions, tipsValues,
-        scalePositions);
+      this.updateViewForInterval({runnersPositions, tipsValues,
+        scalePositions});
     } else {
-      this.updateViewForSingleRunner(runnersPositions, tipsValues,
-        scalePositions);
+      this.updateViewForSingleRunner({runnersPositions, tipsValues,
+        scalePositions});
     }
   }
 
@@ -208,16 +207,16 @@ class View extends ViewComponent {
     return this.runnersAndTips.size;
   }
 
-  private setRunnerPosition(runnerIndex: 0 | 1, position: number): void {
-    this.runnersAndTips.get(runnerIndex).runner.setPosition(position);
+  private setRunnerPosition({ index, position }: positionOptions): void {
+    this.runnersAndTips.get(index).runner.setPosition(position);
   }
 
   private getRunnerPosition(runnerIndex: 0 | 1): number {
     return this.runnersAndTips.get(runnerIndex).runner.getPosition();
   }
 
-  private setTipPosition(tipIndex: 0 | 1, position: number): void {
-    const { tip } = this.runnersAndTips.get(tipIndex);
+  private setTipPosition({index, position}: positionOptions): void {
+    const { tip } = this.runnersAndTips.get(index);
     tip.setPosition(position);
   }
 
@@ -273,19 +272,18 @@ class View extends ViewComponent {
     this.notify('resize', { scaleDivisionsAmount });
   };
 
-  private updateViewForInterval(runnersPositions: number[], tipsValues: number[],
-    scalePositions: Map<number, number>): void {
+  private updateViewForInterval({runnersPositions, tipsValues, scalePositions}: updateViewOptions): void {
     if (this.getRunnersAmount() === 1) {
       this.changeModeToRange(runnersPositions[1], tipsValues[1]);
     }
     this.setScale(scalePositions);
-    this.setRunnerPosition(0, runnersPositions[0]);
-    this.setRunnerPosition(1, runnersPositions[1]);
-    this.updateAllTipsPositionAndText(runnersPositions, tipsValues);
+    this.setRunnerPosition({index: 0, position: runnersPositions[0]});
+    this.setRunnerPosition({index: 1, position: runnersPositions[1]});
+    this.updateAllTipsPositionAndText({runnersPositions, tipsValues});
     this.setRange(runnersPositions[0], runnersPositions[1]);
   }
 
-  private updateAllTipsPositionAndText(runnersPositions: number[], tipsValues: number[]) {
+  private updateAllTipsPositionAndText({ runnersPositions, tipsValues }: updateViewOptions) {
     const isRunnersTooClose = Math.abs(runnersPositions[0]
       - runnersPositions[1]) <= Constants.tipsJoinDistance;
 
@@ -297,22 +295,21 @@ class View extends ViewComponent {
       }
 
       this.setTipText(0, tipsValues[0].toString());
-      this.setTipPosition(0, runnersPositions[0]);
+      this.setTipPosition({index: 0, position: runnersPositions[0]});
 
       this.setTipText(1, tipsValues[1].toString());
-      this.setTipPosition(1, runnersPositions[1]);
+      this.setTipPosition({index: 1, position: runnersPositions[1]});
     }
   }
 
-  private updateViewForSingleRunner(runnersPositions: number[], tipsValues: number[],
-    scalePositions: Map<number, number>): void {
+  private updateViewForSingleRunner({runnersPositions, tipsValues, scalePositions }: updateViewOptions): void {
     if (this.getRunnersAmount() === 2) {
       this.changeModeToSingle();
     }
     this.setScale(scalePositions);
-    this.setRunnerPosition(0, runnersPositions[0]);
+    this.setTipPosition({index: 0, position: runnersPositions[0]});
     this.setTipText(0, tipsValues[0].toString());
-    this.setTipPosition(0, runnersPositions[0]);
+    this.setTipPosition({index: 0, position: runnersPositions[0]});
     this.setRange(0, runnersPositions[0]);
   }
 
@@ -322,7 +319,7 @@ class View extends ViewComponent {
     this.setTipText(0, tipText);
     const tipPosition: number = tipsPositions[0]
       + (tipsPositions[1] - tipsPositions[0]) / 2;
-    this.setTipPosition(0, tipPosition);
+    this.setTipPosition({index: 0, position: tipPosition});
   }
 }
 

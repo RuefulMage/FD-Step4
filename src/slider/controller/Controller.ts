@@ -1,6 +1,6 @@
 import View from '../view/viewComponents/View';
 import Model from '../model/Model';
-import { ViewEventName } from '../utils/types';
+import { positionOptions, ViewEventName } from '../utils/types';
 
 class Controller {
   constructor(private view: View, private model: Model) {
@@ -18,7 +18,7 @@ class Controller {
       || eventName === 'position-change-by-click';
 
     if (isPositionChangeEvent) {
-      this.setValues(data.runnerIndex, data.position);
+      this.setValues({ index: data.runnerIndex, position: data.position });
     } else {
       this.updateView();
     }
@@ -28,21 +28,21 @@ class Controller {
     this.updateView();
   }
 
-  private setValues(runnerIndex: 0 | 1, position: number): void {
-    if (runnerIndex === 0) {
+  private setValues({index, position}: positionOptions): void {
+    if (index === 0) {
       this.model.setLowValueByPercent(position);
-    } else if (runnerIndex === 1) {
+    } else if (index === 1) {
       this.model.setHighValueByPercent(position);
     }
   }
 
   private updateView(): void{
-    const runnerPositions = [this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
+    const runnersPositions = [this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
     const tipsValues = [this.model.getLowValue(), this.model.getHighValue()];
     const scalePositions = this.model
       .splitIntervalByStep(this.view.computeDivisionsAmountBySize());
     const isRange = this.model.getRangeStatus();
-    this.view.updateView(runnerPositions, tipsValues, scalePositions, isRange);
+    this.view.updateView({runnersPositions, tipsValues, scalePositions, isRange});
   }
 }
 

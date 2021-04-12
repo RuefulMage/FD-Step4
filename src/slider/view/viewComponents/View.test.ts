@@ -258,8 +258,8 @@ describe('view class', () => {
       const view = new View(parentElement, options);
       const runnersPositions = [10, 90];
       const tipsValues = [20, 80];
-      const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
-      view.updateView(runnersPositions, tipsValues, scaleValues, true);
+      const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
+      view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: true });
 
       const tips = view.getDOMNode().querySelectorAll(`.${Constants.tipClassName}`);
       const realTipsValues = [Number(tips[0].innerHTML), Number(tips[1].innerHTML)];
@@ -270,7 +270,7 @@ describe('view class', () => {
       });
 
       expect(realTipsValues).toEqual(tipsValues);
-      expect(realScaleValues).toEqual(Array.from(scaleValues.keys()));
+      expect(realScaleValues).toEqual(Array.from(scalePositions.keys()));
     });
 
     test('Should update view and split tips in one, '
@@ -279,8 +279,8 @@ describe('view class', () => {
       const view = new View(parentElement, options);
       const runnersPositions = [88, 90];
       const tipsValues = [88, 90];
-      const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
-      view.updateView(runnersPositions, tipsValues, scaleValues, true);
+      const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
+      view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: true });
 
       const tips = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       const realTipValue = tips.innerHTML;
@@ -294,8 +294,8 @@ describe('view class', () => {
       const view = new View(parentElement, options);
       const runnersPositions = [10, 90];
       const tipsValues = [20, 80];
-      const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
-      view.updateView(runnersPositions, tipsValues, scaleValues, true);
+      const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
+      view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: true });
       const runners = view.getDOMNode().querySelectorAll(`.${Constants.runnerClassName}`);
 
       expect(runners.length).toBe(2);
@@ -305,10 +305,10 @@ describe('view class', () => {
       + 'tip value and position and scale. Range mode is single value', () => {
       options.isRange = false;
       const view = new View(parentElement, options);
-      const runnerPosition = [10];
-      const tipValue = [20];
-      const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
-      view.updateView(runnerPosition, tipValue, scaleValues, false);
+      const runnersPositions = [10];
+      const tipsValues = [20];
+      const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
+      view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: false });
 
       const tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       const realTipValue = [Number(tip.innerHTML)];
@@ -318,18 +318,18 @@ describe('view class', () => {
         realScaleValues.push(Number((value as HTMLElement).innerText));
       });
 
-      expect(realTipValue).toEqual(tipValue);
-      expect(realScaleValues).toEqual(Array.from(scaleValues.keys()));
+      expect(realTipValue).toEqual(tipsValues);
+      expect(realScaleValues).toEqual(Array.from(scalePositions.keys()));
     });
 
     test('Should update view and change mode to single value,'
       + ' if runners amount more than one. Range mode is single value', () => {
       options.isRange = true;
       const view = new View(parentElement, options);
-      const runnerPosition = [10, 11];
-      const tipValue = [20, 21];
-      const scaleValues = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
-      view.updateView(runnerPosition, tipValue, scaleValues, false);
+      const runnersPositions = [10, 11];
+      const tipsValues = [20, 21];
+      const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
+      view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: false });
       const runners = view.getDOMNode().querySelectorAll(`.${Constants.runnerClassName}`);
 
       expect(runners.length).toBe(1);
