@@ -1,7 +1,7 @@
 import Constants from '../../utils/constants';
 import ViewComponent from './ViewComponent';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
-import { viewComponentOptions } from '../../utils/types';
+import { basicViewComponentOptions } from '../../utils/types';
 
 class Range extends ViewComponent {
   private lowEdge: number;
@@ -10,7 +10,7 @@ class Range extends ViewComponent {
 
   private orientationBehavior: OrientationBehavior;
 
-  constructor({ parentNode, orientationBehavior }: viewComponentOptions) {
+  constructor({ parentNode, orientationBehavior }: basicViewComponentOptions) {
     super(parentNode, Constants.rangeClassName);
     this.orientationBehavior = orientationBehavior;
     this.lowEdge = 0;

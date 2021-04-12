@@ -42,11 +42,9 @@ const DefaultSliderOptions: SliderOptions = {
   step: 1,
 };
 
-interface viewComponentOptions {
+interface basicViewComponentOptions {
   parentNode: HTMLElement,
   orientationBehavior: OrientationBehavior,
-  isTipsHidden?: boolean,
-  scaleValuesAndPositions?: Map<number, number>,
 }
 
 interface updateViewOptions {
@@ -61,6 +59,18 @@ interface positionOptions {
   position: number,
 }
 
+interface viewOptions {
+  orientation?: Orientation,
+  isRange?: boolean,
+  isTipsHidden?: boolean
+}
+
+interface modelOptions {
+  isRange?: boolean, minValue?: number,
+  maxValue?: number, startValueLow?: number,
+  startValueHigh?: number, step?: number
+}
+
 export {
   Logger,
   ModelEventName,
@@ -68,7 +78,9 @@ export {
   Orientation,
   SliderOptions,
   DefaultSliderOptions,
-  viewComponentOptions,
+  basicViewComponentOptions,
   updateViewOptions,
-  positionOptions
+  positionOptions,
+  viewOptions,
+  modelOptions
 };

@@ -1,6 +1,6 @@
 import Big from 'big.js';
 import Publisher from '../publisher/Publisher';
-import { DefaultSliderOptions } from '../utils/types';
+import { DefaultSliderOptions, modelOptions } from '../utils/types';
 
 class Model extends Publisher {
   private isRange: boolean;
@@ -15,29 +15,15 @@ class Model extends Publisher {
 
   private step: number;
 
-  constructor(options: {
-    isRange?: boolean, minValue?: number,
-    maxValue?: number, startValueLow?: number,
-    startValueHigh?: number, step?: number
-  }) {
+  constructor(options: modelOptions) {
     super();
     this.init(options);
   }
 
-  private init(options: {
-    isRange?: boolean, minValue?: number,
-    maxValue?: number, startValueLow?: number,
-    startValueHigh?: number, step?: number,
-  }): void {
-    const {
-      isRange = DefaultSliderOptions.isRange,
-      minValue = DefaultSliderOptions.minValue,
-      maxValue = DefaultSliderOptions.maxValue,
-      startValueLow = DefaultSliderOptions.startValueLow,
-      startValueHigh = DefaultSliderOptions.startValueHigh,
-      step = DefaultSliderOptions.step,
-    } = options;
-
+  private init({ isRange = DefaultSliderOptions.isRange, minValue = DefaultSliderOptions.minValue,
+    maxValue = DefaultSliderOptions.maxValue, startValueLow = DefaultSliderOptions.startValueLow,
+    startValueHigh = DefaultSliderOptions.startValueHigh, step = DefaultSliderOptions.step,
+  }: modelOptions): void {
     const isOptionsNotValid = (maxValue <= minValue) || (step <= 0);
 
     if (isOptionsNotValid) {

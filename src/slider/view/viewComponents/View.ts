@@ -1,4 +1,4 @@
-import { Orientation, DefaultSliderOptions, updateViewOptions, positionOptions } from '../../utils/types';
+import { Orientation, DefaultSliderOptions, updateViewOptions, positionOptions, viewOptions } from '../../utils/types';
 import Constants from '../../utils/constants';
 
 import ViewComponent from './ViewComponent';
@@ -24,22 +24,15 @@ class View extends ViewComponent {
 
   private isTipsHidden: boolean;
 
-  constructor(parentNode: HTMLElement, options: {
-    orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
-  }) {
+  constructor(parentNode: HTMLElement, options: viewOptions) {
     super(parentNode, Constants.viewWrapperClassName);
-
     this.init(options);
   }
 
-  private init(options: {
-    orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
-  }): void {
-    const {
-      orientation = DefaultSliderOptions.orientation as Orientation,
-      isRange = DefaultSliderOptions.isRange,
-      isTipsHidden = DefaultSliderOptions.isTipsHidden,
-    } = options;
+  private init({ orientation = DefaultSliderOptions.orientation,
+                 isRange = DefaultSliderOptions.isRange,
+                 isTipsHidden = DefaultSliderOptions.isTipsHidden
+  }: viewOptions): void {
 
     this.orientation = orientation;
 
