@@ -1,53 +1,53 @@
 include ./demo/demo
 doctype html
 html(lang="en")
-    head
-        link(rel="apple-touch-icon" sizes="180x180" href="../assets/favicons/apple-touch-icon.png")
-        link(rel="icon" type="image/png" sizes="32x32" href="../assets/favicons/favicon-32x32.png")
-        link(rel="icon" type="image/png" sizes="16x16" href="../assets/favicons/favicon-16x16.png")
-        link(rel="manifest" href="../assets/favicons/site.webmanifest")
-        link(rel="mask-icon" href="../assets/favicons/safari-pinned-tab.svg" color="red")
-        meta(name="msapplication-TileColor" content="#da532c")
-        meta(name="theme-color" content="#ffffff")
-        meta(charset="utf-8")
-        meta(name="viewport" content="width=device-width, initial-scale=1, user-scalable=no")
-        meta(name="keywords" content="Slider")
-        meta(name="description" content="slider demonstration page")
-        title Slider demo
-    body
-        .index-page
-            .index-page__item
-                +demo({})
-            .index-page__item
-                +demo({
-                    isRange: "false",
-                    isTipsHidden: "true",
-                    maxValue: 100,
-                    minValue: 0,
-                    orientation: "vertical",
-                    startValueHigh: 100,
-                    startValueLow: 0,
-                    step: 1
-                })
-            .index-page__item
-                +demo({
-                    isRange: "true",
-                    isTipsHidden: "false",
-                    maxValue: 5000,
-                    minValue: -5000,
-                    orientation: "vertical",
-                    startValueHigh: 1000,
-                    startValueLow: -1000,
-                    step: 5
-                })
-            .index-page__item
-                +demo({
-                    isRange: "true",
-                    isTipsHidden: "false",
-                    maxValue: 100000,
-                    minValue: -100000,
-                    orientation: "horizontal",
-                    startValueHigh: 10000,
-                    startValueLow: -10000,
-                    step: 1000
-                })
+  head
+    link(rel="apple-touch-icon" sizes="180x180" href="../assets/favicons/apple-touch-icon.png")
+    link(rel="icon" type="image/png" sizes="32x32" href="../assets/favicons/favicon-32x32.png")
+    link(rel="icon" type="image/png" sizes="16x16" href="../assets/favicons/favicon-16x16.png")
+    link(rel="manifest" href="../assets/favicons/site.webmanifest")
+    link(rel="mask-icon" href="../assets/favicons/safari-pinned-tab.svg" color="red")
+    meta(name="msapplication-TileColor" content="#da532c")
+    meta(name="theme-color" content="#ffffff")
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1, user-scalable=no")
+    meta(name="keywords" content="Slider")
+    meta(name="description" content="slider demonstration page")
+    title Slider demo
+  body
+    .index-page
+      .index-page__item
+        +demo({})
+      .index-page__item
+        +demo({
+          isRange: "false",
+          isTipsHidden: "true",
+          maxValue: 100,
+          minValue: 0,
+          orientation: "vertical",
+          startValueHigh: 100,
+          startValueLow: 0,
+          step: 1
+        })
+      .index-page__item
+        +demo({
+          isRange: "true",
+          isTipsHidden: "false",
+          maxValue: 5000,
+          minValue: -5000,
+          orientation: "vertical",
+          startValueHigh: 1000,
+          startValueLow: -1000,
+          step: 5
+        })
+      .index-page__item
+        +demo({
+          isRange: "true",
+          isTipsHidden: "false",
+          maxValue: 100000,
+          minValue: -100000,
+          orientation: "horizontal",
+          startValueHigh: 10000,
+          startValueLow: -10000,
+          step: 1000
+        })
