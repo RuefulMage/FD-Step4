@@ -5,7 +5,6 @@ import { Logger, DefaultSliderOptions, Orientation, SliderOptions } from './util
 
 class Slider {
   private readonly view: View;
-
   private readonly model: Model;
 
   constructor(private rootElement: HTMLElement, options: SliderOptions) {
