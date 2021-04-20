@@ -2,7 +2,6 @@ import { SliderOptions } from '../slider/utils/types';
 import Slider from '../slider/Slider';
 
 class Demo {
-
   private slider: Slider;
   private maxValueInput: HTMLInputElement;
   private minValueInput: HTMLInputElement;

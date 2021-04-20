@@ -2,7 +2,6 @@ import { Orientation } from '../../utils/types';
 
 /* eslint class-methods-use-this: ['error', { 'exceptMethods': ['resetStyles'] }] */
 class OrientationBehavior {
-
   constructor(private orientation: Orientation) {}
   //for tests only
   public getOrientation(): Orientation {
@@ -37,7 +36,6 @@ class OrientationBehavior {
     if (clientX > window.innerWidth || clientY > window.innerHeight) {
       throw new Error('clientX or clientY is too big');
     }
-
     if (this.orientation === 'horizontal') {
       const positionInPixels = clientX - domElement.parentElement.getBoundingClientRect().left;
       const parentSize = domElement.parentElement.offsetWidth;

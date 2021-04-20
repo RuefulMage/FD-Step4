@@ -5,9 +5,7 @@ import { basicViewComponentOptions } from '../../utils/types';
 
 class Range extends ViewComponent {
   private lowEdge: number;
-
   private highEdge: number;
-
   private orientationBehavior: OrientationBehavior;
 
   constructor({ parentNode, orientationBehavior }: basicViewComponentOptions) {

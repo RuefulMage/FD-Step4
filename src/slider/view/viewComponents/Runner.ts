@@ -5,7 +5,6 @@ import { basicViewComponentOptions } from '../../utils/types';
 
 class Runner extends ViewComponent {
   private position: number;
-
   private orientationBehavior: OrientationBehavior;
 
   constructor({ parentNode, orientationBehavior }: basicViewComponentOptions ) {
@@ -84,7 +83,6 @@ class Runner extends ViewComponent {
       const touch: Touch = event.targetTouches[0];
       const newPosition = this.orientationBehavior.getPositionFromCoordinates(touch.clientX,
         touch.clientY, this.getDOMNode());
-
       const changePositionEvent: CustomEvent = new CustomEvent(
         'slider-drag',
         {
@@ -93,7 +91,6 @@ class Runner extends ViewComponent {
           detail: { position: newPosition, target: this.getDOMNode() },
         },
       );
-
       this.getDOMNode().dispatchEvent(changePositionEvent);
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define

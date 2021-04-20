@@ -20,7 +20,6 @@ describe('Scale subelement class', () => {
     test('Should set position to input value and set attribute data-scale-position to new position',
       () => {
         scaleSubElement.setPosition(60);
-
         expect(scaleSubElement.getPosition()).toBe(60);
         expect(scaleSubElement.getDOMNode().getAttribute('data-scale-position')).toBe('60');
       });

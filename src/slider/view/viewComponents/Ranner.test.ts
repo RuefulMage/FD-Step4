@@ -28,13 +28,11 @@ describe('Runner class', () => {
   describe('Create range object', () => {
     test('Should be created an instance of range and not to be undefined', () => {
       runner = new Runner({ parentNode, orientationBehavior });
-
       expect(runner).toBeDefined();
     });
 
     test('When arguments only 2, should be created with default options', () => {
       runner = new Runner({ parentNode, orientationBehavior });
-
       expect(runner).toBeDefined();
     });
   });
@@ -48,10 +46,8 @@ describe('Runner class', () => {
   describe('Set position', () => {
     test('Set position to input position and call setPosition method od orientation behavior', () => {
       runner.setPosition(40);
-
       expect(runner.getPosition()).toBe(40);
       expect(mockSetPosition.mock.calls.length).toBe(1);
-
       mockSetPosition.mock.calls.length = 0;
     });
   });
@@ -60,14 +56,12 @@ describe('Runner class', () => {
     test('Should add curren-modifier to element classList, if input value is true', () => {
       runner.setCurrentStatus(true);
       const realResult = runner.getDOMNode().classList.contains(Constants.runnerCurrentModifier);
-
       expect(realResult).toBe(true);
     });
 
     test('Should remove curren-modifier from element classList, if input value is false', () => {
       runner.setCurrentStatus(false);
       const realResult = runner.getDOMNode().classList.contains(Constants.runnerCurrentModifier);
-
       expect(realResult).toBe(false);
     });
   });
@@ -76,7 +70,6 @@ describe('Runner class', () => {
     test('Should destroy dom element', () => {
       runner.destroy();
       const runnerElement = parentNode.getElementsByClassName(Constants.runnerClassName)[0];
-
       expect(runnerElement).toBeUndefined();
     });
   });
@@ -98,7 +91,6 @@ describe('Runner class', () => {
       runner.getDOMNode().dispatchEvent(mousedown);
       runner.getDOMNode().dispatchEvent(dragstart);
       runner.getDOMNode().dispatchEvent(mousemove);
-
       expect(mockEventHandler.mock.calls.length).toBe(1);
       expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
 
@@ -110,10 +102,8 @@ describe('Runner class', () => {
       });
       runner.getDOMNode().dispatchEvent(mouseup);
       runner.getDOMNode().dispatchEvent(mousemove);
-
       expect(mockEventHandler.mock.calls.length).toBe(1);
       expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
-
       mockGetPositionFromCoordinates.mock.calls.length = 0;
     });
 
@@ -146,14 +136,12 @@ describe('Runner class', () => {
     () => {
       const touchStart = new TouchEvent('touchstart');
       const dragstart = new Event('dragstart');
-
       const touch = { clientY: 100, clientX: 100 } as Touch;
       const touchMove = new TouchEvent('touchmove', {
         bubbles: true,
         cancelable: true,
         targetTouches: [touch],
       });
-
       const mockTouchEventHandler = jest.fn();
       parentNode.addEventListener('slider-drag', mockTouchEventHandler);
       runner.getDOMNode().dispatchEvent(touchStart);
@@ -169,14 +157,12 @@ describe('Runner class', () => {
         clientX: 100,
         clientY: 100,
       } as TouchEventInit;
-
       const touchEnd = new TouchEvent('touchend', touchEndEvent);
       runner.getDOMNode().dispatchEvent(touchEnd);
       runner.getDOMNode().dispatchEvent(touchMove);
 
       expect(mockTouchEventHandler.mock.calls.length).toBe(1);
       expect(mockGetPositionFromCoordinates.mock.calls.length).toBe(1);
-
       mockGetPositionFromCoordinates.mock.calls.length = 0;
     });
 
@@ -186,14 +172,12 @@ describe('Runner class', () => {
       };
       const touchStart = new TouchEvent('touchstart');
       const dragstart = new Event('dragstart');
-
       const touch = { clientY: 100, clientX: 100 } as Touch;
       const touchMove = new TouchEvent('touchmove', {
         bubbles: true,
         cancelable: true,
         targetTouches: [touch],
       });
-
       const mockTouchEventHandler = jest.fn();
       parentNode.addEventListener('slider-drag', mockTouchEventHandler);
 

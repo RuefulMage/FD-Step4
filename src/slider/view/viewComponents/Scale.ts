@@ -6,7 +6,6 @@ import { basicViewComponentOptions } from '../../utils/types';
 
 class Scale extends ViewComponent {
   private subElements: ScaleSubElement[] = [];
-
   private orientationBehavior: OrientationBehavior;
 
   constructor({ parentNode, orientationBehavior }: basicViewComponentOptions, valuesAndPositions: Map<number, number>) {

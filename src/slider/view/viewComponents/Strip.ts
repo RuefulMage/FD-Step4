@@ -21,18 +21,15 @@ class Strip extends ViewComponent {
   private handleMouseDown = (event: MouseEvent): void => {
     const runners = this.getDOMNode().getElementsByClassName(Constants.runnerPrefixedClassName);
     let isTargetRunner = false;
-
     Object.entries(runners).forEach((key, index) => {
       if (event.target === runners[index]) {
         isTargetRunner = true;
       }
     });
-
     if (!isTargetRunner) {
       const position = this.orientationBehavior
         .getPositionFromCoordinates(event.clientX, event.clientY,
           this.getDOMNode());
-
       const customEvent = new CustomEvent('slider-click',
         {
           bubbles: true,

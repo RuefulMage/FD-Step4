@@ -22,7 +22,6 @@ describe('view class', () => {
       minValue: 0,
       orientation: 'horizontal',
     };
-
     parentElement = document.createElement('div');
     document.body.append(parentElement);
   });
@@ -32,7 +31,6 @@ describe('view class', () => {
       options.isRange = true;
       const view = new View(parentElement, options);
       const runnersAmount = parentElement.getElementsByClassName(Constants.runnerClassName).length;
-
       expect(runnersAmount).toBe(2);
     });
 
@@ -40,14 +38,12 @@ describe('view class', () => {
       options.isRange = false;
       const view = new View(parentElement, options);
       const runnersAmount = parentElement.getElementsByClassName(Constants.runnerClassName).length;
-
       expect(runnersAmount).toBe(1);
     });
 
     test('When options is empty, should create view with default values', () => {
       const emptyOptions = {};
       const view = new View(parentElement, emptyOptions);
-
       expect(view).toBeDefined();
     });
   });
@@ -59,7 +55,6 @@ describe('view class', () => {
       let realResult = view.getHideStatus();
       let tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       let expectedResult = tip.classList.contains(Constants.tipHiddenClassName);
-
       expect(realResult).toBe(expectedResult);
 
       options.isTipsHidden = false;
@@ -67,7 +62,6 @@ describe('view class', () => {
       realResult = view.getHideStatus();
       tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       expectedResult = tip.classList.contains(Constants.tipHiddenClassName);
-
       expect(realResult).toBe(expectedResult);
     });
   });
@@ -78,7 +72,6 @@ describe('view class', () => {
       const view = new View(parentElement, options);
       view.hideTips();
       const tipElement = parentElement.getElementsByClassName(Constants.tipClassName)[0];
-
       expect(tipElement.classList.contains(Constants.tipHiddenClassName)).toBe(true);
     });
   });
@@ -89,7 +82,6 @@ describe('view class', () => {
       const view = new View(parentElement, options);
       view.showTips();
       const tipElement = parentElement.getElementsByClassName(Constants.tipClassName)[0];
-
       expect(tipElement.classList.contains(Constants.tipHiddenClassName)).toBe(false);
     });
   });
@@ -99,7 +91,6 @@ describe('view class', () => {
       options.orientation = 'vertical';
       const view = new View(parentElement, options);
       const output = view.getOrientation();
-
       expect(output).toEqual('vertical');
     });
   });
@@ -109,43 +100,36 @@ describe('view class', () => {
       let view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 1400 });
       let output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(10);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 1100 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(8);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 900 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(6);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 700 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(6);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 500 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(4);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 300 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(3);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientWidth', { value: 100 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(3);
     });
 
@@ -154,43 +138,36 @@ describe('view class', () => {
       let view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 1400 });
       let output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(10);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 1100 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(8);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 900 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(6);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 700 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(6);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 500 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(4);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 300 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(3);
 
       view = new View(parentElement, options);
       Object.defineProperty(view.getDOMNode(), 'clientHeight', { value: 100 });
       output = view.computeDivisionsAmountBySize();
-
       expect(output).toBe(3);
     });
   });
@@ -202,7 +179,6 @@ describe('view class', () => {
       const view = new View(parentElement, options);
       view.setOrientation('vertical');
       const orientationStyleClass = Constants.orientationClassNames.get('vertical');
-
       expect(view.getOrientation()).toEqual('vertical');
       expect(view.getDOMNode().classList.contains(orientationStyleClass)).toBe(true);
     });
@@ -217,12 +193,9 @@ describe('view class', () => {
           .getElementsByClassName(Constants.runnerClassName)[0];
         const runnerChangeEvent = new CustomEvent('slider-drag',
           { bubbles: true, cancelable: true, detail: { position: 40, target: runnerDOMElement } });
-
         runnerDOMElement.dispatchEvent(runnerChangeEvent);
-
         expect(mockUpdate.mock.calls[0][1]).toEqual({ runnerIndex: 0, position: 40 });
         expect(mockUpdate.mock.calls.length).toBe(1);
-
         mockUpdate.mock.calls.length = 0;
       });
 
@@ -233,10 +206,8 @@ describe('view class', () => {
       const runnerChangeEvent = new CustomEvent('slider-click',
         { bubbles: true, cancelable: true, detail: { position: 40 } });
       runnerDOMElement.dispatchEvent(runnerChangeEvent);
-
       expect(mockUpdate.mock.calls[0][1]).toEqual({ position: 40, runnerIndex: 0 });
       expect(mockUpdate.mock.calls.length).toBe(1);
-
       mockUpdate.mock.calls.length = 0;
     });
 
@@ -245,7 +216,6 @@ describe('view class', () => {
       const view = new View(parentElement, options);
       view.attach(mockUpdateFunc);
       window.dispatchEvent(new Event('resize'));
-
       expect(mockUpdateFunc.mock.calls.length).toBe(1);
     });
   });
@@ -260,7 +230,6 @@ describe('view class', () => {
       const tipsValues = [20, 80];
       const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: true });
-
       const tips = view.getDOMNode().querySelectorAll(`.${Constants.tipClassName}`);
       const realTipsValues = [Number(tips[0].innerHTML), Number(tips[1].innerHTML)];
       const scaleSubItems = view.getDOMNode().querySelectorAll(`.${Constants.scaleSubElementClassName}`);
@@ -281,10 +250,8 @@ describe('view class', () => {
       const tipsValues = [88, 90];
       const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: true });
-
       const tips = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       const realTipValue = tips.innerHTML;
-
       expect(realTipValue).toEqual('88&nbsp;—&nbsp;90');
     });
 
@@ -297,7 +264,6 @@ describe('view class', () => {
       const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: true });
       const runners = view.getDOMNode().querySelectorAll(`.${Constants.runnerClassName}`);
-
       expect(runners.length).toBe(2);
     });
 
@@ -309,7 +275,6 @@ describe('view class', () => {
       const tipsValues = [20];
       const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: false });
-
       const tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       const realTipValue = [Number(tip.innerHTML)];
       const scaleSubItems = view.getDOMNode().querySelectorAll(`.${Constants.scaleSubElementClassName}`);
@@ -331,7 +296,6 @@ describe('view class', () => {
       const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
       view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: false });
       const runners = view.getDOMNode().querySelectorAll(`.${Constants.runnerClassName}`);
-
       expect(runners.length).toBe(1);
     });
   });

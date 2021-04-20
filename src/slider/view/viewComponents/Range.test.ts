@@ -1,7 +1,6 @@
 import Constants from '../../utils/constants';
 import Range from './Range';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
-import { Orientation } from '../../utils/types';
 
 describe('Range class', () => {
   let parentNode: HTMLElement;
@@ -23,14 +22,12 @@ describe('Range class', () => {
     test('Should be created an instance of range and not to be undefined', () => {
       const orientationBehavior = new OrientationBehavior('horizontal');
       range = new Range({ parentNode, orientationBehavior });
-
       expect(range).toBeDefined();
     });
 
     test('When arguments only 2, should be created with default options', () => {
       const orientationBehavior = new OrientationBehavior('horizontal');
       range = new Range({ parentNode, orientationBehavior });
-
       expect(range).toBeDefined();
       expect(range.getLowEdge()).toBe(0);
       expect(range.getHighEdge()).toBe(100);
@@ -46,10 +43,8 @@ describe('Range class', () => {
     test('Should correctly set min edge to input value and call setRangePosition method of orientation behavior',
       () => {
         range.setLowEdge(30);
-
         expect(range.getLowEdge()).toBe(30);
         expect(mockFunctionForSetRangePosition.mock.calls.length).toBe(1);
-
         mockFunctionForSetRangePosition.mock.calls.length = 0;
       });
   });
@@ -64,10 +59,8 @@ describe('Range class', () => {
     test('Should correctly set max edge to input value and call setRangePosition method of orientation behavior',
       () => {
         range.setHighEdge(50);
-
         expect(range.getHighEdge()).toBe(50);
         expect(mockFunctionForSetRangePosition.mock.calls.length).toBe(1);
-
         mockFunctionForSetRangePosition.mock.calls.length = 0;
       });
   });

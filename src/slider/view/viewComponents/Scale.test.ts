@@ -1,6 +1,5 @@
 import Scale from './Scale';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
-import { Orientation } from '../../utils/types';
 
 describe('Scale class', () => {
   let scale: Scale;
@@ -31,15 +30,14 @@ describe('Scale class', () => {
         expect(lastScaleSubElementValue).toBe('1000');
         expect(childAmount).toBe(4);
       });
+
     test('If subElements too close to edge subElement,'
       + 'should ignore them', () => {
       const valuesAndPositions = new Map<number, number>();
       valuesAndPositions.set(10, 0).set(300, 30)
         .set(700, 70).set(990, 99)
         .set(1000, 100);
-
       scale.setScale(valuesAndPositions);
-
       const firstScaleSubElement = scale.getDOMNode().firstChild as HTMLElement;
       const firstScaleSubElementValue = firstScaleSubElement.innerText;
       const lastScaleSubElement = scale.getDOMNode().lastChild as HTMLElement;
@@ -60,7 +58,6 @@ describe('Scale class', () => {
         const lastScaleSubElement = scale.getDOMNode().lastChild as HTMLElement;
         const lastScaleSubElementValue = lastScaleSubElement.innerText;
         const childAmount = scale.getDOMNode().childNodes.length;
-
         scale.reCreateScale();
 
         expect(firstScaleSubElementValue)
@@ -80,11 +77,9 @@ describe('Scale class', () => {
       const mockClickHandler = jest.fn();
       scale.getDOMNode().addEventListener('slider-click', mockClickHandler);
       scale.getDOMNode().firstChild.dispatchEvent(click);
-
       expect(mockClickHandler.mock.calls.length).toBe(1);
 
       scale.getDOMNode().dispatchEvent(click);
-
       expect(mockClickHandler.mock.calls.length).toBe(1);
     });
   });

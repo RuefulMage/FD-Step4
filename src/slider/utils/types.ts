@@ -1,7 +1,6 @@
 import OrientationBehavior from '../view/orientationBehaviors/OrientationBehavior';
 
 const Logger = {
-
   logWarning(moduleName: string, message: string) {
     console.warn(`[WARNING] ${new Date()} in ${moduleName}\n${message}`);
   },

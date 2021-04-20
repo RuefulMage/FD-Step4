@@ -1,5 +1,4 @@
 import OrientationBehavior from './OrientationBehavior';
-import { Orientation } from '../../utils/types';
 
 describe('OrientationBehavior class', () => {
   let orientationBehavior: OrientationBehavior;
@@ -48,7 +47,6 @@ describe('OrientationBehavior class', () => {
       },
     });
     parentElement.appendChild(domElement);
-
     orientationBehavior = new OrientationBehavior('horizontal');
   });
 
@@ -61,11 +59,9 @@ describe('OrientationBehavior class', () => {
   describe('Set orientation', () => {
     test('Should change orientation to input value', () => {
       orientationBehavior.setOrientation('vertical');
-
       expect(orientationBehavior.getOrientation()).toBe('vertical');
 
       orientationBehavior.setOrientation('horizontal');
-
       expect(orientationBehavior.getOrientation()).toBe('horizontal');
     });
   });
@@ -75,17 +71,14 @@ describe('OrientationBehavior class', () => {
       + 'input DOM element to shifted position, when orientation is horizontal', () => {
       const inputPosition = 10;
       orientationBehavior.setPosition(inputPosition, domElement);
-
       expect(domElement.style.left).toBe('-10%');
     });
 
     test('Should shift input position to half of element height and set bottom attribute of '
       + 'input DOM element to shifted position, when orientation is vertical', () => {
       const inputPosition = 10;
-
       orientationBehavior.setOrientation('vertical');
       orientationBehavior.setPosition(inputPosition, domElement);
-
       expect(domElement.style.bottom).toBe('-10%');
     });
   });
@@ -94,28 +87,23 @@ describe('OrientationBehavior class', () => {
     test('Should return correct position in percents, when orientation is horizontal', () => {
       const clientX = 30;
       const clientY = 40;
-
       const outputPosition = orientationBehavior
         .getPositionFromCoordinates(clientX, clientY, domElement);
-
       expect(outputPosition).toBe(20);
     });
 
     test('Should return correct position in percents, when orientation is vertical', () => {
       const clientX = 30;
       const clientY = 40;
-
       orientationBehavior.setOrientation('vertical');
       const outputPosition = orientationBehavior
         .getPositionFromCoordinates(clientX, clientY, domElement);
-
       expect(outputPosition).toBe(70);
     });
 
     test('Should throw Error, when clientX or clientY are too big', () => {
       let clientX = window.innerWidth + 10;
       let clientY = 40;
-
       expect(() => {
         orientationBehavior
           .getPositionFromCoordinates(clientX, clientY, domElement);
@@ -123,7 +111,6 @@ describe('OrientationBehavior class', () => {
 
       clientX = 10;
       clientY = window.innerHeight + 10;
-
       expect(() => {
         orientationBehavior
           .getPositionFromCoordinates(clientX, clientY, domElement);
@@ -138,9 +125,7 @@ describe('OrientationBehavior class', () => {
       element.style.height = '200px';
       element.style.left = '10%';
       element.style.top = '20%';
-
       orientationBehavior.resetStyles(element);
-
       expect(element.getAttribute('style')).toBe('');
     });
   });
@@ -150,7 +135,6 @@ describe('OrientationBehavior class', () => {
       const minEdge = 20;
       const maxEdge = 65;
       orientationBehavior.setRangePositions(minEdge, maxEdge, domElement);
-
       expect(domElement.style.left).toBe('20%');
       expect(domElement.style.right).toBe('35%');
     });
@@ -160,7 +144,6 @@ describe('OrientationBehavior class', () => {
       const maxEdge = 65;
       orientationBehavior.setOrientation('vertical');
       orientationBehavior.setRangePositions(minEdge, maxEdge, domElement);
-
       expect(domElement.style.top).toBe('35%');
       expect(domElement.style.bottom).toBe('20%');
     });

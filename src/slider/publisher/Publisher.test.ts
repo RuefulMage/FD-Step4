@@ -22,14 +22,12 @@ describe('publisher class', () => {
       const secondCallback = () => { };
       const thirdCallback = () => { };
       const fourthCallback = () => { };
-
       publisher.attach(firstCallback);
       publisher.attach(secondCallback);
       publisher.attach(thirdCallback);
       publisher.attach(fourthCallback);
       const expectedResult = new Set([
         firstCallback, secondCallback, thirdCallback, fourthCallback]);
-
       expect(publisher.getObserversCallbacks()).toEqual(expectedResult);
     });
   });
@@ -39,7 +37,6 @@ describe('publisher class', () => {
       const callback = jest.fn();
       publisher.attach(callback);
       publisher.notify('edge-value-change', {});
-
       expect(callback.mock.calls.length).toBe(1);
     });
   });

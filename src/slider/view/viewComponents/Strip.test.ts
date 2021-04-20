@@ -1,7 +1,6 @@
 import Constants from '../../utils/constants';
 import Strip from './Strip';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
-import { Orientation } from '../../utils/types';
 
 const mockGetPositionFromCoordinates = jest.fn();
 OrientationBehavior.prototype.getPositionFromCoordinates = mockGetPositionFromCoordinates;
@@ -25,7 +24,6 @@ describe('Strip class', () => {
         cancelable: true,
       });
       const mockClickHandler = jest.fn();
-
       parentNode.addEventListener('slider-click', mockClickHandler);
       strip.getDOMNode().dispatchEvent(click);
 
@@ -40,13 +38,11 @@ describe('Strip class', () => {
       const runner = document.createElement('div');
       runner.classList.add(Constants.runnerClassName);
       strip.getDOMNode().appendChild(runner);
-
       const click = new MouseEvent('mousedown', {
         bubbles: true,
         cancelable: true,
       });
       const mockClickHandler = jest.fn();
-
       parentNode.addEventListener('slider-click', mockClickHandler);
       runner.dispatchEvent(click);
 

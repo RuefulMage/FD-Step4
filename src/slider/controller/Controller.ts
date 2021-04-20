@@ -16,7 +16,6 @@ class Controller {
   public handleViewEvents(eventName: ViewEventName, data: any): void {
     const isPositionChangeEvent = eventName === 'position-change-by-drag'
       || eventName === 'position-change-by-click';
-
     if (isPositionChangeEvent) {
       this.setValues({ index: data.runnerIndex, position: data.position });
     } else {

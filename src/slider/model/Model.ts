@@ -4,15 +4,10 @@ import { DefaultSliderOptions, modelOptions } from '../utils/types';
 
 class Model extends Publisher {
   private isRange: boolean;
-
   private maxValue: number;
-
   private minValue: number;
-
   private lowValue: number;
-
   private highValue: number;
-
   private step: number;
 
   constructor(options: modelOptions) {
@@ -25,7 +20,6 @@ class Model extends Publisher {
     startValueHigh = DefaultSliderOptions.startValueHigh, step = DefaultSliderOptions.step,
   }: modelOptions): void {
     const isOptionsNotValid = (maxValue <= minValue) || (step <= 0);
-
     if (isOptionsNotValid) {
       throw new Error('options is not valid');
     }
@@ -58,18 +52,15 @@ class Model extends Publisher {
 
   public setMaxValue(value: number) {
     const isValueValid = !((value <= this.minValue) || ((value - this.minValue) < this.step));
-
     if (!isValueValid) {
       throw new Error('value is not valid');
     } else {
       this.maxValue = value;
-
       if (this.highValue > value) {
         this.highValue = value;
       } else {
         this.setHighValue(this.highValue);
       }
-
       this.setLowValue(this.lowValue);
       this.notify('edge-value-change', {});
     }
@@ -81,7 +72,6 @@ class Model extends Publisher {
 
   public setMinValue(value: number) {
     const isValueValid = !((value >= this.maxValue) || ((this.maxValue - value) < this.step));
-
     if (!isValueValid) {
       throw new Error('value is not valid');
     } else {
@@ -109,7 +99,6 @@ class Model extends Publisher {
     let newLowValue = this.validateValue(value);
     const isValueTooCloseToHighValue = newLowValue >= (this.highValue - this.step)
       && this.isRange;
-
     if (isValueTooCloseToHighValue) {
       newLowValue = Number(Big(this.highValue).minus(this.step));
       newLowValue = this.validateValue(newLowValue);
@@ -150,7 +139,6 @@ class Model extends Publisher {
     } else if (isLowValueShouldBeSmaller && this.isRange) {
       this.setLowValue(Number(Big(this.highValue).minus(this.step)));
     }
-
     this.highValue = newValue;
     this.notify('value-change', {});
   }
@@ -161,7 +149,6 @@ class Model extends Publisher {
 
   public setStep(value: number): void {
     const isValueValid = !((value > (this.maxValue - this.minValue)) || (value <= 0));
-
     if (!isValueValid) {
       throw new Error('Step value is not valid');
     } else {
@@ -210,9 +197,7 @@ class Model extends Publisher {
           .minus(this.getMinValue())
           .div(this.step)),
       );
-
       const lengthFromStart = Big(amountOfStepSegments).times(this.step);
-
       validatedValue = Number(Big(this.minValue).plus(lengthFromStart));
     }
     return validatedValue;
