@@ -15,24 +15,6 @@ class Model extends Publisher {
     this.init(options);
   }
 
-  private init({ isRange = DefaultSliderOptions.isRange, minValue = DefaultSliderOptions.minValue,
-    maxValue = DefaultSliderOptions.maxValue, startValueLow = DefaultSliderOptions.startValueLow,
-    startValueHigh = DefaultSliderOptions.startValueHigh, step = DefaultSliderOptions.step,
-  }: modelOptions): void {
-    const isOptionsNotValid = (maxValue <= minValue) || (step <= 0);
-    if (isOptionsNotValid) {
-      throw new Error('options is not valid');
-    }
-    this.isRange = isRange;
-    this.maxValue = maxValue;
-    this.minValue = minValue;
-    this.step = step;
-    this.lowValue = this.minValue;
-    this.highValue = this.maxValue;
-    this.setLowValue(startValueLow);
-    this.setHighValue(startValueHigh);
-  }
-
   public getRangeStatus(): boolean {
     return this.isRange;
   }
@@ -180,6 +162,24 @@ class Model extends Publisher {
       currentValue += grow;
     } while (currentValueInPercents < 100);
     return valuesAndPercents;
+  }
+
+  private init({ isRange = DefaultSliderOptions.isRange, minValue = DefaultSliderOptions.minValue,
+                 maxValue = DefaultSliderOptions.maxValue, startValueLow = DefaultSliderOptions.startValueLow,
+                 startValueHigh = DefaultSliderOptions.startValueHigh, step = DefaultSliderOptions.step,
+               }: modelOptions): void {
+    const isOptionsNotValid = (maxValue <= minValue) || (step <= 0);
+    if (isOptionsNotValid) {
+      throw new Error('options is not valid');
+    }
+    this.isRange = isRange;
+    this.maxValue = maxValue;
+    this.minValue = minValue;
+    this.step = step;
+    this.lowValue = this.minValue;
+    this.highValue = this.maxValue;
+    this.setLowValue(startValueLow);
+    this.setHighValue(startValueHigh);
   }
 
   // Проверяет значение на то, что оно находится в промежутке [minValue: maxValue]

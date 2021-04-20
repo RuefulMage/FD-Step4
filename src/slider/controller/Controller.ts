@@ -7,12 +7,6 @@ class Controller {
     this.init();
   }
 
-  private init(): void {
-    this.view.attach(this.handleViewEvents.bind(this));
-    this.model.attach(this.handleModelEvents.bind(this));
-    this.updateView();
-  }
-
   public handleViewEvents(eventName: ViewEventName, data: any): void {
     const isPositionChangeEvent = eventName === 'position-change-by-drag'
       || eventName === 'position-change-by-click';
@@ -24,6 +18,12 @@ class Controller {
   }
 
   public handleModelEvents(): void {
+    this.updateView();
+  }
+
+  private init(): void {
+    this.view.attach(this.handleViewEvents.bind(this));
+    this.model.attach(this.handleModelEvents.bind(this));
     this.updateView();
   }
 

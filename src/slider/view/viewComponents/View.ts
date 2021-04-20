@@ -23,32 +23,6 @@ class View extends ViewComponent {
     this.init(options);
   }
 
-  private init({ orientation = DefaultSliderOptions.orientation,
-                 isRange = DefaultSliderOptions.isRange,
-                 isTipsHidden = DefaultSliderOptions.isTipsHidden
-  }: viewOptions): void {
-    this.orientation = orientation;
-    this.orientationBehavior = new OrientationBehavior(orientation);
-    this.DOMNode.classList.add(Constants.orientationClassNames.get(orientation));
-    this.strip = new Strip({ parentNode: this.DOMNode, orientationBehavior: this.orientationBehavior });
-    this.isTipsHidden = isTipsHidden;
-    if (isRange) {
-      const lowValueRunner = new Runner({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
-      const lowValueTip = new Tip({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior }, isTipsHidden);
-      const highValueRunner = new Runner({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
-      const highValueTip = new Tip({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior }, isTipsHidden);
-      this.runnersAndTips = new Map([
-        [0, { runner: lowValueRunner, tip: lowValueTip }],
-        [1, { runner: highValueRunner, tip: highValueTip }]]);
-    } else {
-      const lowValueRunner = new Runner({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
-      const lowValueTip = new Tip({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior }, isTipsHidden);
-      this.runnersAndTips = new Map([[0, { runner: lowValueRunner, tip: lowValueTip }]]);
-    }
-    this.range = new Range({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
-    this.addHandlers();
-  }
-
   public hideTips(): void {
     this.isTipsHidden = true;
     this.runnersAndTips.forEach(((item) => item.tip.hide()));
@@ -116,6 +90,32 @@ class View extends ViewComponent {
       this.updateViewForSingleRunner({runnersPositions, tipsValues,
         scalePositions});
     }
+  }
+
+  private init({ orientation = DefaultSliderOptions.orientation,
+                 isRange = DefaultSliderOptions.isRange,
+                 isTipsHidden = DefaultSliderOptions.isTipsHidden
+               }: viewOptions): void {
+    this.orientation = orientation;
+    this.orientationBehavior = new OrientationBehavior(orientation);
+    this.DOMNode.classList.add(Constants.orientationClassNames.get(orientation));
+    this.strip = new Strip({ parentNode: this.DOMNode, orientationBehavior: this.orientationBehavior });
+    this.isTipsHidden = isTipsHidden;
+    if (isRange) {
+      const lowValueRunner = new Runner({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
+      const lowValueTip = new Tip({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior }, isTipsHidden);
+      const highValueRunner = new Runner({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
+      const highValueTip = new Tip({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior }, isTipsHidden);
+      this.runnersAndTips = new Map([
+        [0, { runner: lowValueRunner, tip: lowValueTip }],
+        [1, { runner: highValueRunner, tip: highValueTip }]]);
+    } else {
+      const lowValueRunner = new Runner({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
+      const lowValueTip = new Tip({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior }, isTipsHidden);
+      this.runnersAndTips = new Map([[0, { runner: lowValueRunner, tip: lowValueTip }]]);
+    }
+    this.range = new Range({ parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior });
+    this.addHandlers();
   }
 
   private hideTip(tipIndex: 0 | 1): void {
