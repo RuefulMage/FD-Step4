@@ -1,6 +1,6 @@
 import { Orientation } from '../../utils/types';
 
-/* eslint class-methods-use-this: ["error", { "exceptMethods": ["resetStyles"] }] */
+/* eslint class-methods-use-this: ['error', { 'exceptMethods': ['resetStyles'] }] */
 class OrientationBehavior {
 
   constructor(private orientation: Orientation) {}
