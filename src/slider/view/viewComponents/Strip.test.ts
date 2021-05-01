@@ -36,7 +36,7 @@ describe('Strip class', () => {
 
     test('When click on runner happens, should not react to event ', () => {
       const runner = document.createElement('div');
-      runner.classList.add(Constants.runnerClassName);
+      runner.classList.add(Constants.runnerClassName, Constants.runnerPrefixedClassName);
       strip.getDOMNode().appendChild(runner);
       const click = new MouseEvent('mousedown', {
         bubbles: true,
