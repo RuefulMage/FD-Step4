@@ -11,10 +11,6 @@ class Publisher {
   public notify(eventType: ModelEventName | ViewEventName, data: any): void {
     this.observersCallbacks.forEach((callback) => callback(eventType, data));
   }
-  // for tests only
-  public getObserversCallbacks(): Set<Function> {
-    return this.observersCallbacks;
-  }
 }
 
 export default Publisher;

@@ -9,26 +9,11 @@ describe('publisher class', () => {
 
   describe('attach method', () => {
     test('Should add to observers list input function', () => {
-      const callback = () => { };
+      const callback = jest.fn();
       publisher.attach(callback);
 
-      expect(publisher.getObserversCallbacks()).toContain(callback);
-    });
-  });
-
-  describe('getObserversCallbacks method', () => {
-    test('Should return all observers functions', () => {
-      const firstCallback = () => { };
-      const secondCallback = () => { };
-      const thirdCallback = () => { };
-      const fourthCallback = () => { };
-      publisher.attach(firstCallback);
-      publisher.attach(secondCallback);
-      publisher.attach(thirdCallback);
-      publisher.attach(fourthCallback);
-      const expectedResult = new Set([
-        firstCallback, secondCallback, thirdCallback, fourthCallback]);
-      expect(publisher.getObserversCallbacks()).toEqual(expectedResult);
+      publisher.notify('edge-value-change', {});
+      expect(callback.mock.calls.length).toBe(1);
     });
   });
 

@@ -50,22 +50,6 @@ describe('OrientationBehavior class', () => {
     orientationBehavior = new OrientationBehavior('horizontal');
   });
 
-  describe('Get orientation', () => {
-    test('Should get current orientation', () => {
-      expect(orientationBehavior.getOrientation()).toBe('horizontal');
-    });
-  });
-
-  describe('Set orientation', () => {
-    test('Should change orientation to input value', () => {
-      orientationBehavior.setOrientation('vertical');
-      expect(orientationBehavior.getOrientation()).toBe('vertical');
-
-      orientationBehavior.setOrientation('horizontal');
-      expect(orientationBehavior.getOrientation()).toBe('horizontal');
-    });
-  });
-
   describe('Set Position', () => {
     test('Should shift input position to half of element width and set left attribute of '
       + 'input DOM element to shifted position, when orientation is horizontal', () => {

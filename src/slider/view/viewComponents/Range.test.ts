@@ -29,13 +29,6 @@ describe('Range class', () => {
       const orientationBehavior = new OrientationBehavior('horizontal');
       range = new Range({ parentNode, orientationBehavior });
       expect(range).toBeDefined();
-      expect(range.getLowEdge()).toBe(0);
-      expect(range.getHighEdge()).toBe(100);
-    });
-  });
-  describe('Get min edge', () => {
-    test('Should return current min edge. Default min edge equal 0', () => {
-      expect(range.getLowEdge()).toBe(0);
     });
   });
 
@@ -43,23 +36,17 @@ describe('Range class', () => {
     test('Should correctly set min edge to input value and call setRangePosition method of orientation behavior',
       () => {
         range.setLowEdge(30);
-        expect(range.getLowEdge()).toBe(30);
+        expect(mockFunctionForSetRangePosition.mock.calls[0][0]).toBe(30);
         expect(mockFunctionForSetRangePosition.mock.calls.length).toBe(1);
         mockFunctionForSetRangePosition.mock.calls.length = 0;
       });
-  });
-
-  describe('Get max edge', () => {
-    test('Should return current max edge. Default max edge equal 100', () => {
-      expect(range.getHighEdge()).toBe(100);
-    });
   });
 
   describe('Set max edge to input value', () => {
     test('Should correctly set max edge to input value and call setRangePosition method of orientation behavior',
       () => {
         range.setHighEdge(50);
-        expect(range.getHighEdge()).toBe(50);
+        expect(mockFunctionForSetRangePosition.mock.calls[0][1]).toBe(50);
         expect(mockFunctionForSetRangePosition.mock.calls.length).toBe(1);
         mockFunctionForSetRangePosition.mock.calls.length = 0;
       });
