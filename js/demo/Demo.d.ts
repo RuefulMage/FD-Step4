@@ -1,4 +1,4 @@
-import SliderOptions from '../Slider/Utils/SliderOptions';
+import { SliderOptions } from '../slider/utils/types';
 declare class Demo {
     private sliderElement;
     private panelElement;

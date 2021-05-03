@@ -1,9 +1,8 @@
-import SliderOptions from './Utils/SliderOptions';
+import { Orientation, SliderOptions } from './utils/types';
 declare class Slider {
-    private view;
-    private model;
-    private controller;
     private rootElement;
+    private readonly view;
+    private readonly model;
     constructor(rootElement: HTMLElement, options: SliderOptions);
     isRange(): boolean;
     setRangeMode(isRange: boolean): void;
@@ -18,7 +17,7 @@ declare class Slider {
     getStep(): number;
     setStep(step: number): boolean;
     getOrientation(): string;
-    setOrientation(orientation: 'horizontal' | 'vertical'): void;
+    setOrientation(orientation: Orientation): void;
     hideTips(): void;
     showTips(): void;
     getHideStatus(): boolean;

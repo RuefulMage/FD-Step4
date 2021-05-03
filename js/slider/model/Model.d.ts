@@ -1,4 +1,5 @@
-import Publisher from '../Publisher/Publisher';
+import Publisher from '../publisher/Publisher';
+import { modelOptions } from '../utils/types';
 declare class Model extends Publisher {
     private isRange;
     private maxValue;
@@ -6,15 +7,7 @@ declare class Model extends Publisher {
     private lowValue;
     private highValue;
     private step;
-    constructor(options: {
-        isRange?: boolean;
-        minValue?: number;
-        maxValue?: number;
-        startValueLow?: number;
-        startValueHigh?: number;
-        step?: number;
-    });
-    private init;
+    constructor(options: modelOptions);
     getRangeStatus(): boolean;
     setRangeMode(isRange: boolean): void;
     getMaxValue(): number;
@@ -32,6 +25,7 @@ declare class Model extends Publisher {
     getStep(): number;
     setStep(value: number): void;
     splitIntervalByStep(divisionsAmount: number): Map<number, number>;
+    private init;
     private validateValue;
     private validateValueInPercent;
     private convertPercentToValue;

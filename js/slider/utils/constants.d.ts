@@ -1,10 +1,11 @@
-import Orientation from './Orientation';
-declare const CONSTANTS: {
+import { Orientation } from './types';
+declare const Constants: {
     viewWrapperClassName: string;
     orientationClassNames: Map<Orientation, string>;
     rangeClassName: string;
     scaleClassName: string;
     runnerClassName: string;
+    runnerPrefixedClassName: string;
     runnerCurrentModifier: string;
     stripClassName: string;
     scaleSubElementClassName: string;
@@ -14,4 +15,4 @@ declare const CONSTANTS: {
     tipBellowClassName: string;
     tipsJoinDistance: number;
 };
-export default CONSTANTS;
+export default Constants;

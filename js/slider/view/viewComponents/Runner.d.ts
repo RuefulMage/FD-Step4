@@ -1,9 +1,9 @@
 import ViewComponent from './ViewComponent';
-import OrientationBehavior from '../OrientationBehaviors/OrientationBehavior';
+import { basicViewComponentOptions } from '../../utils/types';
 declare class Runner extends ViewComponent {
     private position;
     private orientationBehavior;
-    constructor(parentNode: HTMLElement, orientationBehavior: OrientationBehavior);
+    constructor({ parentNode, orientationBehavior }: basicViewComponentOptions);
     getPosition(): number;
     setPosition(value: number): void;
     setCurrentStatus(newStatus: boolean): void;

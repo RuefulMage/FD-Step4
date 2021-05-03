@@ -1,13 +1,13 @@
-import View from '../View/ViewComponents/View';
-import Model from '../Model/Model';
-import ViewEventName from '../Utils/ViewEventName';
+import View from '../view/viewComponents/View';
+import Model from '../model/Model';
+import { ViewEventName } from '../utils/types';
 declare class Controller {
-    private model;
     private view;
+    private model;
     constructor(view: View, model: Model);
-    private init;
     handleViewEvents(eventName: ViewEventName, data: any): void;
     handleModelEvents(): void;
+    private init;
     private setValues;
     private updateView;
 }

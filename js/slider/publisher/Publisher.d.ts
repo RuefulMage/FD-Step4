@@ -1,10 +1,8 @@
-import ModelEventName from '../Utils/ModelEventName';
-import ViewEventName from '../Utils/ViewEventName';
+import { ModelEventName } from '../utils/types';
+import { ViewEventName } from '../utils/types';
 declare class Publisher {
     private observersCallbacks;
     attach(callback: Function): void;
-    detach(callback: Function): void;
     notify(eventType: ModelEventName | ViewEventName, data: any): void;
-    getObserversCallbacks(): Set<Function>;
 }
 export default Publisher;

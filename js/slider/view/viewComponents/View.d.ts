@@ -1,4 +1,4 @@
-import Orientation from '../../Utils/Orientation';
+import { Orientation, updateViewOptions, viewOptions } from '../../utils/types';
 import ViewComponent from './ViewComponent';
 declare class View extends ViewComponent {
     private strip;
@@ -8,19 +8,15 @@ declare class View extends ViewComponent {
     private orientationBehavior;
     private runnersAndTips;
     private isTipsHidden;
-    constructor(parentNode: HTMLElement, options: {
-        orientation?: Orientation;
-        isRange?: boolean;
-        isTipsHidden?: boolean;
-    });
-    private init;
+    constructor(parentNode: HTMLElement, options: viewOptions);
     hideTips(): void;
     showTips(): void;
     getHideStatus(): boolean;
     getOrientation(): Orientation;
     setOrientation(orientation: Orientation): void;
     computeDivisionsAmountBySize(): number;
-    updateView(runnersPositions: number[], tipsValues: number[], scalePositions: Map<number, number>, isRange: boolean): void;
+    updateView({ runnersPositions, tipsValues, scalePositions, isRange }: updateViewOptions): void;
+    private init;
     private hideTip;
     private showTip;
     private setRange;
