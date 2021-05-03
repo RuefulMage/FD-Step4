@@ -94,11 +94,11 @@ class Runner extends ViewComponent {
       this.getDOMNode().dispatchEvent(changePositionEvent);
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/no-use-before-define
-      this.handleTouchEnd(event);
+      this.handleTouchEnd();
     }
   };
 
-  private handleTouchEnd = (event: TouchEvent): void => {
+  private handleTouchEnd = (): void => {
     document.removeEventListener('touchmove', this.handleTouchMove);
     document.removeEventListener('touchend', this.handleTouchEnd);
     document.removeEventListener('touchcancel', this.handleTouchEnd);
