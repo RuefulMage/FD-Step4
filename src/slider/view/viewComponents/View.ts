@@ -268,7 +268,7 @@ class View extends ViewComponent {
       this.changeModeToSingle();
     }
     this.setScale(scalePositions);
-    this.setTipPosition({index: 0, position: runnersPositions[0]});
+    this.setRunnerPosition({index: 0, position: runnersPositions[0]});
     this.setTipText(0, tipsValues[0].toString());
     this.setTipPosition({index: 0, position: runnersPositions[0]});
     this.setRange(0, runnersPositions[0]);
