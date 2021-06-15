@@ -1,12 +1,12 @@
 import Constants from '../../utils/constants';
 import ViewComponent from './ViewComponent';
 import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
-import { basicViewComponentOptions } from '../../utils/types';
+import { BasicViewComponentOptions } from '../types';
 
 class Strip extends ViewComponent {
   private orientationBehavior: OrientationBehavior;
 
-  constructor({ parentNode, orientationBehavior }: basicViewComponentOptions) {
+  constructor({ parentNode, orientationBehavior }: BasicViewComponentOptions) {
     super(parentNode, Constants.stripClassName);
     this.orientationBehavior = orientationBehavior;
     this.addHandlers();

@@ -2,7 +2,6 @@ import Constants from '../../utils/constants';
 import ViewComponent from './ViewComponent';
 
 class ScaleSubElement extends ViewComponent {
-
   constructor(parentNode: HTMLElement, private position: number) {
     super(parentNode, Constants.scaleSubElementClassName);
     this.DOMNode.setAttribute('data-scale-position', this.position.toString());

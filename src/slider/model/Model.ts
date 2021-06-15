@@ -1,16 +1,22 @@
 import Big from 'big.js';
 import Publisher from '../publisher/Publisher';
-import { DefaultSliderOptions, modelOptions } from '../utils/types';
+import { DefaultSliderOptions } from '../utils/types';
+import { ModelOptions } from './types';
 
 class Model extends Publisher {
   private isRange: boolean;
+
   private maxValue: number;
+
   private minValue: number;
+
   private lowValue: number;
+
   private highValue: number;
+
   private step: number;
 
-  constructor(options: modelOptions) {
+  constructor(options: ModelOptions) {
     super();
     this.init(options);
   }
@@ -164,10 +170,11 @@ class Model extends Publisher {
     return valuesAndPercents;
   }
 
-  private init({ isRange = DefaultSliderOptions.isRange, minValue = DefaultSliderOptions.minValue,
-                 maxValue = DefaultSliderOptions.maxValue, startValueLow = DefaultSliderOptions.startValueLow,
-                 startValueHigh = DefaultSliderOptions.startValueHigh, step = DefaultSliderOptions.step,
-               }: modelOptions): void {
+  private init({
+    isRange = DefaultSliderOptions.isRange, minValue = DefaultSliderOptions.minValue,
+    maxValue = DefaultSliderOptions.maxValue, startValueLow = DefaultSliderOptions.startValueLow,
+    startValueHigh = DefaultSliderOptions.startValueHigh, step = DefaultSliderOptions.step,
+  }: ModelOptions): void {
     const isOptionsNotValid = (maxValue <= minValue) || (step <= 0);
     if (isOptionsNotValid) {
       throw new Error('options is not valid');

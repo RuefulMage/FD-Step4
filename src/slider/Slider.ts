@@ -1,10 +1,13 @@
 import View from './view/viewComponents/View';
 import Model from './model/Model';
 import Controller from './controller/Controller';
-import { Logger, DefaultSliderOptions, Orientation, SliderOptions } from './utils/types';
+import {
+  Logger, DefaultSliderOptions, Orientation, SliderOptions,
+} from './utils/types';
 
 class Slider {
   private readonly view: View;
+
   private readonly model: Model;
 
   constructor(private rootElement: HTMLElement, options: SliderOptions) {
@@ -37,7 +40,7 @@ class Slider {
     };
     this.view = new View(rootElement, viewOptions);
     this.view.attach(this.update.bind(this));
-    new Controller(this.view, this.model);
+    (() => new Controller(this.view, this.model))();
   }
 
   public isRange(): boolean {

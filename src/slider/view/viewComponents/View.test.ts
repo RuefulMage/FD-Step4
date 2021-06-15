@@ -229,7 +229,9 @@ describe('view class', () => {
       const runnersPositions = [10, 90];
       const tipsValues = [20, 80];
       const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
-      view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: true });
+      view.updateView({
+        runnersPositions, tipsValues, scalePositions, isRange: true,
+      });
       const tips = view.getDOMNode().querySelectorAll(`.${Constants.tipClassName}`);
       const realTipsValues = [Number(tips[0].innerHTML), Number(tips[1].innerHTML)];
       const scaleSubItems = view.getDOMNode().querySelectorAll(`.${Constants.scaleSubElementClassName}`);
@@ -249,7 +251,9 @@ describe('view class', () => {
       const runnersPositions = [88, 90];
       const tipsValues = [88, 90];
       const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
-      view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: true });
+      view.updateView({
+        runnersPositions, tipsValues, scalePositions, isRange: true,
+      });
       const tips = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       const realTipValue = tips.innerHTML;
       expect(realTipValue).toEqual('88&nbsp;—&nbsp;90');
@@ -262,7 +266,9 @@ describe('view class', () => {
       const runnersPositions = [10, 90];
       const tipsValues = [20, 80];
       const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
-      view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: true });
+      view.updateView({
+        runnersPositions, tipsValues, scalePositions, isRange: true,
+      });
       const runners = view.getDOMNode().querySelectorAll(`.${Constants.runnerClassName}`);
       expect(runners.length).toBe(2);
     });
@@ -274,7 +280,9 @@ describe('view class', () => {
       const runnersPositions = [10];
       const tipsValues = [20];
       const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
-      view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: false });
+      view.updateView({
+        runnersPositions, tipsValues, scalePositions, isRange: false,
+      });
       const tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       const realTipValue = [Number(tip.innerHTML)];
       const scaleSubItems = view.getDOMNode().querySelectorAll(`.${Constants.scaleSubElementClassName}`);
@@ -294,7 +302,9 @@ describe('view class', () => {
       const runnersPositions = [10, 11];
       const tipsValues = [20, 21];
       const scalePositions = new Map([[0, 10], [20, 20], [40, 40], [90, 80]]);
-      view.updateView({ runnersPositions, tipsValues, scalePositions, isRange: false });
+      view.updateView({
+        runnersPositions, tipsValues, scalePositions, isRange: false,
+      });
       const runners = view.getDOMNode().querySelectorAll(`.${Constants.runnerClassName}`);
       expect(runners.length).toBe(1);
     });

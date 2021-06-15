@@ -1,6 +1,6 @@
 import View from '../view/viewComponents/View';
 import Model from '../model/Model';
-import { positionOptions, ViewEventName } from '../utils/types';
+import { PositionOptions, ViewEventName } from '../view/types';
 
 class Controller {
   constructor(private view: View, private model: Model) {
@@ -27,7 +27,7 @@ class Controller {
     this.updateView();
   }
 
-  private setValues({index, position}: positionOptions): void {
+  private setValues({ index, position }: PositionOptions): void {
     if (index === 0) {
       this.model.setLowValueByPercent(position);
     } else if (index === 1) {
@@ -36,12 +36,15 @@ class Controller {
   }
 
   private updateView(): void{
-    const runnersPositions = [this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
+    const runnersPositions = [
+      this.model.getLowValueInPercent(), this.model.getHighValueInPercent()];
     const tipsValues = [this.model.getLowValue(), this.model.getHighValue()];
     const scalePositions = this.model
       .splitIntervalByStep(this.view.computeDivisionsAmountBySize());
     const isRange = this.model.getRangeStatus();
-    this.view.updateView({runnersPositions, tipsValues, scalePositions, isRange});
+    this.view.updateView({
+      runnersPositions, tipsValues, scalePositions, isRange,
+    });
   }
 }
 
