@@ -3,7 +3,7 @@ import Demo from './Demo';
 function initDemo(element: Element): Demo {
   const options = {
     isRange: (element.getAttribute('data-is-range') === 'true'),
-    isTipsHidden: (element.getAttribute('data-tips-hidden') === 'true'),
+    isTipsExists: (element.getAttribute('data-tips-hidden') === 'true'),
     maxValue: Number(element.getAttribute('data-max-value')),
     minValue: Number(element.getAttribute('data-min-value')),
     orientation: element.getAttribute('data-orientation') as 'horizontal'| 'vertical',

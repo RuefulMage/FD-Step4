@@ -1,7 +1,7 @@
 import OrientationBehavior from './orientationBehaviors/OrientationBehavior';
 import { Orientation } from '../utils/types';
 
-type ViewEventName = 'position-change-by-drag' | 'position-change-by-click' | 'resize' | 'orientation-change';
+type ViewEventName = 'position-change-by-drag' | 'position-change-by-click' | 'resize' | 'orientation-change' | 'tips-hide-status-change';
 
 interface BasicViewComponentOptions {
   parentNode: HTMLElement,
@@ -23,7 +23,7 @@ interface PositionOptions {
 interface ViewOptions {
   orientation?: Orientation,
   isRange?: boolean,
-  isTipsHidden?: boolean
+  isTipsExists?: boolean
 }
 
 export {

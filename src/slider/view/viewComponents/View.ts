@@ -23,35 +23,38 @@ class View extends ViewComponent {
 
   private runnersAndTips: Map<number, { runner: Runner, tip: Tip }>;
 
-  private isTipsHidden: boolean;
+  private isTipsExists: boolean;
 
   constructor(parentNode: HTMLElement, options: ViewOptions) {
     super(parentNode, Constants.viewWrapperClassName);
     this.init(options);
   }
 
-  public hideTips(): void {
-    this.isTipsHidden = true;
-    this.runnersAndTips.forEach(((item) => item.tip.hide()));
+  public deleteTips(): void {
+    this.isTipsExists = false;
+    this.runnersAndTips.forEach(((_, index: 0 | 1) => {
+      this.deleteTip(index);
+    }));
   }
 
-  public showTips(): void {
-    this.isTipsHidden = false;
-    this.runnersAndTips.forEach((item, index: 0 | 1) => this.showTip(index));
+  public createTips(): void {
+    this.isTipsExists = true;
+    this.createTip(0);
     if (this.runnersAndTips.size === 2) {
       const isRunnersTooClose = Math.abs(this.getRunnerPosition(0)
         - this.getRunnerPosition(1)) <= Constants.tipsJoinDistance;
       if (isRunnersTooClose) {
-        this.hideTip(1);
         const tipPosition = this.getRunnerPosition(0)
           + ((this.getRunnerPosition(1) - this.getRunnerPosition(0)) / 2);
         this.runnersAndTips.get(0).tip.setPosition(tipPosition);
+      } else {
+        this.createTip(1);
       }
     }
   }
 
-  public getHideStatus(): boolean {
-    return this.isTipsHidden;
+  public getTipsExistStatus(): boolean {
+    return this.isTipsExists;
   }
 
   public getOrientation(): Orientation {
@@ -64,7 +67,9 @@ class View extends ViewComponent {
     this.orientationBehavior.setOrientation(orientation);
     this.orientation = orientation;
     this.runnersAndTips.forEach((item) => {
-      this.orientationBehavior.resetStyles(item.tip.getDOMNode());
+      if (item.tip !== null) {
+        this.orientationBehavior.resetStyles(item.tip.getDOMNode());
+      }
       this.orientationBehavior.resetStyles(item.runner.getDOMNode());
     });
     this.orientationBehavior.resetStyles(this.range.getDOMNode());
@@ -110,7 +115,7 @@ class View extends ViewComponent {
   private init({
     orientation = DefaultSliderOptions.orientation,
     isRange = DefaultSliderOptions.isRange,
-    isTipsHidden = DefaultSliderOptions.isTipsHidden,
+    isTipsExists = DefaultSliderOptions.isTipsExists,
   }: ViewOptions): void {
     this.orientation = orientation;
     this.orientationBehavior = new OrientationBehavior(orientation);
@@ -118,37 +123,21 @@ class View extends ViewComponent {
     this.strip = new Strip(
       { parentNode: this.DOMNode, orientationBehavior: this.orientationBehavior },
     );
-    this.isTipsHidden = isTipsHidden;
+    this.isTipsExists = isTipsExists;
+    const lowValueRunner = new Runner({
+      parentNode: this.strip.getDOMNode(),
+      orientationBehavior: this.orientationBehavior,
+    });
+    this.runnersAndTips = new Map([[0, { runner: lowValueRunner, tip: null }]]);
     if (isRange) {
-      const lowValueRunner = new Runner({
-        parentNode: this.strip.getDOMNode(),
-        orientationBehavior: this.orientationBehavior,
-      });
-      const lowValueTip = new Tip({
-        parentNode: this.strip.getDOMNode(),
-        orientationBehavior: this.orientationBehavior,
-      }, isTipsHidden);
       const highValueRunner = new Runner({
         parentNode: this.strip.getDOMNode(),
         orientationBehavior: this.orientationBehavior,
       });
-      const highValueTip = new Tip({
-        parentNode: this.strip.getDOMNode(),
-        orientationBehavior: this.orientationBehavior,
-      }, isTipsHidden);
-      this.runnersAndTips = new Map([
-        [0, { runner: lowValueRunner, tip: lowValueTip }],
-        [1, { runner: highValueRunner, tip: highValueTip }]]);
-    } else {
-      const lowValueRunner = new Runner({
-        parentNode: this.strip.getDOMNode(),
-        orientationBehavior: this.orientationBehavior,
-      });
-      const lowValueTip = new Tip({
-        parentNode: this.strip.getDOMNode(),
-        orientationBehavior: this.orientationBehavior,
-      }, isTipsHidden);
-      this.runnersAndTips = new Map([[0, { runner: lowValueRunner, tip: lowValueTip }]]);
+      this.runnersAndTips.set(1, { runner: highValueRunner, tip: null });
+    }
+    if (isTipsExists) {
+      this.runnersAndTips.forEach((_, index: 0 | 1) => this.createTip(index));
     }
     this.range = new Range({
       parentNode: this.strip.getDOMNode(),
@@ -157,15 +146,27 @@ class View extends ViewComponent {
     this.addHandlers();
   }
 
-  private hideTip(tipIndex: 0 | 1): void {
-    this.runnersAndTips.get(tipIndex).tip.hide();
+  private deleteTip(tipIndex: 0 | 1): void {
+    const { runner, tip } = this.runnersAndTips.get(tipIndex);
+    if (tip !== null) {
+      tip.destroy();
+      this.runnersAndTips.set(tipIndex, { runner, tip: null });
+    }
   }
 
-  private showTip(tipIndex: 0 | 1): void {
-    this.isTipsHidden = false;
-    const { tip } = this.runnersAndTips.get(tipIndex);
-    tip.show();
-    tip.setPosition(this.getRunnerPosition(tipIndex));
+  private createTip(tipIndex: 0 | 1): Tip {
+    const { runner, tip } = this.runnersAndTips.get(tipIndex);
+    if (tip !== null) {
+      tip.setPosition(this.getRunnerPosition(tipIndex));
+      return tip;
+    }
+    const newTip = new Tip(
+      { parentNode: this.strip.getDOMNode(), orientationBehavior: this.orientationBehavior },
+    );
+    newTip.setPosition(this.getRunnerPosition(tipIndex));
+    this.runnersAndTips.set(tipIndex, { runner, tip: newTip });
+    this.notify('tips-hide-status-change', {});
+    return newTip;
   }
 
   private setRange(minEdge: number, maxEdge: number): void {
@@ -182,13 +183,11 @@ class View extends ViewComponent {
       orientationBehavior: this.orientationBehavior,
     });
     runner.setPosition(highRunnerPosition);
-    const tip = new Tip({
-      parentNode: this.strip.getDOMNode(),
-      orientationBehavior: this.orientationBehavior,
-    }, this.isTipsHidden);
-    tip.setInnerText(highValue.toString());
-    tip.setPosition(highRunnerPosition);
-    this.runnersAndTips.set(1, { runner, tip });
+    this.runnersAndTips.set(1, { runner, tip: null });
+    if (this.isTipsExists) {
+      const tip = this.createTip(1);
+      tip.setInnerText(highValue.toString());
+    }
     this.setRange(this.runnersAndTips.get(0).runner.getPosition(),
       this.runnersAndTips.get(1).runner.getPosition());
   }
@@ -198,10 +197,9 @@ class View extends ViewComponent {
       return;
     }
     const { runner } = this.runnersAndTips.get(1);
-    const { tip } = this.runnersAndTips.get(1);
-    this.runnersAndTips.delete(1);
+    this.deleteTip(1);
     runner.destroy();
-    tip.destroy();
+    this.runnersAndTips.delete(1);
     this.setRange(0, this.runnersAndTips.get(0).runner.getPosition());
   }
 
@@ -230,12 +228,16 @@ class View extends ViewComponent {
 
   private setTipPosition({ index, position }: PositionOptions): void {
     const { tip } = this.runnersAndTips.get(index);
-    tip.setPosition(position);
+    if (tip !== null) {
+      tip.setPosition(position);
+    }
   }
 
   private setTipText(tipIndex: 0 | 1, text: string): void {
     const { tip } = this.runnersAndTips.get(tipIndex);
-    tip.setInnerText(text);
+    if (tip !== null) {
+      tip.setInnerText(text);
+    }
   }
 
   private addHandlers(): void {
@@ -298,14 +300,15 @@ class View extends ViewComponent {
   }
 
   private updateAllTipsPositionAndText({ runnersPositions, tipsValues }: UpdateViewOptions) {
+    if (!this.isTipsExists) {
+      return;
+    }
     const isRunnersTooClose = Math.abs(runnersPositions[0]
       - runnersPositions[1]) <= Constants.tipsJoinDistance;
     if (isRunnersTooClose) {
       this.joinTips(tipsValues, runnersPositions);
     } else {
-      if (!this.getHideStatus()) {
-        this.showTips();
-      }
+      this.createTips();
       this.setTipText(0, tipsValues[0].toString());
       this.setTipPosition({ index: 0, position: runnersPositions[0] });
       this.setTipText(1, tipsValues[1].toString());
@@ -321,13 +324,15 @@ class View extends ViewComponent {
     }
     this.setScale(scalePositions);
     this.setRunnerPosition({ index: 0, position: runnersPositions[0] });
-    this.setTipText(0, tipsValues[0].toString());
-    this.setTipPosition({ index: 0, position: runnersPositions[0] });
+    if (this.isTipsExists) {
+      this.setTipText(0, tipsValues[0].toString());
+      this.setTipPosition({ index: 0, position: runnersPositions[0] });
+    }
     this.setRange(0, runnersPositions[0]);
   }
 
   private joinTips(tipsValues: number[], tipsPositions: number[]): void {
-    this.hideTip(1);
+    this.deleteTip(1);
     const tipText = `${tipsValues[0]}&nbsp;&mdash;&nbsp;${tipsValues[1]}`;
     this.setTipText(0, tipText);
     const tipPosition: number = tipsPositions[0]

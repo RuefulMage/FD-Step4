@@ -6,13 +6,9 @@ import { BasicViewComponentOptions } from '../types';
 class Tip extends ViewComponent {
   private orientationBehavior: OrientationBehavior;
 
-  constructor({ parentNode, orientationBehavior }: BasicViewComponentOptions,
-    private isHidden: boolean = true) {
+  constructor({ parentNode, orientationBehavior }: BasicViewComponentOptions) {
     super(parentNode, Constants.tipClassName);
     this.orientationBehavior = orientationBehavior;
-    if (isHidden) {
-      this.DOMNode.classList.add(Constants.tipHiddenClassName);
-    }
   }
 
   public setPosition(newPosition: number): void {
@@ -21,24 +17,6 @@ class Tip extends ViewComponent {
 
   public setInnerText(text: string): void {
     this.DOMNode.innerHTML = text;
-  }
-
-  public getHideStatus(): boolean {
-    return this.isHidden;
-  }
-
-  public hide(): void {
-    if (!this.isHidden) {
-      this.DOMNode.classList.add(Constants.tipHiddenClassName);
-    }
-    this.isHidden = true;
-  }
-
-  public show(): void {
-    if (this.isHidden) {
-      this.DOMNode.classList.remove(Constants.tipHiddenClassName);
-    }
-    this.isHidden = false;
   }
 }
 

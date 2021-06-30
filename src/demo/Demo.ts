@@ -16,7 +16,7 @@ class Demo {
 
   private isRangeInput: HTMLInputElement;
 
-  private isTipsHiddenInput: HTMLInputElement;
+  private isTipsExistsInput: HTMLInputElement;
 
   private isVerticalInput: HTMLInputElement;
 
@@ -33,20 +33,18 @@ class Demo {
     this.initHighValueInput();
     this.initStepInput();
     this.initRangeInput();
-    this.initTipsHiddenInput();
+    this.initTipsExistsInput();
     this.initIsVerticalInput();
-
     this.sliderElement.on('slider-change', this.handleSliderChange);
     this.handleSliderChange();
   }
 
   private handleSliderChange = (): void => {
-    this.lowValueInput.value = this.slider.getLowValue().toString();
     this.highValueInput.value = this.slider.getHighValue().toString();
     this.minValueInput.value = this.slider.getMinValue().toString();
     this.maxValueInput.value = this.slider.getMaxValue().toString();
     this.stepInput.value = this.slider.getStep().toString();
-    this.isTipsHiddenInput.checked = this.slider.getHideStatus();
+    this.isTipsExistsInput.checked = this.slider.getTipsExistStatus();
     this.isRangeInput.checked = this.slider.isRange();
     if (this.slider.getOrientation() === 'vertical') {
       this.isVerticalInput.checked = true;
@@ -62,11 +60,11 @@ class Demo {
   }
 
   private handleMaxValueChange = (event: Event) => {
-    const isChangeSuccessful = this.slider.setMaxValue(Number(this.maxValueInput.value));
+    const input = (event.target as HTMLInputElement);
+    const isChangeSuccessful = this.slider.setMaxValue(Number(input.value));
 
     if (!isChangeSuccessful) {
-      // eslint-disable-next-line no-param-reassign
-      (event.target as HTMLInputElement).value = this.slider.getMaxValue().toString();
+      input.value = this.slider.getMaxValue().toString();
     }
   };
 
@@ -76,11 +74,12 @@ class Demo {
   }
 
   private handleMinValueChange = (event: Event): void => {
-    const isChangeSuccessful = this.slider.setMinValue(Number(this.minValueInput.value));
+    const input = (event.target as HTMLInputElement);
+    const isChangeSuccessful = this.slider.setMinValue(Number(input.value));
 
     if (!isChangeSuccessful) {
       // eslint-disable-next-line no-param-reassign
-      (event.target as HTMLInputElement).value = this.slider.getMinValue().toString();
+      input.value = this.slider.getMinValue().toString();
     }
   };
 
@@ -89,8 +88,9 @@ class Demo {
     this.lowValueInput.addEventListener('change', this.handleLowValueChange);
   }
 
-  private handleLowValueChange = () => {
-    this.slider.setLowValue(Number(this.lowValueInput.value));
+  private handleLowValueChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    this.slider.setLowValue(Number(input.value));
   };
 
   private initHighValueInput(): void {
@@ -98,8 +98,9 @@ class Demo {
     this.highValueInput.addEventListener('change', this.handleHighValueChange);
   }
 
-  private handleHighValueChange = () => {
-    this.slider.setHighValue(Number(this.highValueInput.value));
+  private handleHighValueChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    this.slider.setHighValue(Number(input.value));
   };
 
   private initStepInput(): void {
@@ -108,7 +109,8 @@ class Demo {
   }
 
   private handleStepChange = (event: Event) => {
-    const isChangeSuccessful = this.slider.setStep(Number(this.stepInput.value));
+    const input = event.target as HTMLInputElement;
+    const isChangeSuccessful = this.slider.setStep(Number(input.value));
 
     if (!isChangeSuccessful) {
       // eslint-disable-next-line no-param-reassign
@@ -121,25 +123,27 @@ class Demo {
     this.isRangeInput.addEventListener('change', this.handleRangeChange);
   }
 
-  private handleRangeChange = () => {
-    this.slider.setRangeMode(this.isRangeInput.checked);
-    if (!this.isRangeInput.checked) {
+  private handleRangeChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    this.slider.setRangeMode(input.checked);
+    if (!input.checked) {
       this.highValueInput.disabled = true;
     } else {
       this.highValueInput.disabled = false;
     }
   };
 
-  private initTipsHiddenInput(): void {
-    this.isTipsHiddenInput = this.panelElement.querySelector('.js-tips-hidden');
-    this.isTipsHiddenInput.addEventListener('change', this.handleTipsHiddenInputChange);
+  private initTipsExistsInput(): void {
+    this.isTipsExistsInput = this.panelElement.querySelector('.js-tips-showed');
+    this.isTipsExistsInput.addEventListener('change', this.handleTipsExistsInputChange);
   }
 
-  private handleTipsHiddenInputChange = () => {
-    if (this.isTipsHiddenInput.checked) {
-      this.slider.hideTips();
-    } else {
+  private handleTipsExistsInputChange = (event: Event) => {
+    const input = event.target as HTMLInputElement;
+    if (input.checked) {
       this.slider.showTips();
+    } else {
+      this.slider.hideTips();
     }
   };
 

@@ -16,7 +16,7 @@ class Slider {
     } catch (error) {
       const validOptions = {
         isRange: options.isRange,
-        isTipsHidden: options.isTipsHidden,
+        isTipsExists: options.isTipsExists,
         maxValue: DefaultSliderOptions.maxValue,
         minValue: DefaultSliderOptions.minValue,
         startValueHigh: options.startValueHigh,
@@ -32,11 +32,11 @@ class Slider {
       : DefaultSliderOptions.orientation;
 
     const viewOptions: {
-      orientation?: Orientation, isRange?: boolean, isTipsHidden?: boolean
+      orientation?: Orientation, isRange?: boolean, isTipsExists?: boolean
     } = {
       orientation: validOrientation,
       isRange: options.isRange,
-      isTipsHidden: options.isTipsHidden,
+      isTipsExists: options.isTipsExists,
     };
     this.view = new View(rootElement, viewOptions);
     this.view.attach(this.update.bind(this));
@@ -118,15 +118,15 @@ class Slider {
   }
 
   public hideTips(): void {
-    this.view.hideTips();
+    this.view.deleteTips();
   }
 
   public showTips(): void {
-    this.view.showTips();
+    this.view.createTips();
   }
 
-  public getHideStatus(): boolean {
-    return this.view.getHideStatus();
+  public getTipsExistStatus(): boolean {
+    return this.view.getTipsExistStatus();
   }
 
   public update(): void {

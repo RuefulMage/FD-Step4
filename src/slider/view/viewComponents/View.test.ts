@@ -52,14 +52,14 @@ describe('view class', () => {
     test('Should get correct hide status', () => {
       options.isTipsHidden = true;
       let view = new View(parentElement, options);
-      let realResult = view.getHideStatus();
+      let realResult = view.getTipsExistStatus();
       let tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       let expectedResult = tip.classList.contains(Constants.tipHiddenClassName);
       expect(realResult).toBe(expectedResult);
 
       options.isTipsHidden = false;
       view = new View(parentElement, options);
-      realResult = view.getHideStatus();
+      realResult = view.getTipsExistStatus();
       tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
       expectedResult = tip.classList.contains(Constants.tipHiddenClassName);
       expect(realResult).toBe(expectedResult);
@@ -70,7 +70,7 @@ describe('view class', () => {
     test('Should hide tips by adding css-class to tips dom element', () => {
       options.isTipsHidden = false;
       const view = new View(parentElement, options);
-      view.hideTips();
+      view.deleteTips();
       const tipElement = parentElement.getElementsByClassName(Constants.tipClassName)[0];
       expect(tipElement.classList.contains(Constants.tipHiddenClassName)).toBe(true);
     });
@@ -80,7 +80,7 @@ describe('view class', () => {
     test('Should show tips by removing css-class from tips classList', () => {
       options.isTipsHidden = true;
       const view = new View(parentElement, options);
-      view.showTips();
+      view.createTips();
       const tipElement = parentElement.getElementsByClassName(Constants.tipClassName)[0];
       expect(tipElement.classList.contains(Constants.tipHiddenClassName)).toBe(false);
     });

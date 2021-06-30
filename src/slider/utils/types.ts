@@ -16,7 +16,7 @@ type Orientation = 'horizontal' | 'vertical';
 
 type SliderOptions = {
   isRange: boolean,
-  isTipsHidden: boolean,
+  isTipsExists: boolean,
   maxValue: number,
   minValue: number,
   orientation: Orientation,
@@ -27,7 +27,7 @@ type SliderOptions = {
 
 const DefaultSliderOptions: SliderOptions = {
   isRange: false,
-  isTipsHidden: false,
+  isTipsExists: false,
   maxValue: 100,
   minValue: 0,
   orientation: 'horizontal',
