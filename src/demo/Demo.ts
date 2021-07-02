@@ -40,6 +40,7 @@ class Demo {
   }
 
   private handleSliderChange = (): void => {
+    this.lowValueInput.value = this.slider.getLowValue().toString();
     this.highValueInput.value = this.slider.getHighValue().toString();
     this.minValueInput.value = this.slider.getMinValue().toString();
     this.maxValueInput.value = this.slider.getMaxValue().toString();
