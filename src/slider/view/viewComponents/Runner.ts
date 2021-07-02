@@ -8,7 +8,8 @@ class Runner extends ViewComponent {
 
   private orientationBehavior: OrientationBehavior;
 
-  constructor({ parentNode, orientationBehavior }: BasicViewComponentOptions) {
+  constructor({ parentNode, orientationBehavior }: BasicViewComponentOptions,
+    private currentOffset: number = 0) {
     super(parentNode, `${Constants.runnerClassName} ${Constants.runnerPrefixedClassName}`);
     this.orientationBehavior = orientationBehavior;
     this.setPosition(0);
@@ -46,7 +47,7 @@ class Runner extends ViewComponent {
   private handleMouseMove = (event: MouseEvent): void => {
     try {
       const newPosition = this.orientationBehavior
-        .getPositionFromCoordinates(event.clientX, event.clientY, this.DOMNode);
+        .getPositionFromCoordinates(event.clientX, event.clientY, this.DOMNode, this.currentOffset);
       const changePositionEvent: CustomEvent = new CustomEvent('slider-drag',
         {
           bubbles: true,
@@ -61,12 +62,15 @@ class Runner extends ViewComponent {
   };
 
   private handleMouseUp = (): void => {
+    this.currentOffset = 0;
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);
   };
 
   private handleMouseDown = (event: MouseEvent): void => {
     event.preventDefault();
+    this.currentOffset = this.orientationBehavior
+      .getOffsetFromCoords(event.clientX, event.clientY, this.DOMNode);
     document.addEventListener('mousemove', this.handleMouseMove);
     document.addEventListener('mouseup', this.handleMouseUp);
   };

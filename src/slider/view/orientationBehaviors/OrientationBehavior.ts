@@ -27,25 +27,41 @@ class OrientationBehavior {
   // Получает координаты точки относительно окна и дом-элемент
   // и возвращает позиуию точки относительно
   // родителя дом-элемента
+  public resetStyles(domElement: HTMLElement): void {
+    domElement.setAttribute('style', '');
+  }
+
   public getPositionFromCoordinates(clientX: number, clientY: number,
-    domElement: HTMLElement): number {
+    domElement: HTMLElement, offset: number = 0): number {
     if (clientX > window.innerWidth || clientY > window.innerHeight) {
       throw new Error('clientX or clientY is too big');
     }
     if (this.orientation === 'horizontal') {
-      const positionInPixels = clientX - domElement.parentElement.getBoundingClientRect().left;
+      const positionInPixels = clientX - offset
+        - domElement.parentElement.getBoundingClientRect().left;
       const parentSize = domElement.parentElement.offsetWidth;
       const position = (positionInPixels / parentSize) * 100;
       return position;
     }
-    const positionInPixels = clientY - domElement.parentElement.getBoundingClientRect().top;
+    const positionInPixels = clientY - offset
+      - domElement.parentElement.getBoundingClientRect().top;
     const parentSize = domElement.parentElement.offsetHeight;
     const position = (positionInPixels / parentSize) * 100;
     return 100 - position;
   }
 
-  public resetStyles(domElement: HTMLElement): void {
-    domElement.setAttribute('style', '');
+  public getOffsetFromCoords(clientX: number, clientY: number,
+    domElement: HTMLElement): number {
+    if (this.orientation === 'horizontal') {
+      const elementWidth = domElement.offsetWidth;
+      const middleCoord = domElement.getBoundingClientRect().left + (elementWidth / 2);
+      const offset = clientX - middleCoord;
+      return offset;
+    }
+    const elementsHeight = domElement.offsetHeight;
+    const middleCoord = domElement.getBoundingClientRect().top + (elementsHeight / 2);
+    const offset = clientY - middleCoord;
+    return offset;
   }
 
   public setRangePositions(minEdge: number, maxEdge: number,
