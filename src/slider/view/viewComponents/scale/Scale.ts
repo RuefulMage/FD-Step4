@@ -54,6 +54,7 @@ class Scale extends ViewComponent {
   private handleRangeCLick = (event: MouseEvent) => {
     if (event.target !== event.currentTarget) {
       const target = event.target as HTMLElement;
+      const currentTarget = event.currentTarget as HTMLElement;
       const customEvent = new CustomEvent('slider-click',
         {
           bubbles: true,
@@ -62,7 +63,7 @@ class Scale extends ViewComponent {
             position: target.getAttribute('data-scale-position'),
           },
         });
-      this.getDOMNode().dispatchEvent(customEvent);
+      currentTarget.dispatchEvent(customEvent);
     }
   };
 }
