@@ -1,14 +1,14 @@
-import { Orientation, DefaultSliderOptions } from '../../utils/types';
-import Constants from '../../utils/constants';
-import { UpdateViewOptions, PositionOptions, ViewOptions } from '../types';
+import { Orientation, DefaultSliderOptions } from '../../../utils/types';
+import Constants from '../../../utils/constants';
+import { UpdateViewOptions, PositionOptions, ViewOptions } from '../../types';
 
-import ViewComponent from './ViewComponent';
-import Strip from './Strip';
-import Runner from './Runner';
-import Scale from './Scale';
-import Range from './Range';
-import Tip from './Tip';
-import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import ViewComponent from '../ViewComponent';
+import Strip from '../strip/Strip';
+import Runner from '../runner/Runner';
+import Scale from '../scale/Scale';
+import Range from '../range/Range';
+import Tip from '../tip/Tip';
+import OrientationBehavior from '../../orientationBehaviors/OrientationBehavior';
 
 class View extends ViewComponent {
   private strip: Strip;

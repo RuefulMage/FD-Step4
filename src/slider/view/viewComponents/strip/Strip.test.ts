@@ -1,6 +1,6 @@
-import Constants from '../../utils/constants';
+import Constants from '../../../utils/constants';
 import Strip from './Strip';
-import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import OrientationBehavior from '../../orientationBehaviors/OrientationBehavior';
 
 const mockGetPositionFromCoordinates = jest.fn();
 OrientationBehavior.prototype.getPositionFromCoordinates = mockGetPositionFromCoordinates;

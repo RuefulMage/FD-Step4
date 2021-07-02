@@ -1,8 +1,8 @@
-import Constants from '../../utils/constants';
+import Constants from '../../../utils/constants';
 import Runner from './Runner';
-import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import OrientationBehavior from '../../orientationBehaviors/OrientationBehavior';
 
-describe('Runner class', () => {
+describe('runner class', () => {
   let parentNode: HTMLElement;
   let runner: Runner;
   const mockGetPositionFromCoordinates = jest.fn();

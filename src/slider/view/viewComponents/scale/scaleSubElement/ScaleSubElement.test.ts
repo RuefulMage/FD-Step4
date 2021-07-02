@@ -1,6 +1,6 @@
 import ScaleSubElement from './ScaleSubElement';
 
-describe('Scale subelement class', () => {
+describe('scale subelement class', () => {
   let scaleSubElement: ScaleSubElement;
   let parentElement;
 

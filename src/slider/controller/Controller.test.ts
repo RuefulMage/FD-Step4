@@ -1,4 +1,4 @@
-import View from '../view/viewComponents/View';
+import View from '../view/viewComponents/view/View';
 import Model from '../model/Model';
 import { Orientation } from '../utils/types';
 import Controller from './Controller';

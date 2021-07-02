@@ -1,5 +1,5 @@
 import Tip from './Tip';
-import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import OrientationBehavior from '../../orientationBehaviors/OrientationBehavior';
 
 const mockSetPosition = jest.fn();
 const mockFunctionForResetStyles = jest.fn();

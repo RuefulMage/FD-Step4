@@ -1,5 +1,5 @@
-import Constants from '../../utils/constants';
-import ViewComponent from './ViewComponent';
+import Constants from '../../../../utils/constants';
+import ViewComponent from '../../ViewComponent';
 
 class ScaleSubElement extends ViewComponent {
   constructor(parentNode: HTMLElement, private position: number) {

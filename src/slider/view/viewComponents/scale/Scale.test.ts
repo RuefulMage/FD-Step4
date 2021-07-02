@@ -1,7 +1,7 @@
 import Scale from './Scale';
-import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import OrientationBehavior from '../../orientationBehaviors/OrientationBehavior';
 
-describe('Scale class', () => {
+describe('scale class', () => {
   let scale: Scale;
   const parentNode: HTMLElement = document.createElement('div');
   document.body.append(parentNode);

@@ -1,8 +1,8 @@
-import Constants from '../../utils/constants';
+import Constants from '../../../utils/constants';
 import Range from './Range';
-import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
+import OrientationBehavior from '../../orientationBehaviors/OrientationBehavior';
 
-describe('Range class', () => {
+describe('range class', () => {
   let parentNode: HTMLElement;
   let range: Range;
   const mockFunctionForSetRangePosition = jest.fn();

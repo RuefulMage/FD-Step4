@@ -1,8 +1,8 @@
-import Constants from '../../utils/constants';
-import ViewComponent from './ViewComponent';
-import ScaleSubElement from './ScaleSubElement';
-import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
-import { BasicViewComponentOptions } from '../types';
+import Constants from '../../../utils/constants';
+import ViewComponent from '../ViewComponent';
+import ScaleSubElement from './scaleSubElement/ScaleSubElement';
+import OrientationBehavior from '../../orientationBehaviors/OrientationBehavior';
+import { BasicViewComponentOptions } from '../../types';
 
 class Scale extends ViewComponent {
   private subElements: ScaleSubElement[] = [];

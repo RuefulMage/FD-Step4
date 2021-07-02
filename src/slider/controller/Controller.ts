@@ -1,4 +1,4 @@
-import View from '../view/viewComponents/View';
+import View from '../view/viewComponents/view/View';
 import Model from '../model/Model';
 import { PositionOptions, ViewEventName } from '../view/types';
 

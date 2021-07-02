@@ -1,5 +1,5 @@
-import Constants from '../../utils/constants';
-import { Orientation } from '../../utils/types';
+import Constants from '../../../utils/constants';
+import { Orientation } from '../../../utils/types';
 import View from './View';
 
 const mockUpdate = jest.fn();
@@ -222,7 +222,7 @@ describe('view class', () => {
 
   describe('Update view', () => {
     test('Should update runners positions, '
-      + 'tips values and positions and scale. Range mode is interval', () => {
+      + 'tips values and positions and scale. range mode is interval', () => {
       options.isRange = true;
       options.isTipsHidden = false;
       const view = new View(parentElement, options);
@@ -260,7 +260,7 @@ describe('view class', () => {
     });
 
     test('Should update view and change mode to interval,'
-      + ' if runners amount equal one. Range mode is interval', () => {
+      + ' if runners amount equal one. range mode is interval', () => {
       options.isRange = false;
       const view = new View(parentElement, options);
       const runnersPositions = [10, 90];
@@ -274,7 +274,7 @@ describe('view class', () => {
     });
 
     test('Should update runner position, '
-      + 'tip value and position and scale. Range mode is single value', () => {
+      + 'tip value and position and scale. range mode is single value', () => {
       options.isRange = false;
       const view = new View(parentElement, options);
       const runnersPositions = [10];
@@ -296,7 +296,7 @@ describe('view class', () => {
     });
 
     test('Should update view and change mode to single value,'
-      + ' if runners amount more than one. Range mode is single value', () => {
+      + ' if runners amount more than one. range mode is single value', () => {
       options.isRange = true;
       const view = new View(parentElement, options);
       const runnersPositions = [10, 11];

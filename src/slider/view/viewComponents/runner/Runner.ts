@@ -1,7 +1,7 @@
-import Constants from '../../utils/constants';
-import ViewComponent from './ViewComponent';
-import OrientationBehavior from '../orientationBehaviors/OrientationBehavior';
-import { BasicViewComponentOptions } from '../types';
+import Constants from '../../../utils/constants';
+import ViewComponent from '../ViewComponent';
+import OrientationBehavior from '../../orientationBehaviors/OrientationBehavior';
+import { BasicViewComponentOptions } from '../../types';
 
 class Runner extends ViewComponent {
   private position: number;
