@@ -172,8 +172,8 @@ class Model extends Publisher {
 
   private init({
     isRange = DefaultSliderOptions.isRange, minValue = DefaultSliderOptions.minValue,
-    maxValue = DefaultSliderOptions.maxValue, startValueLow = DefaultSliderOptions.startValueLow,
-    startValueHigh = DefaultSliderOptions.startValueHigh, step = DefaultSliderOptions.step,
+    maxValue = DefaultSliderOptions.maxValue, lowValue = DefaultSliderOptions.lowValue,
+    highValue = DefaultSliderOptions.highValue, step = DefaultSliderOptions.step,
   }: ModelOptions): void {
     const isOptionsNotValid = (maxValue <= minValue) || (step <= 0);
     if (isOptionsNotValid) {
@@ -185,8 +185,8 @@ class Model extends Publisher {
     this.step = step;
     this.lowValue = this.minValue;
     this.highValue = this.maxValue;
-    this.setLowValue(startValueLow);
-    this.setHighValue(startValueHigh);
+    this.setLowValue(lowValue);
+    this.setHighValue(highValue);
   }
 
   // Проверяет значение на то, что оно находится в промежутке [minValue: maxValue]

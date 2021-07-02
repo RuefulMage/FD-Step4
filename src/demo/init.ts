@@ -7,8 +7,8 @@ function initDemo(element: Element): Demo {
     maxValue: Number(element.getAttribute('data-max-value')),
     minValue: Number(element.getAttribute('data-min-value')),
     orientation: element.getAttribute('data-orientation') as 'horizontal'| 'vertical',
-    startValueHigh: Number(element.getAttribute('data-start-high')),
-    startValueLow: Number(element.getAttribute('data-start-low')),
+    highValue: Number(element.getAttribute('data-start-high')),
+    lowValue: Number(element.getAttribute('data-start-low')),
     step: Number(element.getAttribute('data-step')),
   };
   const sliderElement = $(element.querySelector('.js-slider') as HTMLElement);

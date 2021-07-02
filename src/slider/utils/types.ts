@@ -20,8 +20,8 @@ type SliderOptions = {
   maxValue: number,
   minValue: number,
   orientation: Orientation,
-  startValueHigh: number,
-  startValueLow: number,
+  highValue: number,
+  lowValue: number,
   step: number
 };
 
@@ -31,8 +31,8 @@ const DefaultSliderOptions: SliderOptions = {
   maxValue: 100,
   minValue: 0,
   orientation: 'horizontal',
-  startValueHigh: 100,
-  startValueLow: 0,
+  highValue: 100,
+  lowValue: 0,
   step: 1,
 };
 export {

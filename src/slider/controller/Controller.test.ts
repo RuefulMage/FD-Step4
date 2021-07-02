@@ -24,8 +24,8 @@ describe('controller class', () => {
       isRange: true,
       maxValue: 100,
       minValue: 0,
-      startValueHigh: 100,
-      startValueLow: 0,
+      highValue: 100,
+      lowValue: 0,
       step: 1,
     };
     parentElement = document.createElement('div');

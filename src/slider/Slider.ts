@@ -19,8 +19,8 @@ class Slider {
         isTipsExists: options.isTipsExists,
         maxValue: DefaultSliderOptions.maxValue,
         minValue: DefaultSliderOptions.minValue,
-        startValueHigh: options.startValueHigh,
-        startValueLow: options.startValueLow,
+        highValue: options.highValue,
+        lowValue: options.lowValue,
         step: DefaultSliderOptions.step,
       };
       this.model = new Model(validOptions);

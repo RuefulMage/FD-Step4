@@ -2,8 +2,8 @@ type ModelEventName = 'edge-value-change' | 'value-change'|'range-mode-change' |
 
 interface ModelOptions {
   isRange?: boolean, minValue?: number,
-  maxValue?: number, startValueLow?: number,
-  startValueHigh?: number, step?: number
+  maxValue?: number, lowValue?: number,
+  highValue?: number, step?: number
 }
 
 export {
