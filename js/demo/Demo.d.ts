@@ -9,7 +9,7 @@ declare class Demo {
     private highValueInput;
     private stepInput;
     private isRangeInput;
-    private isTipsHiddenInput;
+    private isTipsExistsInput;
     private isVerticalInput;
     constructor(sliderElement: JQuery, panelElement: HTMLElement, sliderOptions: SliderOptions);
     private init;
@@ -26,8 +26,8 @@ declare class Demo {
     private handleStepChange;
     private initRangeInput;
     private handleRangeChange;
-    private initTipsHiddenInput;
-    private handleTipsHiddenInputChange;
+    private initTipsExistsInput;
+    private handleTipsExistsInputChange;
     private initIsVerticalInput;
     private handleIsVerticalInputChange;
 }

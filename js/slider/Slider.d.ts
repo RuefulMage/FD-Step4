@@ -20,7 +20,7 @@ declare class Slider {
     setOrientation(orientation: Orientation): void;
     hideTips(): void;
     showTips(): void;
-    getHideStatus(): boolean;
+    getTipsExistStatus(): boolean;
     update(): void;
 }
 export default Slider;

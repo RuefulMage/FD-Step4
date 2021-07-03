@@ -1,5 +1,5 @@
 import Publisher from '../publisher/Publisher';
-import { modelOptions } from '../utils/types';
+import { ModelOptions } from './types';
 declare class Model extends Publisher {
     private isRange;
     private maxValue;
@@ -7,7 +7,7 @@ declare class Model extends Publisher {
     private lowValue;
     private highValue;
     private step;
-    constructor(options: modelOptions);
+    constructor(options: ModelOptions);
     getRangeStatus(): boolean;
     setRangeMode(isRange: boolean): void;
     getMaxValue(): number;

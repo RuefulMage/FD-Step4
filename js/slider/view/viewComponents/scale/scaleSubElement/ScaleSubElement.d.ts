@@ -1,4 +1,4 @@
-import ViewComponent from './ViewComponent';
+import ViewComponent from '../../ViewComponent';
 declare class ScaleSubElement extends ViewComponent {
     private position;
     constructor(parentNode: HTMLElement, position: number);

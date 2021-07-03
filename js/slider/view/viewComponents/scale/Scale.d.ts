@@ -1,9 +1,9 @@
-import ViewComponent from './ViewComponent';
-import { basicViewComponentOptions } from '../../utils/types';
+import ViewComponent from '../ViewComponent';
+import { BasicViewComponentOptions } from '../../types';
 declare class Scale extends ViewComponent {
     private subElements;
     private orientationBehavior;
-    constructor({ parentNode, orientationBehavior }: basicViewComponentOptions, valuesAndPositions: Map<number, number>);
+    constructor({ parentNode, orientationBehavior }: BasicViewComponentOptions, valuesAndPositions: Map<number, number>);
     setScale(valuesAndPositions: Map<number, number>): void;
     reCreateScale(): void;
     private addHandler;

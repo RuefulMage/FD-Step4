@@ -1,9 +1,10 @@
-import ViewComponent from './ViewComponent';
-import { basicViewComponentOptions } from '../../utils/types';
+import ViewComponent from '../ViewComponent';
+import { BasicViewComponentOptions } from '../../types';
 declare class Runner extends ViewComponent {
+    private currentOffset;
     private position;
     private orientationBehavior;
-    constructor({ parentNode, orientationBehavior }: basicViewComponentOptions);
+    constructor({ parentNode, orientationBehavior }: BasicViewComponentOptions, currentOffset?: number);
     getPosition(): number;
     setPosition(value: number): void;
     setCurrentStatus(newStatus: boolean): void;

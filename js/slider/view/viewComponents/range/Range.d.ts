@@ -1,10 +1,10 @@
-import ViewComponent from './ViewComponent';
-import { basicViewComponentOptions } from '../../utils/types';
+import ViewComponent from '../ViewComponent';
+import { BasicViewComponentOptions } from '../../types';
 declare class Range extends ViewComponent {
     private lowEdge;
     private highEdge;
     private orientationBehavior;
-    constructor({ parentNode, orientationBehavior }: basicViewComponentOptions);
+    constructor({ parentNode, orientationBehavior }: BasicViewComponentOptions);
     setLowEdge(value: number): void;
     setHighEdge(value: number): void;
 }
