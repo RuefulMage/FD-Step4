@@ -102,6 +102,21 @@ describe('OrientationBehavior class', () => {
     });
   });
 
+  describe('Get offset from coords', () => {
+    test('Should get correct click offset over middle of input dom element', () => {
+      const clientX = 30;
+      const clientY = 50;
+      let outputPosition = orientationBehavior
+        .getOffsetFromCoords(clientX, clientY, domElement);
+      expect(outputPosition).toBe(10);
+
+      orientationBehavior.setOrientation('vertical');
+      outputPosition = orientationBehavior
+        .getOffsetFromCoords(clientX, clientY, domElement);
+      expect(outputPosition).toBe(30);
+    });
+  });
+
   describe('Reset styles', () => {
     test('Should clean style attribute of dom element', () => {
       const element = document.createElement('div');
