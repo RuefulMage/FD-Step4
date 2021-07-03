@@ -41,11 +41,11 @@ $('#my-slider').slider(options);
     тип: boolean
     по умолчанию: false
 
-* isTipsHidden
+* isTipsExists
 
-    Если true, то подсказки с значениями отключены
+    Если true, то подсказки с значениями включены
     тип: boolean
-    по умолчанию: true
+    по умолчанию: false
 
 * maxValue
 
@@ -65,15 +65,15 @@ $('#my-slider').slider(options);
     тип: string
     по умолчанию: 'horizontal'
 
-* startValueHigh
+* highValue
 
-    Стартовое значение большего бегунка
+    Значение большего бегунка
     тип: number
     по умолчанию: 100
 
-* startValueLow
+* lowValue
 
-    Стартовое значение меньшего бегунка( или единственного, если isRange: false)
+    Значение меньшего бегунка( или единственного, если isRange: false)
     тип: number
     по умолчанию: 0
 
@@ -137,9 +137,9 @@ $('#my-slider').slider(options);
 |string
 |Возвращает вид слайдера(горизонтальный или вертикальный)
 
-|getHideStatus
+|getTipsExistStatus
 |boolean
-|Если возвращаемое значение true, то подсказки отключены
+|Если возвращаемое значение true, то подсказки включены
 
 
 |===
