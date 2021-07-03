@@ -1,25 +1,17 @@
 import Constants from '../../../utils/constants';
-import { Orientation } from '../../../utils/types';
 import View from './View';
+import { ViewOptions } from '../../types';
 
 const mockUpdate = jest.fn();
 
 describe('view class', () => {
   let parentElement: HTMLElement;
-  let options: {
-    isRange: boolean,
-    isTipsHidden: boolean,
-    maxValue: number,
-    minValue: number,
-    orientation: Orientation
-  };
+  let options: ViewOptions;
 
   beforeEach(() => {
     options = {
       isRange: true,
-      isTipsHidden: true,
-      maxValue: 100,
-      minValue: 0,
+      isTipsExists: true,
       orientation: 'horizontal',
     };
     parentElement = document.createElement('div');
@@ -48,37 +40,37 @@ describe('view class', () => {
     });
   });
 
-  describe('Get hide status', () => {
-    test('Should get correct hide status', () => {
-      options.isTipsHidden = true;
-      let view = new View(parentElement, options);
+  describe('Get tips exiting status', () => {
+    test('Should get correct tips exiting status', () => {
+      options.isTipsExists = true;
+      const view = new View(parentElement, options);
       let realResult = view.getTipsExistStatus();
-      let tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
-      let expectedResult = tip.classList.contains(Constants.tipHiddenClassName);
+      let tip = view.getDOMNode().getElementsByClassName(Constants.tipClassName);
+      let expectedResult = tip.length > 0;
       expect(realResult).toBe(expectedResult);
 
-      options.isTipsHidden = false;
-      view = new View(parentElement, options);
-      realResult = view.getTipsExistStatus();
-      tip = view.getDOMNode().querySelector(`.${Constants.tipClassName}`);
-      expectedResult = tip.classList.contains(Constants.tipHiddenClassName);
+      options.isTipsExists = false;
+      const newview = new View(parentElement, options);
+      realResult = newview.getTipsExistStatus();
+      tip = newview.getDOMNode().getElementsByClassName(Constants.tipClassName);
+      expectedResult = tip.length > 0;
       expect(realResult).toBe(expectedResult);
     });
   });
 
   describe('Hide tips', () => {
     test('Should hide tips by adding css-class to tips dom element', () => {
-      options.isTipsHidden = false;
+      options.isTipsExists = false;
       const view = new View(parentElement, options);
       view.deleteTips();
-      const tipElement = parentElement.getElementsByClassName(Constants.tipClassName)[0];
-      expect(tipElement.classList.contains(Constants.tipHiddenClassName)).toBe(true);
+      const tipElements = parentElement.getElementsByClassName(Constants.tipClassName);
+      expect(tipElements.length).toBe(0);
     });
   });
 
   describe('Show tips', () => {
     test('Should show tips by removing css-class from tips classList', () => {
-      options.isTipsHidden = true;
+      options.isTipsExists = true;
       const view = new View(parentElement, options);
       view.createTips();
       const tipElement = parentElement.getElementsByClassName(Constants.tipClassName)[0];
@@ -224,7 +216,7 @@ describe('view class', () => {
     test('Should update runners positions, '
       + 'tips values and positions and scale. range mode is interval', () => {
       options.isRange = true;
-      options.isTipsHidden = false;
+      options.isTipsExists = true;
       const view = new View(parentElement, options);
       const runnersPositions = [10, 90];
       const tipsValues = [20, 80];

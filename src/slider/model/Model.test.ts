@@ -1,22 +1,16 @@
 import Model from './Model';
+import { ModelOptions } from './types';
 
 describe('Class model', () => {
-  let options: {
-    isRange: boolean,
-    maxValue: number,
-    minValue: number,
-    startValueHigh: number,
-    startValueLow: number,
-    step: number,
-  };
+  let options: ModelOptions;
 
   beforeEach(() => {
     options = {
       isRange: false,
       maxValue: 100,
       minValue: 0,
-      startValueHigh: 100,
-      startValueLow: 0,
+      highValue: 100,
+      lowValue: 0,
       step: 1,
     };
   });
@@ -155,7 +149,7 @@ describe('Class model', () => {
 
   describe('Get low value', () => {
     test('Should return current low value', () => {
-      options.startValueLow = 10;
+      options.lowValue = 10;
       const model = new Model(options);
       expect(model.getLowValue()).toBe(10);
     });
@@ -163,8 +157,8 @@ describe('Class model', () => {
 
   describe('Set low value', () => {
     test('Should validate given value and set low value attribute to given validated value', () => {
-      options.startValueLow = 0;
-      options.startValueHigh = 100;
+      options.lowValue = 0;
+      options.highValue = 100;
       options.step = 1;
       let model = new Model(options);
       model.setLowValue(7);
@@ -184,8 +178,8 @@ describe('Class model', () => {
     test('When isRange is true and given value is closer to high value than step or greater than high value'
             + 'should set low value to nearest to high value valid value', () => {
       options.isRange = true;
-      options.startValueLow = 0;
-      options.startValueHigh = 50;
+      options.lowValue = 0;
+      options.highValue = 50;
       options.step = 5;
       const model = new Model(options);
       model.setLowValue(47);
@@ -196,7 +190,7 @@ describe('Class model', () => {
     });
 
     test('When given value is less than min value, should set low value to min value', () => {
-      options.startValueLow = 10;
+      options.lowValue = 10;
       options.minValue = 0;
       const model = new Model(options);
       model.setLowValue(-10);
@@ -215,7 +209,7 @@ describe('Class model', () => {
 
   describe('Get low value in percents', () => {
     test('Should return correct low value in percents', () => {
-      options.startValueLow = 15;
+      options.lowValue = 15;
       let model = new Model(options);
       expect(model.getLowValueInPercent()).toBe(15);
 
@@ -249,7 +243,7 @@ describe('Class model', () => {
       model.setLowValueByPercent(150);
       expect(model.getLowValue()).toBe(100);
 
-      options.startValueHigh = 50;
+      options.highValue = 50;
       options.isRange = true;
       model = new Model(options);
       model.setLowValueByPercent(110);
@@ -266,7 +260,7 @@ describe('Class model', () => {
 
   describe('Get high value', () => {
     test('Should return current high value', () => {
-      options.startValueHigh = 50;
+      options.highValue = 50;
       const model = new Model(options);
       expect(model.getHighValue()).toBe(50);
     });
@@ -292,13 +286,13 @@ describe('Class model', () => {
     test('When given value is closer to low value less than one step or less than low value, '
             + 'should set high value to nearest to low value valid value and move low value', () => {
       options.step = 5;
-      options.startValueLow = 15;
+      options.lowValue = 15;
       let model = new Model(options);
       model.setHighValue(18);
       expect(model.getHighValue()).toBe(20);
 
       options.step = 7;
-      options.startValueLow = 14;
+      options.lowValue = 14;
       model = new Model(options);
       model.setHighValue(10);
       expect(model.getHighValue()).toBe(7);
@@ -314,7 +308,7 @@ describe('Class model', () => {
 
   describe('Get high value in percents', () => {
     test('Should return correct high value in percents', () => {
-      options.startValueHigh = 25;
+      options.highValue = 25;
       let model = new Model(options);
       expect(model.getHighValueInPercent()).toBe(25);
 
@@ -354,8 +348,8 @@ describe('Class model', () => {
   describe('Set step', () => {
     test('Should set current step to given and validate low and high values', () => {
       options.step = 2;
-      options.startValueLow = 5;
-      options.startValueHigh = 10;
+      options.lowValue = 5;
+      options.highValue = 10;
       const model = new Model(options);
       model.setStep(3);
       expect(model.getStep()).toBe(3);
